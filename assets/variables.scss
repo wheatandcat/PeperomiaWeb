@@ -1,1 +1,9 @@
 $font-size-root: 20px;
+
+$main: #006835;
+$darkGray: #4F4F4F;
+
+:export {
+  main: $main;
+  darkGray: $darkGray;
+}

@@ -14,7 +14,10 @@
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "dayjs": "^1.8.20",
+    "node-sass": "^4.13.1",
+    "nuxt": "^2.0.0",
+    "sass-loader": "^8.0.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
