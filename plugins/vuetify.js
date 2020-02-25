@@ -1,8 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 import variables from '~/assets/variables.scss'
 
-console.log(variables)
-
 export default {
   customVariables: ['~/assets/variables.scss'],
   theme: {

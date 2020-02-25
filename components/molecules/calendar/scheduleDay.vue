@@ -1,7 +1,8 @@
 <template>
-  <div class="root">
-    <div class="no-event" :style="fontStyle">
-      {{ dayjs(date).format('D') }}
+  <div class="root" :style="bg">
+    <div class="event" :style="fontStyle">{{ dayjs(date).format('D') }}</div>
+    <div>
+      <v-img :src="kindData.src" class="kind-img" :style="imgStyle" />
     </div>
   </div>
 </template>
@@ -15,11 +16,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   color: $darkGray;
 }
 
-.no-event {
+.event {
   font-weight: 600;
+}
+
+.kind-img {
+  opacity: 0.8;
 }
 </style>
 
@@ -33,13 +39,25 @@ dayjs.extend(advancedFormat)
 export default Vue.extend({
   props: {
     date: { type: String, default: '' },
+    kindData: { type: Object, default: () => {} },
     size: { type: Number, default: 1 },
   },
   computed: {
     dayjs: () => dayjs,
+    bg() {
+      return {
+        backgroundColor: this.kindData.backgroundColor,
+      }
+    },
+    imgStyle() {
+      return {
+        width: `${2 * this.size}rem`,
+        height: `${2 * this.size}rem`,
+      }
+    },
     fontStyle() {
       return {
-        fontSize: `${1.2 * this.size}rem`,
+        fontSize: `${0.9 * this.size}rem`,
       }
     },
   },
