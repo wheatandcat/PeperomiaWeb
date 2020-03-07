@@ -30,9 +30,7 @@
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
     <v-footer fixed app>
       <span>&copy; 2020</span>
@@ -57,7 +55,7 @@ const ignoreWarnMessage =
 Vue.config.warnHandler = function(msg) {
   // `trace` is the component hierarchy trace
   if (msg === ignoreWarnMessage) {
-    return
+    return null
   }
 }
 

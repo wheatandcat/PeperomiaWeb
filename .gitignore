@@ -90,3 +90,4 @@ sw.*
 # Vim swap files
 *.swp
 go.mod
+config/index.js
