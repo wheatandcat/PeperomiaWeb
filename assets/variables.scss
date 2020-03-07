@@ -2,8 +2,12 @@ $font-size-root: 20px;
 
 $main: #006835;
 $darkGray: #4F4F4F;
+$red: #E15757;
+$lightRed: #FF8C8C;
 
 :export {
   main: $main;
   darkGray: $darkGray;
+  red: $red;
+  lightRed: $lightRed;
 }
