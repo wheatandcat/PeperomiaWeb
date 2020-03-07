@@ -9,10 +9,24 @@ module.exports = {
     parser: 'babel-eslint',
   },
   extends: [
+    '@nuxtjs/eslint-config-typescript',
     'eslint:recommended',
     'plugin:vue/recommended',
     'plugin:prettier/recommended',
     'prettier/vue',
+  ],
+  overrides: [
+    {
+      files: ['*.ts', '*.vue'],
+      plugins: ['@typescript-eslint'],
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
+      rules: {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
   ],
   // required to lint *.vue files
   plugins: ['vue', 'jest'],
