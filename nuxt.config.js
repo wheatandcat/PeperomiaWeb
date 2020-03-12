@@ -1,3 +1,5 @@
+import env from './config/index'
+
 export default {
   mode: 'universal',
   buildModules: ['@nuxt/typescript-build'],
@@ -37,13 +39,29 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: [['@nuxtjs/firebase']],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
     optionsPath: './plugins/vuetify.js',
+  },
+
+  firebase: {
+    config: {
+      ...env.FIREBASE,
+    },
+    onFirebaseHosting: false,
+    services: {
+      auth: {
+        initialize: {
+          onSuccessAction: 'handleSuccessfulAuthentication',
+          ssr: true,
+        },
+      },
+      firestore: true,
+    },
   },
   /*
    ** Build configuration

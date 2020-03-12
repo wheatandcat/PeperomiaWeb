@@ -60,6 +60,7 @@ Vue.config.warnHandler = function(msg) {
 }
 
 export default Vue.extend({
+  middleware: 'authenticated',
   data() {
     return {
       clipped: false,
