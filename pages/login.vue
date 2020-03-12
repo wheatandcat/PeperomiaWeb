@@ -40,18 +40,20 @@
 
 <script>
 import Vue from 'vue'
-import firebaseApp, { googleProvider } from '~/firebase/app'
+import firebase from 'firebase'
 
 export default Vue.extend({
   layout: 'simple',
 
   methods: {
     async fbGoogleLogin() {
-      const { user } = await firebaseApp.auth().signInWithPopup(googleProvider)
-      const { uid, email } = user
+      const googleProvider = new firebase.auth.GoogleAuthProvider()
 
-      this.$store.commit('SET_USER', { uid, email })
-      this.$router.push('/')
+      await this.$fireAuth.signInWithPopup(googleProvider)
+
+      this.$fireAuth.onAuthStateChanged(() => {
+        this.$router.push('/')
+      })
     },
   },
 })
