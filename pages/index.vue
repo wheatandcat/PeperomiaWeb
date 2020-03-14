@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Calendar />
+    <Calendar :calendars="calendars" />
   </div>
 </template>
 
@@ -24,6 +24,9 @@ export default Vue.extend({
   components: {
     Calendar,
   },
+  data: () => ({
+    calendars: [],
+  }),
   async mounted() {
     const uid = this.$store.state.authUser.uid
     const firestore = this.$fireStore
@@ -43,7 +46,10 @@ export default Vue.extend({
         ...item,
       }
     })
+
     console.log(result)
+
+    this.calendars = result
   },
 })
 </script>

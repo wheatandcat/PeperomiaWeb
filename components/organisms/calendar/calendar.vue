@@ -1,8 +1,14 @@
 <template>
   <div>
-    <div>2020年 2月</div>
+    <div :style="fontStyle" class="calendar-title">
+      {{ dayjs(calendarDate).format('YYYY年MM月') }}
+    </div>
     <v-sheet :height="height" :width="width">
-      <v-calendar :now="today" :value="today" locale="ja-jp">
+      <v-calendar
+        :now="dayjs().format('YYYY-MM-DD')"
+        :value="dayjs(calendarDate).format('YYYY-MM-DD')"
+        locale="ja-jp"
+      >
         <template v-slot:day="{ date }">
           <scheduleDay
             v-if="getSchedule(date)"
@@ -28,6 +34,11 @@
   font-weight: 600;
   border-bottom: 1px solid #e0e0e0;
 }
+
+.calendar-title {
+  font-weight: 600;
+  text-align: center;
+}
 </style>
 
 <script>
@@ -47,16 +58,15 @@ export default Vue.extend({
   },
   props: {
     size: { type: Number, default: 1 },
+    calendarDate: { type: String, required: true },
+    calendars: { type: Array, default: () => [] },
   },
-  data: () => ({
-    today: '2020-02-23',
-    calendars: [{ date: '2020-02-05', kind: 'park' }],
-  }),
+
   computed: {
     KINDS: () => KINDS,
     dayjs: () => dayjs,
     getSchedule() {
-      return function(date) {
+      return date => {
         const item = this.calendars.find(v => v.date === date)
 
         return item
@@ -67,6 +77,12 @@ export default Vue.extend({
     },
     width() {
       return 510 * this.size
+    },
+    fontStyle() {
+      return {
+        fontSize: `${1.5 * this.size}rem`,
+        paddingBottom: `${1.5 * this.size}rem`,
+      }
     },
   },
 })
