@@ -91,3 +91,4 @@ sw.*
 *.swp
 go.mod
 config/index.js
+static/firebase-auth-sw.js
