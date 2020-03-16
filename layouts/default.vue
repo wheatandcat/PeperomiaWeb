@@ -28,6 +28,31 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <img src="/logo.png" alt="logp" class="logo" />
       <v-spacer />
+      <v-menu left bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn class="text-transform-none" color="#eee" text v-on="on">
+            <v-img
+              :src="getStore.authUser.photoURL"
+              contain
+              max-width="28px"
+              max-height="28px"
+              class="user-photo"
+            />
+            <span class="my-page">
+              {{ getName }}
+            </span>
+            <v-icon right>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-title>
+              <span class="logout">ログアウト</span>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <nuxt />
@@ -45,10 +70,29 @@
   width: 30px;
   height: 30px;
 }
+
+.logout {
+  color: $red;
+  font-size: 12px;
+}
+
+.my-page {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.user-photo {
+  border-radius: 20px;
+  width: 28px;
+  margin-right: 7px;
+}
 </style>
 
 <script>
 import Vue from 'vue'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 const ignoreWarnMessage =
   'The .native modifier for v-on is only valid on components but it was used on <div>.'
@@ -79,6 +123,33 @@ export default Vue.extend({
       ],
       miniVariant: false,
     }
+  },
+  computed: {
+    getStore() {
+      console.log(this.$store.state)
+
+      return this.$store.state
+    },
+    getName() {
+      const email = this.$store.state.authUser.email
+
+      const name = email.split('@')[0]
+
+      return name
+    },
+  },
+  methods: {
+    ...mapActions({
+      logoutUser: 'logoutUser',
+    }),
+    async logout() {
+      try {
+        await this.logoutUser()
+        this.$router.push('/login')
+      } catch (e) {
+        alert(e)
+      }
+    },
   },
 })
 </script>

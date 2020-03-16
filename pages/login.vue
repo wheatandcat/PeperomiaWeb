@@ -1,40 +1,110 @@
 <template>
-  <div class="pa-10">
+  <div class="root">
+    <div class="icon">
+      <v-img src="/logo.png" alt="logo" width="50px" height="50px" contain />
+    </div>
     <v-sheet
       tile
       class="mx-auto"
-      height="400"
+      height="300"
       width="100%"
       max-width="480"
       elevation="2"
     >
-      <v-sheet color="primary" width="60" height="60">
-        <img src="/logo.png" alt="logp" />
-      </v-sheet>
       <div class="form-container">
-        <v-btn
-          color="secondary"
-          large
-          class="text-transform-none"
-          @click.prevent="fbGoogleLogin"
-        >
-          <v-icon left>mdi-google-plus</v-icon>
-          Googleでログイン
-        </v-btn>
+        <div class="title">新規会員登録</div>
+        <v-divider class="divider" />
+
+        <div class="button-container">
+          <v-btn
+            x-large
+            class="text-transform-none"
+            block
+            outlined
+            @click.prevent="fbGoogleLogin"
+          >
+            <v-icon left color="secondary">mdi-google-plus</v-icon>
+            Googleで登録する
+          </v-btn>
+        </div>
+        <div class="guide">
+          <div class="link">
+            <v-btn x-small class="text-transform-none" text color="primary">
+              会員登録するとできること
+              <v-icon small left>mdi-chevron-right</v-icon>
+            </v-btn>
+          </div>
+        </div>
       </div>
     </v-sheet>
+    <div class="links">
+      <v-btn x-small class="text-transform-none" text>利用規約</v-btn>
+      |
+      <v-btn x-small class="text-transform-none" text>
+        プライバシーポリシー
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import '~/assets/variables.scss';
 
-.form-container {
+.root {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  flex-direction: column;
   height: 100%;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .title {
+    text-align: center;
+    padding-top: 15px;
+  }
+
+  .divider {
+    margin: 15px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px 60px;
+    width: 100%;
+  }
+
+  .guide {
+    position: relative;
+    height: 100px;
+
+    .link {
+      position: absolute;
+      left: 35%;
+      bottom: 0;
+    }
+  }
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  font-size: 12px;
 }
 </style>
 
@@ -47,13 +117,17 @@ export default Vue.extend({
 
   methods: {
     async fbGoogleLogin() {
-      const googleProvider = new firebase.auth.GoogleAuthProvider()
+      try {
+        const googleProvider = new firebase.auth.GoogleAuthProvider()
 
-      await this.$fireAuth.signInWithPopup(googleProvider)
+        await this.$fireAuth.signInWithPopup(googleProvider)
 
-      this.$fireAuth.onAuthStateChanged(() => {
-        this.$router.push('/')
-      })
+        this.$fireAuth.onAuthStateChanged(user => {
+          this.$router.push('/')
+        })
+      } catch (e) {
+        console.log(e)
+      }
     },
   },
 })

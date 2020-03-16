@@ -31,6 +31,9 @@ export default Vue.extend({
     const uid = this.$store.state.authUser.uid
     const firestore = this.$fireStore
 
+    console.log(this.$store.state.authUser.photoURL)
+    console.log(this.$store.state.authUser.email)
+
     const calendars = await findCalendarByUID(firestore, uid)
     if (calendars.length === 0) {
       return
