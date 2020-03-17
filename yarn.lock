@@ -5202,7 +5202,7 @@ firebase-admin@^8.9.2:
     "@google-cloud/firestore" "^3.0.0"
     "@google-cloud/storage" "^4.1.2"
 
-firebase@^7.10.0, firebase@^7.9.1:
+firebase@^7.10.0:
   version "7.10.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.10.0.tgz#1df4d42f30ce6de97d7327f468911f51416e4fdd"
   integrity sha512-j80k8wsgg0N/t8uOkpGK6OT1MHHZ3Y/98nyZJJ+6lNodA6O79mXgyvI4AwXlPYd8qfmYeXwHz1f19sC+EqnZZg==
@@ -7950,7 +7950,7 @@ node-object-hash@^1.2.0:
   resolved "https://registry.yarnpkg.com/node-object-hash/-/node-object-hash-1.4.2.tgz#385833d85b229902b75826224f6077be969a9e94"
   integrity sha512-UdS4swXs85fCGWWf6t6DMGgpN/vnlKeSGEQ7hJcrs7PBFoxoKLmibc3QRb7fwiYsjdL7PX8iI/TMSlZ90dgHhQ==
 
-node-pre-gyp@*, node-pre-gyp@^0.14.0:
+node-pre-gyp@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
   integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
@@ -8551,10 +8551,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peperomia-util@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/peperomia-util/-/peperomia-util-0.0.4.tgz#812f36b499a5412291b0d1cafa0ddf28106bd3fb"
-  integrity sha512-UGyD7WDZhDomgmqxUkV4zfwr/U1Ytjorhy9f/IYwteti0Dwx+OTMU1tP6KOgMgXBs1+PSv6OjizHkl+qWQWPjg==
+peperomia-util@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/peperomia-util/-/peperomia-util-0.0.8.tgz#83604bc139c1471fc8c745429043335aad641d6f"
+  integrity sha512-ZkW/wPUqVwZd/ArcNlK6bI3lE6cVmjpggKqa2kEb0TXi3L/asR3eS4C2IDGu//F3UBmkCYN8QjkaG6ConH4ldw==
   dependencies:
     dayjs "^1.8.22"
     firebase "^7.10.0"

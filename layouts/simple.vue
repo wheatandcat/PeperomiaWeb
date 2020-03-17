@@ -1,9 +1,5 @@
 <template>
   <v-app dark>
-    <v-app-bar :clipped-left="clipped" fixed app color="primary">
-      <img src="/logo.png" alt="logp" class="logo" />
-      <v-spacer />
-    </v-app-bar>
     <v-content class="content">
       <v-container>
         <nuxt />
