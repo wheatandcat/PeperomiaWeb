@@ -126,8 +126,6 @@ export default Vue.extend({
   },
   computed: {
     getStore() {
-      console.log(this.$store.state)
-
       return this.$store.state
     },
     getName() {
