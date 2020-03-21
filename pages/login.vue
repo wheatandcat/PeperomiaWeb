@@ -29,7 +29,14 @@
         </div>
         <div class="guide">
           <div class="link">
-            <v-btn x-small class="text-transform-none" text color="primary">
+            <v-btn
+              x-small
+              class="text-transform-none"
+              text
+              color="primary"
+              href="https://amazing-hawking-a280c3.netlify.com/general/account/"
+              target="_blank"
+            >
               会員登録するとできること
               <v-icon small left>mdi-chevron-right</v-icon>
             </v-btn>
@@ -38,9 +45,23 @@
       </div>
     </v-sheet>
     <div class="links">
-      <v-btn x-small class="text-transform-none" text>利用規約</v-btn>
+      <v-btn
+        x-small
+        class="text-transform-none"
+        text
+        href="https://peperomia.app/tos"
+        target="_blank"
+      >
+        利用規約
+      </v-btn>
       |
-      <v-btn x-small class="text-transform-none" text>
+      <v-btn
+        x-small
+        class="text-transform-none"
+        text
+        href="https://peperomia.app/policy"
+        target="_blank"
+      >
         プライバシーポリシー
       </v-btn>
     </div>
