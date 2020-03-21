@@ -1,22 +1,31 @@
 # PeperomiaWeb
 
-> My world-class Nuxt.js project
+■ URL
+https://app.peperomia.info/login
 
-## Build Setup
+
+## セットアップ
 
 ``` bash
-# install dependencies
-$ yarn install
+$ yarn
+```
+## ローカル実行
 
-# serve with hot reload at localhost:3000
+```
 $ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## デプロイ
+``` bash
+$ yarn build
+$ gcloud app deploy
+```
+
+確認
+
+``` bash
+$ gcloud app browse -s peperomia-web
+```
+
+

@@ -1,0 +1,3 @@
+dispatch:
+  - url: "*app.peperomia.info/*"
+    service:  peperomia-web

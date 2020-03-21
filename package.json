@@ -4,11 +4,14 @@
   "description": "My world-class Nuxt.js project",
   "author": "wheatandcat",
   "private": true,
+  "engines": {
+    "node": "12.x.x"
+  },
   "scripts": {
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
-    "start": "nuxt-ts start",
+    "start": "HOST=0.0.0.0 PORT=8080 nuxt-ts start",
     "test": "jest",
     "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .ts,.js,.vue --ignore-path .gitignore ."
@@ -17,6 +20,7 @@
     "@mdi/font": "^4.9.95",
     "@nuxt/typescript-runtime": "^0.3.10",
     "@nuxtjs/firebase": "^4.1.0",
+    "@nuxtjs/vuetify": "^1.0.0",
     "core-js": "2.6.5",
     "dayjs": "^1.8.20",
     "firebase": "^7.10.0",
@@ -24,7 +28,7 @@
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.11.0",
     "peperomia-util": "^0.0.8",
     "sass-loader": "^8.0.2",
     "vuex-persistedstate": "^2.7.1",
@@ -33,7 +37,6 @@
   "devDependencies": {
     "@nuxt/typescript-build": "^0.5.7",
     "@nuxtjs/eslint-config-typescript": "^1.0.2",
-    "@nuxtjs/vuetify": "^1.0.0",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.1.0",

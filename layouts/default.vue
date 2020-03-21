@@ -112,13 +112,8 @@ export default Vue.extend({
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'ダッシュボード',
           to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
         },
       ],
       miniVariant: false,
