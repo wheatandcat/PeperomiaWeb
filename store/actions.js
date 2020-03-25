@@ -11,9 +11,10 @@ export default {
     }
   },
 
-  handleSuccessfulAuthentication({ commit }, { authUser }) {
-    if (process.browser && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/firebase-auth-sw.js', { scope: '/' })
+  onAuthStateChanged({ commit }, { authUser }) {
+    if (!authUser) {
+      commit('RESET_STORE')
+      return
     }
 
     commit('SET_AUTH_USER', { authUser })
