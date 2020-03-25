@@ -31,7 +31,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/cookie-storage.js'],
+  plugins: ['@/plugins/composition-api', '~/plugins/cookie-storage.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -56,7 +56,7 @@ export default {
     services: {
       auth: {
         initialize: {
-          onSuccessAction: 'handleSuccessfulAuthentication',
+          onAuthStateChangedAction: 'onAuthStateChanged',
           ssr: true,
         },
       },
@@ -67,6 +67,19 @@ export default {
    ** Build configuration
    */
   build: {
+    babel: {
+      presets({ isServer }) {
+        return [
+          [require.resolve('babel-preset-vca-jsx')],
+          [
+            require.resolve('@nuxt/babel-preset-app'),
+            {
+              targets: isServer ? { node: 'current' } : { ie: '9' },
+            },
+          ],
+        ]
+      },
+    },
     /*
      ** You can extend webpack config here
      */
