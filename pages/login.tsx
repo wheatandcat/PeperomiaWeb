@@ -2,6 +2,9 @@ import { defineComponent } from '@vue/composition-api'
 import firebase from 'firebase'
 import Login from '~/components/templates/login/index.vue'
 
+export type LoginType = {
+  fbGoogleLogin: () => Promise<void>
+}
 
 export default defineComponent({
   layout: 'simple',

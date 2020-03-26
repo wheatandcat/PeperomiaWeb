@@ -129,12 +129,19 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
+import { defineComponent } from '@vue/composition-api'
+import { LoginType } from '~/pages/login.tsx'
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     fbGoogleLogin: { type: Function, required: true },
+  },
+  setup(props: LoginType) {
+    return {
+      ...props,
+    }
   },
 })
 </script>
