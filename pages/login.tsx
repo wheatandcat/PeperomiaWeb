@@ -1,19 +1,10 @@
-<template>
-  <Login :fb-google-login="fbGoogleLogin" />
-</template>
-
-<script lang="ts">
-import Vue from 'vue'
-import firebase from 'firebase'
 import { defineComponent } from '@vue/composition-api'
+import firebase from 'firebase'
 import Login from '~/components/templates/login/index.vue'
+
 
 export default defineComponent({
   layout: 'simple',
-  components: {
-    Login,
-  },
-
   setup(_, context) {
     const fbGoogleLogin = async () => {
       try {
@@ -21,7 +12,7 @@ export default defineComponent({
 
         await context.root.$fireAuth.signInWithPopup(googleProvider)
 
-        context.root.$fireAuth.onAuthStateChanged(user => {
+        context.root.$fireAuth.onAuthStateChanged(() => {
           context.root.$router.push('/')
         })
       } catch (e) {
@@ -29,9 +20,10 @@ export default defineComponent({
       }
     }
 
-    return {
-      fbGoogleLogin,
-    }
+    return () => (
+      <div>
+        <Login fbGoogleLogin={fbGoogleLogin} />
+      </div>
+    )
   },
 })
-</script>
