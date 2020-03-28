@@ -1,0 +1,6 @@
+shims-tsx.d.ts
+config/index.js
+static/firebase-auth-sw.js
+.cache
+# next.js build output
+.next
