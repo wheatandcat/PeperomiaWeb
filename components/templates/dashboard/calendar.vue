@@ -28,7 +28,7 @@ export default defineComponent({
   props: {
     calendars: { type: Array, default: () => [] },
   },
-  setup(props: Props, context) {
+  setup(props: Props) {
     const main = ref<any>(null)
 
     const getDate = (month: number) => {

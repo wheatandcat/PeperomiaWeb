@@ -1,13 +1,5 @@
 <script lang="tsx">
-import Vue from 'vue'
-import {
-  defineComponent,
-  onMounted,
-  onBeforeUnmount,
-  computed,
-  ref,
-  reactive,
-} from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
@@ -29,7 +21,7 @@ export default defineComponent({
     calendarDate: { type: String, required: true },
     calendars: { type: Array, default: () => [] },
   },
-  setup(props: Props, context) {
+  setup(props: Props) {
     const getSchedule = (date: string) => {
       const item = props.calendars.find(v => v.date === date)
       return item

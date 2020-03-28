@@ -1,6 +1,11 @@
 <script lang="tsx">
 import firebase from 'firebase'
-import { defineComponent, onMounted, ref, reactive } from '@vue/composition-api'
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  SetupContext,
+} from '@vue/composition-api'
 import {
   findInID as findItemInID,
   Item,
@@ -41,7 +46,7 @@ type State = {
 }
 
 export default defineComponent({
-  setup(_, context) {
+  setup(_, context: SetupContext) {
     const state = reactive<State>({
       calendars: [],
     })

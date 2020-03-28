@@ -1,7 +1,6 @@
 <script lang="tsx">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, SetupContext } from '@vue/composition-api'
 import firebase from 'firebase'
-// import style from './login.module.scss?module'
 import Login from '~/components/templates/login/index.vue'
 
 export type LoginType = {
@@ -10,7 +9,7 @@ export type LoginType = {
 
 export default defineComponent({
   layout: 'simple',
-  setup(_, context) {
+  setup(_, context: SetupContext) {
     const fbGoogleLogin = async () => {
       try {
         const googleProvider = new firebase.auth.GoogleAuthProvider()
