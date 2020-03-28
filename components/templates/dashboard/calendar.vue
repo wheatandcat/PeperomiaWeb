@@ -1,15 +1,76 @@
-<script lang="tsx">
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col ref="main" cols="12" md="6" class="calendar-container">
+        <calendar
+          :size="getMainCalendarSize"
+          :calendars="getCalendarByMonth(0)"
+          :calendar-date="getDate(0)"
+        />
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-container fluid>
+          <v-row>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(1)"
+                :calendar-date="getDate(1)"
+              />
+            </v-col>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(2)"
+                :calendar-date="getDate(2)"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(-1)"
+                :calendar-date="getDate(-1)"
+              />
+            </v-col>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendar="getCalendarByMonth(-2)"
+                :calendar-date="getDate(-2)"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<script lang="ts">
 import {
   defineComponent,
   onMounted,
   onBeforeUnmount,
   ref,
+  computed,
   reactive,
 } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
-import Calendar from '~/components/organisms/calendar/calendar.vue'
+import calendar from '~/components/organisms/calendar/calendar.vue'
 import { CalendarItem } from '~/pages/index.vue'
 
 dayjs.extend(isBetween)
@@ -25,6 +86,9 @@ type State = {
 }
 
 export default defineComponent({
+  components: {
+    calendar,
+  },
   props: {
     calendars: { type: Array, default: () => [] },
   },
@@ -37,7 +101,7 @@ export default defineComponent({
         .format('YYYY-MM-01')
     }
 
-    const getMainCalendarSize = () => {
+    const getMainCalendarSize = computed(() => {
       if (state.large) {
         return 1.2
       }
@@ -45,9 +109,9 @@ export default defineComponent({
         return 0.8
       }
       return 1.0
-    }
+    })
 
-    const getSubCalendarSize = () => {
+    const getSubCalendarSize = computed(() => {
       if (state.large) {
         return 0.6
       }
@@ -55,7 +119,7 @@ export default defineComponent({
         return 0.4
       }
       return 0.5
-    }
+    })
 
     const getCalendarByMonth = (month: number) => {
       const startDate = dayjs()
@@ -95,65 +159,13 @@ export default defineComponent({
       }
     })
 
-    return () => (
-      <v-container fluid>
-        <v-row>
-          <v-col ref={main} cols="12" md="6" class="calendar-container">
-            <Calendar
-              size={getMainCalendarSize()}
-              calendars={getCalendarByMonth(0)}
-              calendarDate={getDate(0)}
-            />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-container fluid>
-              <v-row>
-                <v-col cols="6" class="calendar-container">
-                  <Calendar
-                    size={getSubCalendarSize()}
-                    calendars={getCalendarByMonth(1)}
-                    calendarDate={getDate(1)}
-                  />
-                </v-col>
-                <v-col cols="6" class="calendar-container">
-                  <Calendar
-                    size={getSubCalendarSize()}
-                    calendars={getCalendarByMonth(2)}
-                    calendarDate={getDate(2)}
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="6" class="calendar-container">
-                  <Calendar
-                    size={getSubCalendarSize()}
-                    calendars={getCalendarByMonth(-1)}
-                    calendarDate={getDate(-1)}
-                  />
-                </v-col>
-                <v-col cols="6" class="calendar-container">
-                  <Calendar
-                    size={getSubCalendarSize()}
-                    calendars={getCalendarByMonth(-2)}
-                    calendarDate={getDate(-2)}
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
-    )
+    return {
+      main,
+      getCalendarByMonth,
+      getSubCalendarSize,
+      getMainCalendarSize,
+      getDate,
+    }
   },
 })
 </script>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.calendar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
