@@ -1,5 +1,7 @@
+<script lang="tsx">
 import { defineComponent } from '@vue/composition-api'
 import firebase from 'firebase'
+// import style from './login.module.scss?module'
 import Login from '~/components/templates/login/index.vue'
 
 export type LoginType = {
@@ -30,3 +32,4 @@ export default defineComponent({
     )
   },
 })
+</script>
