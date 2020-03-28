@@ -1,4 +1,10 @@
-<script lang="tsx">
+<template>
+  <div>
+    <CalendarView :calendars="state.calendars" />
+  </div>
+</template>
+
+<script lang="ts">
 import firebase from 'firebase'
 import {
   defineComponent,
@@ -46,6 +52,9 @@ type State = {
 }
 
 export default defineComponent({
+  components: {
+    CalendarView,
+  },
   setup(_, context: SetupContext) {
     const state = reactive<State>({
       calendars: [],
@@ -59,11 +68,9 @@ export default defineComponent({
       state.calendars = result
     })
 
-    return () => (
-      <div>
-        <CalendarView calendars={state.calendars} />
-      </div>
-    )
+    return {
+      state,
+    }
   },
 })
 </script>

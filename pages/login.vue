@@ -1,4 +1,8 @@
-<script lang="tsx">
+<template>
+  <Login :fb-google-login="fbGoogleLogin" />
+</template>
+
+<script lang="ts">
 import { defineComponent, SetupContext } from '@vue/composition-api'
 import firebase from 'firebase'
 import Login from '~/components/templates/login/index.vue'
@@ -9,6 +13,9 @@ export type LoginType = {
 
 export default defineComponent({
   layout: 'simple',
+  components: {
+    Login,
+  },
   setup(_, context: SetupContext) {
     const fbGoogleLogin = async () => {
       try {
@@ -24,11 +31,9 @@ export default defineComponent({
       }
     }
 
-    return () => (
-      <div>
-        <Login fbGoogleLogin={fbGoogleLogin} />
-      </div>
-    )
+    return {
+      fbGoogleLogin,
+    }
   },
 })
 </script>
