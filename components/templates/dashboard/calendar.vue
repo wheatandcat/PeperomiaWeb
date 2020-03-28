@@ -1,5 +1,4 @@
 <script lang="tsx">
-import Vue from 'vue'
 import {
   defineComponent,
   onMounted,
