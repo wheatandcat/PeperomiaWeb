@@ -1,55 +1,64 @@
-<template>
-  <div>
-    <Calendar :calendars="calendars" />
-  </div>
-</template>
+<script lang="tsx">
+import firebase from 'firebase'
+import { defineComponent, onMounted, ref, reactive } from '@vue/composition-api'
+import {
+  findInID as findItemInID,
+  Item,
+} from 'peperomia-util/build/firestore/item'
+import {
+  findByUID as findCalendarByUID,
+  Calendar,
+} from 'peperomia-util/build/firestore/calendar'
+import CalendarView from '~/components/templates/dashboard/calendar.vue'
 
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
+export type CalendarItem = Calendar & Item
 
-.calendar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+const getCalendars = async (
+  firestore: firebase.firestore.Firestore,
+  uid: string
+): Promise<CalendarItem[]> => {
+  const calendars = await findCalendarByUID(firestore, uid)
+  if (calendars.length === 0) {
+    return []
+  }
 
-<script>
-import Vue from 'vue'
-import { findInID as findItemInID } from 'peperomia-util/build/firestore/item'
-import { findByUID as findCalendarByUID } from 'peperomia-util/build/firestore/calendar'
-import Calendar from '~/components/templates/dashboard/calendar.vue'
+  const ids = calendars.map(calendar => String(calendar.id))
+  const items = await findItemInID(firestore, uid, ids)
+  const result = calendars.map(calendar => {
+    const item = items.find(v => v.id === calendar.id)
 
-export default Vue.extend({
-  components: {
-    Calendar,
-  },
-  data: () => ({
-    calendars: [],
-  }),
-  async mounted() {
-    const uid = this.$store.state.authUser.uid
-    const firestore = this.$fireStore
-
-    const calendars = await findCalendarByUID(firestore, uid)
-    if (calendars.length === 0) {
-      return
+    return {
+      ...calendar,
+      ...item,
     }
+  })
 
-    const ids = calendars.map(calendar => String(calendar.id))
-    const items = await findItemInID(firestore, uid, ids)
-    const result = calendars.map(calendar => {
-      const item = items.find(v => v.id === calendar.id)
+  return result as CalendarItem[]
+}
 
-      return {
-        ...calendar,
-        ...item,
-      }
+type State = {
+  calendars: CalendarItem[]
+}
+
+export default defineComponent({
+  setup(_, context) {
+    const state = reactive<State>({
+      calendars: [],
     })
 
-    console.log(result)
+    onMounted(async () => {
+      const uid = context.root.$store.state.authUser.uid
+      const firestore = context.root.$fireStore
+      const result = await getCalendars(firestore, uid)
 
-    this.calendars = result
+      state.calendars = result
+    })
+
+    return () => (
+      <div>
+        <CalendarView calendars={state.calendars} />
+      </div>
+    )
   },
 })
 </script>
