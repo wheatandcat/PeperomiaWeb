@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="no-event" :style="fontStyle">
-      {{ dayjs(props).format('D') }}
+      {{ dayjs(props.date).format('D') }}
     </div>
   </div>
 </template>
