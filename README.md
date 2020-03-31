@@ -15,6 +15,17 @@ $ yarn
 $ yarn dev
 ```
 
+## lint 
+
+```
+$ yarn lint
+```
+
+## 型チェック
+```
+$ npx vti diagnostics
+```
+
 
 ## デプロイ
 ``` bash
