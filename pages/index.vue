@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CalendarView :calendars="state.calendars" />
+    <CalendarView :calendars="state.calendars1" />
   </div>
 </template>
 
@@ -34,7 +34,6 @@ const getCalendars = async (
   }
 
   const ids = calendars.map(calendar => String(calendar.id))
-  console.log('test')
 
   const items = await findItemInID(firestore, uid, ids)
   const result = calendars.map(calendar => {
