@@ -63,7 +63,8 @@
   "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix",
-      "git add"
+      "npx vti diagnostics",
+      "git add *"
     ]
   },
   "husky": {
