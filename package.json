@@ -63,15 +63,12 @@
   "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix",
-      "git add *"
+      "git add"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": [
-        "lint-staged",
-        "npx vti diagnostics"
-      ]
+      "pre-commit": "yarn lint-staged"
     }
   }
 }
