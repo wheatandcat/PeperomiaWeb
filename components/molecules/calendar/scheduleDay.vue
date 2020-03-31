@@ -1,7 +1,7 @@
 <template>
   <div class="root" :style="bg">
     <div class="event" :style="fontStyle">
-      {{ dayjs(props).format('D') }}
+      {{ dayjs(props.date).format('D') }}
     </div>
     <div>
       <v-img :src="props.kindData.src" class="kind-img" :style="imgStyle" />
