@@ -53,11 +53,13 @@
     "husky": "^4.2.3",
     "jest": "^24.1.0",
     "lint-staged": "^10.1.1",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "vue-jest": "^4.0.0-0"
   },
-  "pre-commit": [],
+  "pre-commit": [
+    "eslint --fix",
+    "git add"
+  ],
   "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix",
