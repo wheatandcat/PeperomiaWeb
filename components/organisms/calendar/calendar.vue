@@ -58,6 +58,15 @@ type Props = {
   calendarDate: string
 }
 
+const defaultCalendarItem: CalendarItem = {
+  id: '',
+  itemId: '',
+  uid: '',
+  date: '',
+  title: '',
+  kind: '',
+}
+
 export default defineComponent({
   components: {
     day,
@@ -71,7 +80,8 @@ export default defineComponent({
   setup(props: Props) {
     const getSchedule = (date: string) => {
       const item = props.calendars.find(v => v.date === date)
-      return item
+
+      return item || defaultCalendarItem
     }
 
     const height = computed(() => 380 * props.size)

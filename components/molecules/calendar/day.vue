@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="no-event" :style="fontStyle">
-      {{ dayjs(date).format('D') }}
+      {{ dayjs(props.date).format('D') }}
     </div>
   </div>
 </template>
@@ -23,25 +23,35 @@
 }
 </style>
 
-<script>
-import Vue from 'vue'
+<script lang="ts">
+import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 dayjs.extend(advancedFormat)
 
-export default Vue.extend({
+type Props = {
+  date: string
+  size: number
+}
+
+export default defineComponent({
   props: {
     date: { type: String, default: '' },
     size: { type: Number, default: 1 },
   },
-  computed: {
-    dayjs: () => dayjs,
-    fontStyle() {
+  setup(props: Props) {
+    const fontStyle = computed(() => {
       return {
-        fontSize: `${1.2 * this.size}rem`,
+        fontSize: `${1.2 * props.size}rem`,
       }
-    },
+    })
+
+    return {
+      fontStyle,
+      dayjs,
+      props,
+    }
   },
 })
 </script>

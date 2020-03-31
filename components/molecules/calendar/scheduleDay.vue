@@ -1,8 +1,10 @@
 <template>
   <div class="root" :style="bg">
-    <div class="event" :style="fontStyle">{{ dayjs(date).format('D') }}</div>
+    <div class="event" :style="fontStyle">
+      {{ dayjs(props.date).format('D') }}
+    </div>
     <div>
-      <v-img :src="kindData.src" class="kind-img" :style="imgStyle" />
+      <v-img :src="props.kindData.src" class="kind-img" :style="imgStyle" />
     </div>
   </div>
 </template>
@@ -29,37 +31,51 @@
 }
 </style>
 
-<script>
-import Vue from 'vue'
+<script lang="ts">
+import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
+import { Kind } from 'peperomia-util/build/getKind'
 
 dayjs.extend(advancedFormat)
 
-export default Vue.extend({
+type Props = {
+  date: string
+  kindData: Kind
+  size: number
+}
+
+export default defineComponent({
   props: {
     date: { type: String, default: '' },
     kindData: { type: Object, default: () => {} },
     size: { type: Number, default: 1 },
   },
-  computed: {
-    dayjs: () => dayjs,
-    bg() {
+  setup(props: Props) {
+    const bg = computed(() => {
       return {
-        backgroundColor: this.kindData.backgroundColor,
+        backgroundColor: props.kindData.backgroundColor,
       }
-    },
-    imgStyle() {
+    })
+    const imgStyle = computed(() => {
       return {
-        width: `${2 * this.size}rem`,
-        height: `${2 * this.size}rem`,
+        width: `${2 * props.size}rem`,
+        height: `${2 * props.size}rem`,
       }
-    },
-    fontStyle() {
+    })
+    const fontStyle = computed(() => {
       return {
-        fontSize: `${0.9 * this.size}rem`,
+        fontSize: `${0.9 * props.size}rem`,
       }
-    },
+    })
+
+    return {
+      bg,
+      imgStyle,
+      fontStyle,
+      dayjs,
+      props,
+    }
   },
 })
 </script>
