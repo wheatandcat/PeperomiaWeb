@@ -31,6 +31,10 @@ export default defineComponent({
       }
     }
 
+    if (context.root.$store.getters.isLoggedIn) {
+      context.root.$router.push('/')
+    }
+
     return {
       fbGoogleLogin,
     }
