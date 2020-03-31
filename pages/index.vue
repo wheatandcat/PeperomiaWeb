@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CalendarView :calendars="state.calendars1" />
+    <CalendarView :calendars="state.calendars" />
   </div>
 </template>
 
