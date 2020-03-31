@@ -12,7 +12,6 @@
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
     "start": "HOST=0.0.0.0 PORT=8080 nuxt-ts start",
-    "test": "jest",
     "lint": "eslint --ext .ts,.tsx,.js,.vue --ignore-path .eslintignore .",
     "lintfix": "eslint --fix --ext .ts,.tsx,.js,.vue --ignore-path .eslintignore ."
   },
@@ -53,13 +52,15 @@
     "husky": "^4.2.3",
     "jest": "^24.1.0",
     "lint-staged": "^10.1.1",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "vue-jest": "^4.0.0-0"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
+    "*.{js,ts,vue}": [
       "lint --fix",
-      "npx vti diagnostics"
+      "npx vti diagnostics",
+      "git add"
     ]
   },
   "husky": {
