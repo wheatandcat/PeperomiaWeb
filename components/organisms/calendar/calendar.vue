@@ -11,7 +11,7 @@
       >
         <template v-slot:day="{ date }">
           <scheduleDay
-            v-if="getSchedule(date)"
+            v-if="isSchedule(date)"
             :date="date"
             :kind-data="KINDS[getSchedule(date).kind]"
             :size="size"
@@ -78,6 +78,12 @@ export default defineComponent({
     calendars: { type: Array, default: () => [] },
   },
   setup(props: Props) {
+    const isSchedule = (date: string): boolean => {
+      const item = props.calendars.find(v => v.date === date)
+
+      return Boolean(item)
+    }
+
     const getSchedule = (date: string) => {
       const item = props.calendars.find(v => v.date === date)
 
@@ -96,6 +102,7 @@ export default defineComponent({
       width,
       fontStyle,
       getSchedule,
+      isSchedule,
       dayjs,
       KINDS,
     }
