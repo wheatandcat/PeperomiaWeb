@@ -16,5 +16,7 @@ jobs:
     - name: Install node_modules PeperomiaWeb
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
-    - name: build
+    - name: setup
+      run: sh localInit.sh
+     - name: build
       run: yarn build
