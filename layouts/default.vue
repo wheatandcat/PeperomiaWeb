@@ -1,9 +1,9 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      v-model="state.drawer"
+      :mini-variant="state.miniVariant"
+      :clipped="state.clipped"
       fixed
       app
     >
@@ -24,15 +24,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="primary">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar :clipped-left="state.clipped" fixed app color="primary">
+      <v-app-bar-nav-icon @click.stop="state.drawer = !state.drawer" />
       <img src="/logo.png" alt="logp" class="logo" />
       <v-spacer />
       <v-menu left bottom>
         <template v-slot:activator="{ on }">
           <v-btn class="text-transform-none" color="#eee" text v-on="on">
             <v-img
-              :src="getStore.authUser.photoURL"
+              v-if="getPhotoURL"
+              :src="getPhotoURL"
               contain
               max-width="28px"
               max-height="28px"
@@ -90,9 +91,14 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
-import { mapActions } from 'vuex'
+import {
+  defineComponent,
+  reactive,
+  computed,
+  SetupContext,
+} from '@vue/composition-api'
 
 const ignoreWarnMessage =
   'The .native modifier for v-on is only valid on components but it was used on <div>.'
@@ -103,46 +109,61 @@ Vue.config.warnHandler = function(msg) {
   }
 }
 
-export default Vue.extend({
+type State = {
+  clipped: boolean
+  drawer: boolean
+  miniVariant: boolean
+}
+
+const initState = {
+  clipped: false,
+  drawer: false,
+  miniVariant: false,
+}
+
+export default defineComponent({
   middleware: 'authenticated',
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'ダッシュボード',
-          to: '/',
-        },
-      ],
-      miniVariant: false,
-    }
-  },
-  computed: {
-    getStore() {
-      return this.$store.state
-    },
-    getName() {
-      const email = this.$store.state.authUser.email
+
+  setup(_, context: SetupContext) {
+    const state = reactive<State>(initState)
+
+    const getPhotoURL = computed(() => {
+      return context.root.$store?.state?.authUser?.photoURL || null
+    })
+
+    const getName = computed(() => {
+      const email = context.root.$store?.state?.authUser?.email || ''
 
       const name = email.split('@')[0]
 
       return name
-    },
-  },
-  methods: {
-    ...mapActions({
-      logoutUser: 'logoutUser',
-    }),
-    async logout() {
+    })
+
+    const logout = async () => {
       try {
-        await this.logoutUser()
-        this.$router.push('/login')
+        await context.root.$fireAuth.signOut()
+        await context.root.$store.commit('RESET_STORE')
+        context.root.$router.push('/login')
       } catch (e) {
         alert(e)
       }
-    },
+    }
+
+    const items = [
+      {
+        icon: 'mdi-apps',
+        title: 'ダッシュボード',
+        to: '/',
+      },
+    ]
+
+    return {
+      state,
+      items,
+      getPhotoURL,
+      getName,
+      logout,
+    }
   },
 })
 </script>

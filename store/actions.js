@@ -19,16 +19,4 @@ export default {
 
     commit('SET_AUTH_USER', { authUser })
   },
-
-  async logoutUser({ commit }) {
-    try {
-      await this.$fireAuth.signOut()
-    } catch (e) {
-      // Do nothing, not properly signed in anyway.
-      console.error(e)
-    } finally {
-      // Reset store
-      commit('RESET_STORE')
-    }
-  },
 }

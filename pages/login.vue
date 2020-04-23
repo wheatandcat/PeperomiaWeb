@@ -24,7 +24,7 @@ export default defineComponent({
         await context.root.$fireAuth.signInWithPopup(googleProvider)
 
         context.root.$fireAuth.onAuthStateChanged(() => {
-          context.root.$router.push('/')
+          window.location.href = `${location.protocol}//${location.host}`
         })
       } catch (e) {
         console.log(e)
