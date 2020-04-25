@@ -1,5 +1,8 @@
 <template>
   <v-app dark>
+    <v-dialog v-model="state.dialog" width="500">
+      <v-sheet elevation="4" width="500" height="500">aaaa</v-sheet>
+    </v-dialog>
     <v-navigation-drawer
       v-model="state.drawer"
       :mini-variant="state.miniVariant"
@@ -113,12 +116,14 @@ type State = {
   clipped: boolean
   drawer: boolean
   miniVariant: boolean
+  dialog: boolean
 }
 
 const initState = {
   clipped: false,
   drawer: false,
   miniVariant: false,
+  dialog: true,
 }
 
 export default defineComponent({

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import colors from 'vuetify/es5/util/colors'
-import variables from '~/assets/variables.scss'
+import variables from '../assets/variables.scss'
 
 export default {
   customVariables: ['~/assets/variables.scss'],

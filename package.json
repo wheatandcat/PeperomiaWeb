@@ -14,7 +14,9 @@
     "start": "HOST=0.0.0.0 PORT=8080 nuxt-ts start",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx,.js,.vue --ignore-path .eslintignore .",
-    "lintfix": "eslint --fix --ext .ts,.tsx,.js,.vue --ignore-path .eslintignore ."
+    "lintfix": "eslint --fix --ext .ts,.tsx,.js,.vue --ignore-path .eslintignore .",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
@@ -33,16 +35,24 @@
     "nuxt": "latest",
     "peperomia-util": "latest",
     "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.0",
     "vuex-persistedstate": "^2.7.1",
     "vuexfire": "^3.2.1"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "^1.0.2",
+    "@babel/core": "^7.9.0",
     "@nuxt/typescript-build": "latest",
+    "@nuxtjs/eslint-config-typescript": "^1.0.2",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/vue": "^5.3.18",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.1.0",
+    "babel-loader": "^8.1.0",
     "babel-preset-vca-jsx": "^0.3.4",
+    "babel-preset-vue": "^2.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-formatter-friendly": "^7.0.0",
