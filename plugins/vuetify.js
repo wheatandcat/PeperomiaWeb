@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import colors from 'vuetify/es5/util/colors'
-import variables from '../assets/variables.scss'
+import variables from '~/assets/variables.scss'
 
 export default {
   customVariables: ['~/assets/variables.scss'],
@@ -17,7 +17,10 @@ export default {
         error: colors.deepOrange.accent4,
         success: colors.green.accent3,
         themeRed: variables.red,
+        themeGray: variables.gray,
         themeLightRed: variables.lightRed,
+        themeLightGray: variables.lightGray,
+        themeLightGreen: variables.lightGreen,
       },
       light: {
         primary: variables.main,
@@ -28,7 +31,10 @@ export default {
         error: colors.deepOrange.accent4,
         success: colors.green.accent3,
         themeRed: variables.red,
+        themeGray: variables.gray,
         themeLightRed: variables.lightRed,
+        themeLightGray: variables.lightGray,
+        themeLightGreen: variables.lightGreen,
       },
     },
   },

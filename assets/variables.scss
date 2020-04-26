@@ -4,10 +4,16 @@ $main: #006835;
 $darkGray: #4F4F4F;
 $red: #E15757;
 $lightRed: #FF8C8C;
+$lightGray: #F2F2F2;
+$lightGreen: #ADCF01;
+$gray: #D3D3D3;
 
 :export {
   main: $main;
   darkGray: $darkGray;
   red: $red;
   lightRed: $lightRed;
+  gray: $gray;
+  lightGray: $lightGray;
+  lightGreen: $lightGreen;
 }
