@@ -1,5 +1,5 @@
 <template>
-  <div class="root" :style="bg">
+  <div class="root" :style="bg" @click="onOenItemDialog(props.itemID)">
     <div class="event" :style="fontStyle">
       {{ dayjs(props.date).format('D') }}
     </div>
@@ -20,6 +20,7 @@
   align-items: center;
   flex-direction: column;
   color: $darkGray;
+  cursor: pointer;
 }
 
 .event {
@@ -32,7 +33,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent, computed, SetupContext } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { Kind } from 'peperomia-util/build/getKind'
@@ -48,10 +49,11 @@ type Props = {
 export default defineComponent({
   props: {
     date: { type: String, default: '' },
+    itemID: { type: String, default: '' },
     kindData: { type: Object, default: () => {} },
     size: { type: Number, default: 1 },
   },
-  setup(props: Props) {
+  setup(props: Props, context: SetupContext) {
     const bg = computed(() => {
       return {
         backgroundColor: props.kindData.backgroundColor,
@@ -69,12 +71,19 @@ export default defineComponent({
       }
     })
 
+    const onOenItemDialog = (id: string) => {
+      context.root.$store.commit('OPEN_ITEM_DIALOG', {
+        id,
+      })
+    }
+
     return {
       bg,
       imgStyle,
       fontStyle,
       dayjs,
       props,
+      onOenItemDialog,
     }
   },
 })
