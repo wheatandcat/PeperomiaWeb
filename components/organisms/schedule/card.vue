@@ -30,35 +30,39 @@
           東京都
         </div>
 
-        <v-chip
-          class="chip-container"
-          color="themeLightGray"
-          text-color="themeGary"
-          x-small
-          label
-        >
-          <v-icon color="themeLightGreen" size="13" class="mr-1" left>
-            mdi-link
-          </v-icon>
-          <div class="label-text">URL</div>
-        </v-chip>
-        <div class="label-value">
-          <a href="https://peperomia.info/">https://peperomia.info/</a>
-        </div>
+        <template v-if="props.itemDetail.url">
+          <v-chip
+            class="chip-container"
+            color="themeLightGray"
+            text-color="themeGary"
+            x-small
+            label
+          >
+            <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+              mdi-link
+            </v-icon>
+            <div class="label-text">URL</div>
+          </v-chip>
+          <div class="label-value">
+            <a :href="props.itemDetail.url">{{ props.itemDetail.url }}</a>
+          </div>
+        </template>
 
-        <v-chip
-          class="chip-container"
-          color="themeLightGray"
-          text-color="themeGary"
-          x-small
-          label
-        >
-          <v-icon color="themeLightGreen" size="13" class="mr-1" left>
-            mdi-view-list
-          </v-icon>
-          <div class="label-text">メモ</div>
-        </v-chip>
-        <div class="label-value">弁当持参</div>
+        <template v-if="props.itemDetail.memo">
+          <v-chip
+            class="chip-container"
+            color="themeLightGray"
+            text-color="themeGary"
+            x-small
+            label
+          >
+            <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+              mdi-view-list
+            </v-icon>
+            <div class="label-text">メモ</div>
+          </v-chip>
+          <div class="label-value">{{ props.itemDetail.memo }}</div>
+        </template>
       </div>
     </div>
   </v-sheet>

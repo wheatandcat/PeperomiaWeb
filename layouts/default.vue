@@ -1,8 +1,6 @@
 <template>
   <v-app dark>
-    <v-dialog v-model="state.dialog" width="500">
-      <v-sheet elevation="4" width="500" height="500">aaaa</v-sheet>
-    </v-dialog>
+    <scheduleDialog />
     <v-navigation-drawer
       v-model="state.drawer"
       :mini-variant="state.miniVariant"
@@ -102,6 +100,7 @@ import {
   computed,
   SetupContext,
 } from '@vue/composition-api'
+import scheduleDialog from '~/components/organisms/schedule/dialog.vue'
 
 const ignoreWarnMessage =
   'The .native modifier for v-on is only valid on components but it was used on <div>.'
@@ -128,6 +127,9 @@ const initState = {
 
 export default defineComponent({
   middleware: 'authenticated',
+  components: {
+    scheduleDialog,
+  },
 
   setup(_, context: SetupContext) {
     const state = reactive<State>(initState)

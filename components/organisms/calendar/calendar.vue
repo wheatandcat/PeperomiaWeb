@@ -13,6 +13,7 @@
           <scheduleDay
             v-if="isSchedule(date)"
             :date="date"
+            :item-i-d="getSchedule(date).itemId"
             :kind-data="KINDS[getSchedule(date).kind]"
             :size="size"
           />

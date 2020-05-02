@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue'
 
 import Index from './index.vue'
 
-storiesOf('templates', module).add('スケジュール', () => ({
+storiesOf('organisms/schedule', module).add('スケジュール', () => ({
   components: { Index },
   data: () => ({
     calendar: {
@@ -29,10 +29,10 @@ storiesOf('templates', module).add('スケジュール', () => ({
         id: '2',
         title: '新宿駅',
         kind: 'train',
-        memo: '',
-        place: '',
-        url: '',
-        priority: 1,
+        memo: '弁当持参',
+        place: '東京都',
+        url: 'https://peperomia.info/',
+        priority: 2,
       },
       {
         id: '3',
@@ -41,7 +41,7 @@ storiesOf('templates', module).add('スケジュール', () => ({
         memo: '',
         place: '',
         url: '',
-        priority: 1,
+        priority: 3,
       },
     ],
   }),

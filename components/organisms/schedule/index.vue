@@ -1,26 +1,28 @@
 <template>
   <v-sheet elevation="4" width="500">
-    <div class="header-itme" :style="bg">
-      <div class="date">
-        {{ dayjs(props.calendar.date).format('YYYY年MM月DD日') }}
-      </div>
+    <div v-if="!props.loading">
+      <div class="header-itme" :style="bg">
+        <div class="date">
+          {{ itemDate }}
+        </div>
 
-      <div class="header-item-title">
-        <div class="pr-3 py-3">
-          <v-img :src="kindData.src" width="60" height="60" />
-        </div>
-        <div class="item-title pl-5 pt-8">
-          {{ props.item.title }}
+        <div class="header-item-title">
+          <div class="pr-3 py-3">
+            <v-img :src="kindData.src" width="60" height="60" />
+          </div>
+          <div class="item-title pl-5 pt-8">
+            {{ props.item.title }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="item-body">
-      <div
-        v-for="itemDetail in props.itemDetails"
-        :key="itemDetail.id"
-        class="pa-3"
-      >
-        <card :item-detail="itemDetail" />
+      <div class="item-body">
+        <div
+          v-for="itemDetail in props.itemDetails"
+          :key="itemDetail.id"
+          class="pa-3"
+        >
+          <card :item-detail="itemDetail" />
+        </div>
       </div>
     </div>
   </v-sheet>
@@ -84,26 +86,27 @@ export default defineComponent({
     card,
   },
   props: {
-    item: { type: Object, required: true },
-    itemDetails: { type: Array, required: true },
-    calendar: { type: Object, required: true },
+    loading: { type: Boolean, default: false },
+    item: { type: Object, default: () => {} },
+    itemDetails: { type: Array, default: () => [] },
+    calendar: { type: Object, default: () => {} },
   },
   setup(props: Props) {
-    const kindData = KINDS[props.item.kind]
-
-    console.log(kindData.src)
-
+    const kindData = KINDS[props.item?.kind]
     const bg = computed(() => {
       return {
         backgroundColor: kindData.backgroundColor,
       }
     })
 
+    const itemDate = dayjs(props.calendar.date).format('YYYY年MM月DD日')
+
     return {
       props,
       kindData,
       bg,
       dayjs,
+      itemDate,
     }
   },
 })
