@@ -33,11 +33,11 @@ const getCalendars = async (
     return []
   }
 
-  const ids = calendars.map(calendar => String(calendar.id))
+  const ids = calendars.map((calendar) => String(calendar.id))
 
   const items = await findItemInID(firestore, uid, ids)
-  const result = calendars.map(calendar => {
-    const item = items.find(v => v.id === calendar.id)
+  const result = calendars.map((calendar) => {
+    const item = items.find((v) => v.id === calendar.id)
 
     return {
       ...calendar,

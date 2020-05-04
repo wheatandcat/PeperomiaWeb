@@ -120,7 +120,7 @@ export default defineComponent({
 
     const openDialog = computed({
       get: () => context.root.$store.getters.isOpenItemDialog,
-      set: val => {
+      set: (val) => {
         if (!val) {
           context.root.$store.commit('CLOSE_ITEM_DIALOG')
         }

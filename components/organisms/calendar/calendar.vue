@@ -80,13 +80,13 @@ export default defineComponent({
   },
   setup(props: Props) {
     const isSchedule = (date: string): boolean => {
-      const item = props.calendars.find(v => v.date === date)
+      const item = props.calendars.find((v) => v.date === date)
 
       return Boolean(item)
     }
 
     const getSchedule = (date: string) => {
-      const item = props.calendars.find(v => v.date === date)
+      const item = props.calendars.find((v) => v.date === date)
 
       return item || defaultCalendarItem
     }
