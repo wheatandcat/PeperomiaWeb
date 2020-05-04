@@ -84,14 +84,16 @@ export default defineComponent({
     const state = reactive<State>(initState)
 
     const setItemData = async () => {
+      console.log('setItemData')
+
       state.loading = true
 
       const itemDialog = context.root.$store.state.itemDialog
       const firestore = context.root.$fireStore
-      const uid = context.root.$store.state.authUser.uid
+      const uid = context.root.$store.state.authUser?.uid
       const itemID = itemDialog.id
 
-      if (itemID) {
+      if (itemID && uid) {
         const item: any = await findItemByID(firestore, uid, itemID)
         const itemDetails = await findItemDetailByItemID(firestore, uid, itemID)
         const calendar = await findCalendarByItemID(firestore, uid, itemID)

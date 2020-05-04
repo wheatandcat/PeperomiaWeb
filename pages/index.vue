@@ -62,11 +62,13 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      const uid = context.root.$store.state.authUser.uid
+      const uid = context.root.$store.state?.authUser?.uid
       const firestore = context.root.$fireStore
-      const result = await getCalendars(firestore, uid)
+      if (uid) {
+        const result = await getCalendars(firestore, uid)
 
-      state.calendars = result
+        state.calendars = result
+      }
     })
 
     return {

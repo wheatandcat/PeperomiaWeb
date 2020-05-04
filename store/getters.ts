@@ -3,7 +3,7 @@ import { State } from './state'
 export default {
   isLoggedIn: (state: State) => {
     try {
-      return state?.authUser?.uid !== null
+      return Boolean(state?.authUser?.uid)
     } catch {
       return false
     }
