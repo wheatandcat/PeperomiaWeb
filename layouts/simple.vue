@@ -14,11 +14,6 @@
 <style lang="scss" scoped>
 @import '~/assets/variables.scss';
 
-.logo {
-  width: 30px;
-  height: 30px;
-}
-
 .content {
   background-color: #eee;
 }

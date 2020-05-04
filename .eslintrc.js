@@ -12,6 +12,7 @@ module.exports = {
     '@nuxtjs/eslint-config-typescript',
     'eslint:recommended',
     'plugin:vue/recommended',
+    'plugin:vue-scoped-css/recommended',
     'plugin:prettier/recommended',
     'prettier/vue',
   ],
@@ -48,6 +49,7 @@ module.exports = {
       },
     ],
     'prettier/prettier': 'error',
+    'vue-scoped-css/no-unused-selector': 'error',
   },
   globals: {
     context: false, // for jest

@@ -96,9 +96,7 @@ export default defineComponent({
     const main = ref<any>(null)
 
     const getDate = (month: number) => {
-      return dayjs()
-        .add(month, 'month')
-        .format('YYYY-MM-01')
+      return dayjs().add(month, 'month').format('YYYY-MM-01')
     }
 
     const getMainCalendarSize = computed(() => {
@@ -122,16 +120,14 @@ export default defineComponent({
     })
 
     const getCalendarByMonth = (month: number) => {
-      const startDate = dayjs()
-        .add(month, 'month')
-        .format('YYYY-MM-01')
+      const startDate = dayjs().add(month, 'month').format('YYYY-MM-01')
 
       const endDate = dayjs(startDate)
         .add(1, 'month')
         .add(-1, 'day')
         .format('YYYY-MM-DD')
 
-      const items = props.calendars.filter(v =>
+      const items = props.calendars.filter((v) =>
         dayjs(v.date).isBetween(startDate, endDate, null, '[)')
       )
 

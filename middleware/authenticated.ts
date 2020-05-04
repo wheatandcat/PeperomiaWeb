@@ -1,6 +1,6 @@
 import { Middleware } from '@nuxt/types'
 
-const myMiddleware: Middleware = context => {
+const myMiddleware: Middleware = (context) => {
   const { store, redirect } = context
 
   if (!store.getters.isLoggedIn) {

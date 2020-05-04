@@ -104,7 +104,7 @@ import scheduleDialog from '~/components/organisms/schedule/dialog.vue'
 
 const ignoreWarnMessage =
   'The .native modifier for v-on is only valid on components but it was used on <div>.'
-Vue.config.warnHandler = function(msg) {
+Vue.config.warnHandler = function (msg) {
   // `trace` is the component hierarchy trace
   if (msg === ignoreWarnMessage) {
     return null
