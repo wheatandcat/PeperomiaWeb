@@ -1,77 +1,88 @@
 <template>
-  <v-sheet elevation="0" width="210" class="root" :style="bg">
-    <div class="header-card">
-      <div class="header-card-title">
-        <div class="pr-2 py-1">
-          <v-img :src="kindData.src" width="30" height="30" />
-        </div>
-        <div class="card-title pl-3 pt-5">
-          {{ props.itemDetail.title }}
+  <v-hover v-slot:default="{ hover }" open-delay="200">
+    <v-card
+      :elevation="hover ? 4 : 0"
+      width="210"
+      min-height="100"
+      class="root"
+      :style="bg"
+    >
+      <div class="header-card">
+        <div class="header-card-title">
+          <div class="pr-2 py-1">
+            <v-img :src="kindData.src" width="30" height="30" />
+          </div>
+          <div class="card-title pl-3 pt-5">
+            {{ props.itemDetail.title }}
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <div class="px-2">
-        <v-chip
-          class="chip-container"
-          color="themeLightGray"
-          text-color="themeGary"
-          x-small
-          label
-        >
-          <v-icon color="themeLightGreen" size="13" class="mr-1" left>
-            mdi-map-marker-outline
-          </v-icon>
-          <div class="label-text">
-            場所
-          </div>
-        </v-chip>
-        <div class="label-value">
-          東京都
+      <div>
+        <div class="px-2">
+          <template v-if="props.itemDetail.place">
+            <v-chip
+              class="chip-container"
+              color="themeLightGray"
+              text-color="themeGary"
+              x-small
+              label
+            >
+              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+                mdi-map-marker-outline
+              </v-icon>
+              <div class="label-text">
+                場所
+              </div>
+            </v-chip>
+            <div class="label-value">
+              {{ props.itemDetail.place }}
+            </div>
+          </template>
+
+          <template v-if="props.itemDetail.url">
+            <v-chip
+              class="chip-container"
+              color="themeLightGray"
+              text-color="themeGary"
+              x-small
+              label
+            >
+              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+                mdi-link
+              </v-icon>
+              <div class="label-text">URL</div>
+            </v-chip>
+            <div class="label-value">
+              <a :href="props.itemDetail.url">{{ props.itemDetail.url }}</a>
+            </div>
+          </template>
+
+          <template v-if="props.itemDetail.memo">
+            <v-chip
+              class="chip-container"
+              color="themeLightGray"
+              text-color="themeGary"
+              x-small
+              label
+            >
+              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+                mdi-view-list
+              </v-icon>
+              <div class="label-text">メモ</div>
+            </v-chip>
+            <div class="label-value">{{ props.itemDetail.memo }}</div>
+          </template>
         </div>
-
-        <template v-if="props.itemDetail.url">
-          <v-chip
-            class="chip-container"
-            color="themeLightGray"
-            text-color="themeGary"
-            x-small
-            label
-          >
-            <v-icon color="themeLightGreen" size="13" class="mr-1" left>
-              mdi-link
-            </v-icon>
-            <div class="label-text">URL</div>
-          </v-chip>
-          <div class="label-value">
-            <a :href="props.itemDetail.url">{{ props.itemDetail.url }}</a>
-          </div>
-        </template>
-
-        <template v-if="props.itemDetail.memo">
-          <v-chip
-            class="chip-container"
-            color="themeLightGray"
-            text-color="themeGary"
-            x-small
-            label
-          >
-            <v-icon color="themeLightGreen" size="13" class="mr-1" left>
-              mdi-view-list
-            </v-icon>
-            <div class="label-text">メモ</div>
-          </v-chip>
-          <div class="label-value">{{ props.itemDetail.memo }}</div>
-        </template>
       </div>
-    </div>
-  </v-sheet>
+    </v-card>
+  </v-hover>
 </template>
 
 <style lang="scss" scoped>
 @import '~/assets/variables.scss';
 
 .root {
+  cursor: pointer;
   border-radius: 0;
   padding-bottom: 1rem;
 }

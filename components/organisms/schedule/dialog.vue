@@ -84,8 +84,6 @@ export default defineComponent({
     const state = reactive<State>(initState)
 
     const setItemData = async () => {
-      console.log('setItemData')
-
       state.loading = true
 
       const itemDialog = context.root.$store.state.itemDialog
