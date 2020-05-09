@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "@nuxt/types": "^0.6.4",
+    "@nuxt/http": "^0.5.1",
+    "@nuxt/types": "latest",
     "@nuxt/typescript-runtime": "latest",
     "@nuxtjs/firebase": "^5.0.1",
     "@nuxtjs/vuetify": "^1.0.0",
@@ -33,7 +34,7 @@
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
     "nuxt": "latest",
-    "peperomia-util": "^0.0.12",
+    "peperomia-util": "^0.0.14",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.0",
     "vuex-persistedstate": "^2.7.1",
