@@ -6,6 +6,7 @@
       min-height="100"
       class="root"
       :style="bg"
+      @click="onEditItemDetail(props.itemDetail.id)"
     >
       <div class="header-card">
         <div class="header-card-title">
@@ -122,11 +123,13 @@ import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
 
 type Props = {
   itemDetail: ItemDetail
+  onEditItemDetail: (itemDetailId: string) => void
 }
 
 export default defineComponent({
   props: {
     itemDetail: { type: Object, required: true },
+    onEditItemDetail: { type: Function, default: () => {} },
   },
   setup(props: Props) {
     const kindData = KINDS[props.itemDetail.kind]

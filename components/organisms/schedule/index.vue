@@ -21,7 +21,10 @@
           :key="itemDetail.id"
           class="pa-3"
         >
-          <card :item-detail="itemDetail" />
+          <card
+            :item-detail="itemDetail"
+            :on-edit-item-detail="props.onEditItemDetail"
+          />
         </div>
       </div>
     </div>
@@ -77,6 +80,7 @@ type Props = {
   item: Item
   itemDetails: ItemDetail[]
   calendar: Calendar
+  onEditItemDetail: (itemDetailId: string) => void
 }
 
 dayjs.extend(advancedFormat)
@@ -90,6 +94,7 @@ export default defineComponent({
     item: { type: Object, default: () => {} },
     itemDetails: { type: Array, default: () => [] },
     calendar: { type: Object, default: () => {} },
+    onEditItemDetail: { type: Function, default: () => {} },
   },
   setup(props: Props) {
     const kindData = KINDS[props.item?.kind]

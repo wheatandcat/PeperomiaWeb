@@ -6,12 +6,19 @@
           <v-progress-circular indeterminate color="primary" />
         </div>
       </v-sheet>
+      <edit
+        v-else-if="state.mode === 'editItemDetail'"
+        :item-detail="state.selectedItemDetail"
+        :on-cancel="onCancel"
+        :on-save="onSave"
+      />
       <itemDialog
         v-else
         :loading="state.loading"
         :item="state.item"
         :item-details="state.itemDetails"
         :calendar="state.calendar"
+        :on-edit-item-detail="onEditItemDetail"
       />
     </div>
   </v-dialog>
@@ -50,8 +57,11 @@ import {
   Calendar,
 } from 'peperomia-util/build/firestore/calendar'
 import itemDialog from './index.vue'
+import edit from '~/components/organisms/scheduleDetail/edit.vue'
 
 type State = {
+  mode: 'show' | 'editItemDetail'
+  selectedItemDetail: ItemDetail | null | undefined
   loading: boolean
   item: Item | null
   itemDetails: ItemDetail[] | null
@@ -59,6 +69,8 @@ type State = {
 }
 
 const initState: State = {
+  mode: 'show',
+  selectedItemDetail: null,
   loading: true,
   item: {
     id: '',
@@ -78,6 +90,7 @@ const initState: State = {
 export default defineComponent({
   components: {
     itemDialog,
+    edit,
   },
 
   setup(_, context: SetupContext) {
@@ -131,9 +144,34 @@ export default defineComponent({
       }
     })
 
+    const onEditItemDetail = (itemDetailId: string) => {
+      if (!state.itemDetails) {
+        return
+      }
+
+      state.selectedItemDetail = state.itemDetails.find(
+        (v) => v.id === itemDetailId
+      )
+
+      if (state.selectedItemDetail?.id) {
+        state.mode = 'editItemDetail'
+      }
+    }
+
+    const onCancel = () => {
+      state.mode = 'show'
+    }
+
+    const onSave = async (itemDetail: ItemDetail) => {
+      await console.log(itemDetail)
+    }
+
     return {
       openDialog,
       state,
+      onEditItemDetail,
+      onCancel,
+      onSave,
     }
   },
 })
