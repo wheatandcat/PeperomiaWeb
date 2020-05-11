@@ -107,4 +107,7 @@ export default {
       }
     },
   },
+  env: {
+    ...env,
+  },
 }

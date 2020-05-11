@@ -8,4 +8,5 @@ module.exports = {
     messagingSenderId: '',
     appId: '',
   },
+  API_HOST: '',
 }

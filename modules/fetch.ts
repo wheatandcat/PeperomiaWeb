@@ -1,7 +1,7 @@
 import { SetupContext } from '@vue/composition-api'
 import { getAccessToken } from './auth'
 
-const BASE_URL = 'https://peperomia-196da.appspot.com'
+const BASE_URL = process.env.API_HOST
 
 export const post = async (context: SetupContext, path: string, param: any) => {
   const token = await getAccessToken(context)

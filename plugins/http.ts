@@ -11,9 +11,7 @@ const httpPlugin: Plugin = ({ $http }: Props) => {
   })
 
   $http.onError((error) => {
-    if (error.response.status === 500) {
-      alert('Request Error!')
-    }
+    alert('リクエストに失敗しました。メッセージ: ' + error.message)
   })
 }
 
