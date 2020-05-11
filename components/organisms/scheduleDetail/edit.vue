@@ -43,7 +43,15 @@
         <v-btn color="error" class="edit-button" text @click="props.onCancel">
           キャンセル
         </v-btn>
-        <v-btn color="primary" class="edit-button" @click="onSave">保存</v-btn>
+        <v-btn
+          color="primary"
+          class="edit-button"
+          :loading="props.loading"
+          :disabled="props.loading"
+          @click="onSaveItemDetail"
+        >
+          保存
+        </v-btn>
       </div>
     </div>
   </v-sheet>
@@ -133,6 +141,7 @@ type State = {
 }
 
 type Props = {
+  loading: boolean
   itemDetail: ItemDetail
   onCancel: () => void
   onSave: (itemDetail: ItemDetail) => Promise<void>
@@ -142,6 +151,7 @@ dayjs.extend(advancedFormat)
 
 export default defineComponent({
   props: {
+    loading: { type: Boolean, default: false },
     itemDetail: { type: Object, default: () => {} },
     onCancel: { type: Function, default: () => {} },
     onSave: { type: Function, default: () => {} },
@@ -162,11 +172,10 @@ export default defineComponent({
       }
     })
 
-    const onSave = () => {
-      props.onSave({
-        ...props.itemDetail,
-        ...state,
-      })
+    const onSaveItemDetail = () => {
+      const param = { ...props.itemDetail, ...state }
+
+      props.onSave(param)
     }
 
     return {
@@ -174,7 +183,7 @@ export default defineComponent({
       state,
       kindData,
       bg,
-      onSave,
+      onSaveItemDetail,
     }
   },
 })

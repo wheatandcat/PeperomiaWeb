@@ -31,7 +31,19 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/composition-api', '~/plugins/cookie-storage.js'],
+  plugins: [
+    '~/plugins/http',
+    '@/plugins/composition-api',
+    '~/plugins/cookie-storage.js',
+  ],
+
+  http: {
+    proxy: true,
+  },
+
+  proxy: {
+    '/api/': 'https://peperomia-196da.appspot.com',
+  },
   /*
    ** Nuxt.js dev-modules
    */
@@ -39,7 +51,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [['@nuxtjs/firebase']],
+  modules: ['@nuxt/http', '@nuxtjs/firebase'],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

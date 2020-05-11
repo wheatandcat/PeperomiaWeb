@@ -6,6 +6,7 @@
 import { defineComponent, SetupContext } from '@vue/composition-api'
 import firebase from 'firebase'
 import Login from '~/components/templates/login/index.vue'
+import { setSession } from '~/modules/auth'
 
 export type LoginType = {
   fbGoogleLogin: () => Promise<void>
@@ -23,7 +24,8 @@ export default defineComponent({
 
         await context.root.$fireAuth.signInWithPopup(googleProvider)
 
-        context.root.$fireAuth.onAuthStateChanged(() => {
+        context.root.$fireAuth.onAuthStateChanged(async () => {
+          await setSession(context, true)
           window.location.href = `${location.protocol}//${location.host}`
         })
       } catch (e) {
@@ -32,6 +34,7 @@ export default defineComponent({
     }
 
     if (context.root.$store.getters.isLoggedIn) {
+      setSession(context, true)
       context.root.$router.push('/')
     }
 

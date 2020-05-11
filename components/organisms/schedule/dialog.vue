@@ -8,6 +8,7 @@
       </v-sheet>
       <edit
         v-else-if="state.mode === 'editItemDetail'"
+        :loading="state.apiLoading"
         :item-detail="state.selectedItemDetail"
         :on-cancel="onCancel"
         :on-save="onSave"
@@ -58,11 +59,13 @@ import {
 } from 'peperomia-util/build/firestore/calendar'
 import itemDialog from './index.vue'
 import edit from '~/components/organisms/scheduleDetail/edit.vue'
+import { post } from '~/modules/fetch.ts'
 
 type State = {
   mode: 'show' | 'editItemDetail'
   selectedItemDetail: ItemDetail | null | undefined
   loading: boolean
+  apiLoading: boolean
   item: Item | null
   itemDetails: ItemDetail[] | null
   calendar: Calendar | null
@@ -72,6 +75,7 @@ const initState: State = {
   mode: 'show',
   selectedItemDetail: null,
   loading: true,
+  apiLoading: false,
   item: {
     id: '',
     uid: '',
@@ -163,7 +167,18 @@ export default defineComponent({
     }
 
     const onSave = async (itemDetail: ItemDetail) => {
-      await console.log(itemDetail)
+      state.apiLoading = true
+
+      const res = await post(context, 'UpdateItemDetail', {
+        itemDetail,
+      })
+
+      if (res.ok) {
+        await setItemData()
+        state.mode = 'show'
+      }
+
+      state.apiLoading = false
     }
 
     return {
