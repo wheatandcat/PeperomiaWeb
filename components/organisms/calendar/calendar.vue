@@ -49,7 +49,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
 import day from '~/components/molecules/calendar/day.vue'
 import scheduleDay from '~/components/molecules/calendar/scheduleDay.vue'
-import { CalendarItem } from '~/pages/index.vue'
+import { CalendarItem } from '~/domain/calendar'
 
 dayjs.extend(advancedFormat)
 

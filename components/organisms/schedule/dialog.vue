@@ -16,10 +16,12 @@
       <itemDialog
         v-else
         :loading="state.loading"
+        :api-loading="state.apiLoading"
         :item="state.item"
         :item-details="state.itemDetails"
         :calendar="state.calendar"
         :on-edit-item-detail="onEditItemDetail"
+        :on-save-calendar="onSaveCalendar"
       />
     </div>
   </v-dialog>
@@ -181,12 +183,26 @@ export default defineComponent({
       state.apiLoading = false
     }
 
+    const onSaveCalendar = async (calendar: Calendar) => {
+      const res = await post(context, 'UpdateCalendar', {
+        calendar,
+      })
+
+      if (res.ok) {
+        await setItemData()
+      }
+
+      const authUser = context.root.$store.state?.authUser
+      context.root.$store.dispatch('getCalendarData', { authUser })
+    }
+
     return {
       openDialog,
       state,
       onEditItemDetail,
       onCancel,
       onSave,
+      onSaveCalendar,
     }
   },
 })

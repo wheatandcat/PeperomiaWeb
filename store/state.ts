@@ -1,3 +1,5 @@
+import { CalendarItem } from '~/domain/calendar'
+
 export type State = {
   authUser: {
     uid?: string
@@ -7,6 +9,7 @@ export type State = {
   itemDialog: {
     id?: string
   } | null
+  calendars: CalendarItem[]
 }
 
 export const initItemData = {}
@@ -14,4 +17,5 @@ export const initItemData = {}
 export default (): State => ({
   authUser: null,
   itemDialog: null,
+  calendars: [],
 })

@@ -71,7 +71,7 @@ import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import calendar from '~/components/organisms/calendar/calendar.vue'
-import { CalendarItem } from '~/pages/index.vue'
+import { CalendarItem } from '~/domain/calendar'
 
 dayjs.extend(isBetween)
 dayjs.extend(advancedFormat)
