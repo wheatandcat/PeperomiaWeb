@@ -2,9 +2,36 @@
   <v-sheet elevation="4" width="500">
     <div v-if="!props.loading">
       <div class="header-itme" :style="bg">
-        <div class="date">
-          {{ itemDate }}
-        </div>
+        <v-menu
+          v-model="menu"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <div class="date" v-on="on">
+              {{ itemDate }}
+            </div>
+          </template>
+          <v-date-picker
+            v-model="date"
+            locale="jp-ja"
+            :day-format="(date) => new Date(date).getDate()"
+          >
+            <v-spacer />
+            <v-btn text color="error" @click="menu = false">キャンセル</v-btn>
+            <v-btn
+              color="primary"
+              :loading="props.apiLoading"
+              :disabled="props.apiLoading"
+              @click="onSaveCalendarData"
+            >
+              保存
+            </v-btn>
+          </v-date-picker>
+        </v-menu>
 
         <div class="header-item-title">
           <div class="pr-3 py-3">
@@ -39,6 +66,7 @@
   padding: 0.5rem 1rem;
 
   .date {
+    cursor: pointer;
     font-size: 0.8rem;
     color: $darkGray;
   }
@@ -51,8 +79,7 @@
       font-size: 1.3rem;
       font-weight: 600;
       color: $darkGray;
-
-      vertical-align: middle; /* 上下中央に寄せる */
+      vertical-align: middle;
     }
   }
 }
@@ -67,7 +94,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent, computed, ref } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
@@ -77,10 +104,13 @@ import { Calendar } from 'peperomia-util/build/firestore/calendar'
 import card from './card.vue'
 
 type Props = {
+  loading: boolean
+  apiLoading: boolean
   item: Item
   itemDetails: ItemDetail[]
   calendar: Calendar
   onEditItemDetail: (itemDetailId: string) => void
+  onSaveCalendar: (calendar: Calendar) => Promise<void>
 }
 
 dayjs.extend(advancedFormat)
@@ -91,12 +121,17 @@ export default defineComponent({
   },
   props: {
     loading: { type: Boolean, default: false },
+    apiLoading: { type: Boolean, default: false },
     item: { type: Object, default: () => {} },
     itemDetails: { type: Array, default: () => [] },
     calendar: { type: Object, default: () => {} },
     onEditItemDetail: { type: Function, default: () => {} },
+    onSaveCalendar: { type: Function, default: () => {} },
   },
   setup(props: Props) {
+    const menu = ref<boolean>(false)
+    const date = ref<string>(props.calendar.date)
+
     const kindData = KINDS[props.item?.kind]
     const bg = computed(() => {
       return {
@@ -106,12 +141,23 @@ export default defineComponent({
 
     const itemDate = dayjs(props.calendar.date).format('YYYY年MM月DD日')
 
+    const onSaveCalendarData = () => {
+      props.onSaveCalendar({
+        ...props.calendar,
+        date: dayjs(date.value).format('YYYY-MM-DDT00:00:00Z'),
+      })
+      menu.value = false
+    }
+
     return {
       props,
       kindData,
       bg,
       dayjs,
       itemDate,
+      menu,
+      date,
+      onSaveCalendarData,
     }
   },
 })
