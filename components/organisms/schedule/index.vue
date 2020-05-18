@@ -37,7 +37,7 @@
           <div class="pr-3 py-3">
             <v-img :src="kindData.src" width="60" height="60" />
           </div>
-          <div class="item-title pl-5 pt-8">
+          <div class="item-title pl-5 pt-8" @click="props.onEditItem">
             {{ props.item.title }}
           </div>
         </div>
@@ -76,6 +76,7 @@
     align-item: center;
 
     .item-title {
+      cursor: pointer;
       font-size: 1.3rem;
       font-weight: 600;
       color: $darkGray;
@@ -109,6 +110,7 @@ type Props = {
   item: Item
   itemDetails: ItemDetail[]
   calendar: Calendar
+  onEditItem: () => void
   onEditItemDetail: (itemDetailId: string) => void
   onSaveCalendar: (calendar: Calendar) => Promise<void>
 }
@@ -125,6 +127,7 @@ export default defineComponent({
     item: { type: Object, default: () => {} },
     itemDetails: { type: Array, default: () => [] },
     calendar: { type: Object, default: () => {} },
+    onEditItem: { type: Function, default: () => {} },
     onEditItemDetail: { type: Function, default: () => {} },
     onSaveCalendar: { type: Function, default: () => {} },
   },
@@ -132,10 +135,14 @@ export default defineComponent({
     const menu = ref<boolean>(false)
     const date = ref<string>(props.calendar.date)
 
-    const kindData = KINDS[props.item?.kind]
+    const kindData = KINDS[props.item?.kind] || {
+      src: '',
+      backgroundColor: '',
+    }
+
     const bg = computed(() => {
       return {
-        backgroundColor: kindData.backgroundColor,
+        backgroundColor: kindData?.backgroundColor,
       }
     })
 

@@ -1,41 +1,18 @@
 <template>
-  <v-sheet elevation="4" width="500">
+  <v-sheet elevation="4" width="500" height="350">
     <div class="header-itme" :style="bg">
       <div class="header-item-title pb-5">
         <div class="img-icon">
           <v-img :src="kindData.src" width="40" height="40" />
         </div>
-        <div class="item-title pt-3">
-          <v-text-field v-model="state.title" single-line />
-        </div>
       </div>
-      <div class="px-6">
+      <div class="inner pt-4">
         <div>
           <v-text-field
-            v-model="state.place"
-            label="場所"
-            prepend-icon="mdi-map-marker-outline"
-            color="themeLightGreen"
+            v-model="state.title"
+            label="タイトル"
             single-line
-          />
-        </div>
-        <div>
-          <v-text-field
-            v-model="state.url"
-            label="URL"
-            prepend-icon="mdi-link"
-            color="themeLightGreen"
-            single-line
-          />
-        </div>
-        <div>
-          <v-textarea
-            v-model="state.memo"
-            label="メモ"
-            prepend-icon="mdi-view-list"
-            color="themeLightGreen"
-            single-line
-            auto-grow
+            autofocus
           />
         </div>
       </div>
@@ -48,7 +25,7 @@
           class="edit-button"
           :loading="props.loading"
           :disabled="props.loading"
-          @click="onSaveItemDetail"
+          @click="onSaveItem"
         >
           保存
         </v-btn>
@@ -75,36 +52,26 @@
 ::v-deep input {
   color: $main !important;
   font-weight: bold;
+  font-size: 1.4rem;
+  text-align: center;
+  width: 500px;
 }
 
-::v-deep textarea {
-  color: $main !important;
+::v-deep .v-label {
   font-weight: bold;
-  padding-top: 0.175rem;
+  font-size: 1.3rem;
+  text-align: center;
+  width: 100%;
 }
 
 .header-itme {
+  height: 100%;
   background: lightgray;
   padding: 0.5rem 0rem;
 
   .header-item-title {
     position: relative;
     text-align: center;
-
-    .item-title {
-      position: relative;
-      font-size: 1.5rem;
-      font-weight: 600;
-
-      color: $darkGray;
-
-      ::v-deep input {
-        color: $darkGray !important;
-        font-weight: bold;
-        font-size: 1.3rem;
-        text-align: center;
-      }
-    }
 
     .img-icon {
       position: absolute;
@@ -123,6 +90,13 @@
     }
   }
 }
+
+.inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+}
 </style>
 
 <script lang="ts">
@@ -130,21 +104,17 @@ import { defineComponent, computed, reactive } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
-import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
+import { Item } from 'peperomia-util/build/firestore/item'
 
 type State = {
   title: string
-  kind: string
-  memo: string
-  place: string
-  url: string
 }
 
 type Props = {
   loading: boolean
-  itemDetail: ItemDetail
+  item: Item
   onCancel: () => void
-  onSave: (itemDetail: ItemDetail) => Promise<void>
+  onSave: (item: Item) => Promise<void>
 }
 
 dayjs.extend(advancedFormat)
@@ -152,32 +122,28 @@ dayjs.extend(advancedFormat)
 export default defineComponent({
   props: {
     loading: { type: Boolean, default: false },
-    itemDetail: { type: Object, default: () => {} },
+    item: { type: Object, default: () => {} },
     onCancel: { type: Function, default: () => {} },
     onSave: { type: Function, default: () => {} },
   },
   setup(props: Props) {
     const state = reactive<State>({
-      title: props.itemDetail.title,
-      kind: props.itemDetail.kind,
-      memo: props.itemDetail.memo,
-      place: props.itemDetail.place,
-      url: props.itemDetail.url,
+      title: props.item.title,
     })
 
-    const kindData = KINDS[props.itemDetail?.kind] || {
+    const kindData = KINDS[props.item?.kind] || {
       src: '',
       backgroundColor: '',
     }
 
     const bg = computed(() => {
       return {
-        backgroundColor: kindData?.backgroundColor,
+        backgroundColor: kindData.backgroundColor,
       }
     })
 
-    const onSaveItemDetail = () => {
-      const param = { ...props.itemDetail, ...state }
+    const onSaveItem = () => {
+      const param = { ...props.item, ...state }
 
       props.onSave(param)
     }
@@ -187,7 +153,7 @@ export default defineComponent({
       state,
       kindData,
       bg,
-      onSaveItemDetail,
+      onSaveItem,
     }
   },
 })
