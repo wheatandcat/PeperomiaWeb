@@ -6,12 +6,20 @@
           <v-progress-circular indeterminate color="primary" />
         </div>
       </v-sheet>
-      <edit
+      <div v-if="state.mode === 'loading'" />
+      <editItem
+        v-else-if="state.mode === 'editItem'"
+        :loading="state.apiLoading"
+        :item="state.item"
+        :on-cancel="onCancel"
+        :on-save="onSaveItem"
+      />
+      <editItemDetail
         v-else-if="state.mode === 'editItemDetail'"
         :loading="state.apiLoading"
         :item-detail="state.selectedItemDetail"
         :on-cancel="onCancel"
-        :on-save="onSave"
+        :on-save="onSaveItemDetail"
       />
       <itemDialog
         v-else
@@ -20,6 +28,7 @@
         :item="state.item"
         :item-details="state.itemDetails"
         :calendar="state.calendar"
+        :on-edit-item="onEditItem"
         :on-edit-item-detail="onEditItemDetail"
         :on-save-calendar="onSaveCalendar"
       />
@@ -60,11 +69,12 @@ import {
   Calendar,
 } from 'peperomia-util/build/firestore/calendar'
 import itemDialog from './index.vue'
-import edit from '~/components/organisms/scheduleDetail/edit.vue'
+import editItem from './edit.vue'
+import editItemDetail from '~/components/organisms/scheduleDetail/edit.vue'
 import { post } from '~/modules/fetch.ts'
 
 type State = {
-  mode: 'show' | 'editItemDetail'
+  mode: 'show' | 'editItemDetail' | 'editItem' | 'loading'
   selectedItemDetail: ItemDetail | null | undefined
   loading: boolean
   apiLoading: boolean
@@ -74,7 +84,7 @@ type State = {
 }
 
 const initState: State = {
-  mode: 'show',
+  mode: 'loading',
   selectedItemDetail: null,
   loading: true,
   apiLoading: false,
@@ -96,13 +106,15 @@ const initState: State = {
 export default defineComponent({
   components: {
     itemDialog,
-    edit,
+    editItem,
+    editItemDetail,
   },
 
   setup(_, context: SetupContext) {
     const state = reactive<State>(initState)
 
     const setItemData = async () => {
+      state.mode = 'loading'
       state.loading = true
 
       const itemDialog = context.root.$store.state.itemDialog
@@ -130,6 +142,8 @@ export default defineComponent({
           uid: calendar.uid,
           date: calendar.date,
         }
+
+        state.mode = 'show'
       }
 
       state.loading = false
@@ -164,11 +178,30 @@ export default defineComponent({
       }
     }
 
+    const onEditItem = () => {
+      state.mode = 'editItem'
+    }
+
     const onCancel = () => {
       state.mode = 'show'
     }
 
-    const onSave = async (itemDetail: ItemDetail) => {
+    const onSaveItem = async (item: Item) => {
+      state.apiLoading = true
+
+      const res = await post(context, 'UpdateItem', {
+        item,
+      })
+
+      if (res.ok) {
+        await setItemData()
+        state.mode = 'show'
+      }
+
+      state.apiLoading = false
+    }
+
+    const onSaveItemDetail = async (itemDetail: ItemDetail) => {
       state.apiLoading = true
 
       const res = await post(context, 'UpdateItemDetail', {
@@ -199,9 +232,11 @@ export default defineComponent({
     return {
       openDialog,
       state,
+      onEditItem,
       onEditItemDetail,
       onCancel,
-      onSave,
+      onSaveItem,
+      onSaveItemDetail,
       onSaveCalendar,
     }
   },
