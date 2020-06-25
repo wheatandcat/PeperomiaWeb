@@ -7,7 +7,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install node_modules PeperomiaWeb
-      if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
     - name: setup
       run: sh localInit.sh
