@@ -34,7 +34,7 @@
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
     "nuxt": "latest",
-    "peperomia-util": "^0.0.14",
+    "peperomia-util": "^0.0.17",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.0",
     "vuex-persistedstate": "^2.7.1",
