@@ -2,15 +2,15 @@
   <v-app dark>
     <scheduleDialog />
     <v-navigation-drawer
-      v-model="state.drawer"
-      :mini-variant="state.miniVariant"
-      :clipped="state.clipped"
+      v-model="drawer"
+      :mini-variant="miniVariant"
+      :clipped="clipped"
       fixed
       app
     >
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in getItems()"
           :key="i"
           :to="item.to"
           router
@@ -25,8 +25,8 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="state.clipped" fixed app color="primary">
-      <v-app-bar-nav-icon @click.stop="state.drawer = !state.drawer" />
+    <v-app-bar :clipped-left="clipped" fixed app color="primary">
+      <v-app-bar-nav-icon @click.stop="onDrawer" />
       <img src="/logo.png" alt="logp" class="logo" />
       <v-spacer />
       <v-menu left bottom>
@@ -99,7 +99,11 @@ import {
   reactive,
   computed,
   SetupContext,
+  onMounted,
+  watch,
+  toRefs,
 } from '@vue/composition-api'
+import { findByUID } from 'peperomia-util/build/firestore/user'
 import scheduleDialog from '~/components/organisms/schedule/dialog.vue'
 
 const ignoreWarnMessage =
@@ -116,6 +120,13 @@ type State = {
   drawer: boolean
   miniVariant: boolean
   dialog: boolean
+  isAdmin: boolean
+}
+
+type Item = {
+  icon: string
+  title: string
+  to: string
 }
 
 const initState = {
@@ -123,6 +134,7 @@ const initState = {
   drawer: false,
   miniVariant: false,
   dialog: true,
+  isAdmin: false,
 }
 
 export default defineComponent({
@@ -131,15 +143,28 @@ export default defineComponent({
     scheduleDialog,
   },
 
-  setup(_, context: SetupContext) {
+  setup(_, ctx: SetupContext) {
     const state = reactive<State>(initState)
 
+    onMounted(async () => {
+      const user = await findByUID(
+        ctx.root.$fireStore,
+        ctx.root.$store.state.authUser.uid
+      )
+
+      ctx.root.$store.dispatch('user/setRole', { role: user.role })
+    })
+
+    watch('$store.getters["user/isAdmin"]' as any, () => {
+      state.isAdmin = ctx.root.$store.getters['user/isAdmin']
+    })
+
     const getPhotoURL = computed(() => {
-      return context.root.$store?.state?.authUser?.photoURL || null
+      return ctx.root.$store?.state?.authUser?.photoURL || null
     })
 
     const getName = computed(() => {
-      const email = context.root.$store?.state?.authUser?.email || ''
+      const email = ctx.root.$store?.state?.authUser?.email || ''
 
       const name = email.split('@')[0]
 
@@ -148,28 +173,48 @@ export default defineComponent({
 
     const logout = async () => {
       try {
-        await context.root.$fireAuth.signOut()
-        await context.root.$store.commit('RESET_STORE')
-        context.root.$router.push('/login')
+        await ctx.root.$fireAuth.signOut()
+        await ctx.root.$store.commit('RESET_STORE')
+        ctx.root.$router.push('/login')
       } catch (e) {
         alert(e)
       }
     }
 
-    const items = [
-      {
-        icon: 'mdi-apps',
-        title: 'ダッシュボード',
-        to: '/',
-      },
-    ]
+    const onDrawer = () => {
+      state.drawer = !state.drawer
+    }
+
+    const getItems = () => {
+      let items: Item[] = [
+        {
+          icon: 'mdi-apps',
+          title: 'ダッシュボード',
+          to: '/',
+        },
+      ]
+
+      if (state.isAdmin) {
+        items = [
+          ...items,
+          {
+            icon: 'mdi-bell',
+            title: 'ユーザー通知',
+            to: '/notifications',
+          },
+        ]
+      }
+
+      return items
+    }
 
     return {
-      state,
-      items,
+      ...toRefs(state),
+      getItems,
       getPhotoURL,
       getName,
       logout,
+      onDrawer,
     }
   },
 })
