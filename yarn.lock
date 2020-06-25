@@ -10919,10 +10919,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peperomia-util@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/peperomia-util/-/peperomia-util-0.0.14.tgz#38eb72dc8e3c4821c2642bc2573c032e5987e970"
-  integrity sha512-tBnToWtpA2253XYaz7SMbR00vpgZJxTN37T0AX7sXMzw3Tf0InRUs5J0bIcQZKLh7WwheP/Fp5iqKn/xayOkPw==
+peperomia-util@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/peperomia-util/-/peperomia-util-0.0.17.tgz#a63e0db5bc824add0675a1fc90dad72fb3825907"
+  integrity sha512-ISVk8Xsjgvr0YSENRZvFnDEpoOXYRCteaLVuVKmsL8bEDn7fTY7PShIMY8OaZQS413qstfVLDuqsf5oCfusq4g==
   dependencies:
     dayjs "^1.8.22"
     firebase "^7.10.0"
