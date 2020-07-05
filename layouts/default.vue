@@ -202,6 +202,11 @@ export default defineComponent({
             title: 'ユーザー通知',
             to: '/notifications',
           },
+          {
+            icon: 'mdi-dev-to',
+            title: 'デバッグ機能',
+            to: '/debug',
+          },
         ]
       }
 
