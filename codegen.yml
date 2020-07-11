@@ -1,0 +1,13 @@
+overwrite: true
+schema:
+  - ./schema.graphqls
+documents:
+  - "./queries/**/*.gql"
+generates:
+  ./queries/types/index.d.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      skipTypename: true
+      preResolveTypes: true

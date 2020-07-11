@@ -29,6 +29,8 @@
       "@nuxt/types",
       "@nuxtjs/firebase",
       "@nuxt/http",
+      "@nuxtjs/apollo",
+      "vue-cli-plugin-apollo",
       "vuetify"
     ]
   },
