@@ -2,8 +2,7 @@
   <v-hover v-slot:default="{ hover }" open-delay="200">
     <v-card
       :elevation="hover ? 4 : 0"
-      width="210"
-      min-height="100"
+      min-height="60"
       class="root"
       :style="bg"
       @click="onEditItemDetail(props.itemDetail.id)"
@@ -86,6 +85,15 @@
   cursor: pointer;
   border-radius: 0;
   padding-bottom: 1rem;
+  width: 200px;
+
+  @media (max-width: 767px) {
+    width: 400px;
+  }
+
+  @media (max-width: 480px) {
+    width: 320px;
+  }
 }
 
 .header-card {

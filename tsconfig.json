@@ -29,7 +29,10 @@
       "@nuxt/types",
       "@nuxtjs/firebase",
       "@nuxt/http",
-      "vuetify"
+      "@nuxtjs/apollo",
+      "vue-cli-plugin-apollo",
+      "vuetify",
+      "vue-apollo"
     ]
   },
   "exclude": [

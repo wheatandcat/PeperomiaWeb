@@ -1,8 +1,9 @@
 <template>
-  <v-sheet elevation="4" width="500">
+  <v-sheet elevation="4" max-width="500">
     <div v-if="!props.loading">
       <div class="header-itme" :style="bg">
         <v-menu
+          v-if="props.edit"
           v-model="menu"
           :close-on-content-click="false"
           :nudge-right="40"
@@ -11,7 +12,7 @@
           min-width="290px"
         >
           <template v-slot:activator="{ on }">
-            <div class="date" v-on="on">
+            <div class="date cursor" v-on="on">
               {{ itemDate }}
             </div>
           </template>
@@ -32,7 +33,9 @@
             </v-btn>
           </v-date-picker>
         </v-menu>
-
+        <div v-else class="date">
+          {{ itemDate }}
+        </div>
         <div class="header-item-title">
           <div class="pr-3 py-3">
             <v-img :src="kindData.src" width="60" height="60" />
@@ -65,8 +68,11 @@
   background: lightgray;
   padding: 0.5rem 1rem;
 
-  .date {
+  .cursor {
     cursor: pointer;
+  }
+
+  .date {
     font-size: 0.8rem;
     color: $darkGray;
   }
@@ -91,6 +97,10 @@
   flex-wrap: wrap;
   padding: 0.6rem;
   background-color: $lightGray;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+  }
 }
 </style>
 
@@ -124,6 +134,7 @@ export default defineComponent({
   props: {
     loading: { type: Boolean, default: false },
     apiLoading: { type: Boolean, default: false },
+    edit: { type: Boolean, default: false },
     item: { type: Object, default: () => {} },
     itemDetails: { type: Array, default: () => [] },
     calendar: { type: Object, default: () => {} },

@@ -23,6 +23,7 @@
       />
       <itemDialog
         v-else
+        edit
         :loading="state.loading"
         :api-loading="state.apiLoading"
         :item="state.item"

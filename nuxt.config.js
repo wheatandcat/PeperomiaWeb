@@ -51,13 +51,24 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxt/http', '@nuxtjs/firebase'],
+  modules: ['@nuxt/http', '@nuxtjs/firebase', '@nuxtjs/apollo'],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
     optionsPath: './plugins/vuetify.js',
+  },
+
+  apollo: {
+    tokenName: 'yourApolloTokenName',
+    cookieAttributes: {
+      expires: 7,
+    },
+    includeNodeModules: true,
+    clientConfigs: {
+      default: '~/plugins/apollo-client.ts',
+    },
   },
 
   firebase: {

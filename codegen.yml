@@ -1,0 +1,16 @@
+overwrite: true
+schema:
+  - ./schema.graphqls
+documents:
+  - "./queries/**/*.gql"
+generates:
+  ./queries/types/index.d.ts:
+    hooks:
+      afterOneFileWrite:
+        - yarn codegen:lint:fix
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      skipTypename: true
+      preResolveTypes: true

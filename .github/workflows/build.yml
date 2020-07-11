@@ -18,5 +18,7 @@ jobs:
       run: yarn install
     - name: setup
       run: sh localInit.sh
+    - name: codegen
+      run: yarn codegen
     - name: build
       run: yarn build
