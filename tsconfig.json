@@ -31,7 +31,8 @@
       "@nuxt/http",
       "@nuxtjs/apollo",
       "vue-cli-plugin-apollo",
-      "vuetify"
+      "vuetify",
+      "vue-apollo"
     ]
   },
   "exclude": [

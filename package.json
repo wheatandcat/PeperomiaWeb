@@ -18,7 +18,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "download:schema.graphqls": "curl -L -O https://raw.githubusercontent.com/wheatandcat/PeperomiaBackend/master/graph/schema.graphqls",
-    "codegen": "graphql-codegen"
+    "codegen": "npm run download:schema.graphqls && graphql-codegen",
+    "codegen:lint:fix": "eslint --fix ./queries/types/index.d.ts"
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
