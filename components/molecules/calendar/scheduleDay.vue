@@ -56,7 +56,7 @@ export default defineComponent({
   setup(props: Props, context: SetupContext) {
     const bg = computed(() => {
       return {
-        backgroundColor: props.kindData.backgroundColor,
+        backgroundColor: props.kindData.backgroundColor || '#FFF',
       }
     })
     const imgStyle = computed(() => {

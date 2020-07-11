@@ -12,11 +12,12 @@ export const getCalendars = async (
     return []
   }
 
-  const ids = calendars.map((calendar) => String(calendar.id))
+  const ids = calendars.map((calendar) => String(calendar.itemId))
 
   const items = await findItemInID(firestore, uid, ids)
-  const result = calendars.map((calendar) => {
-    const item = items.find((v) => v.id === calendar.id)
+
+  const result: any = calendars.map((calendar) => {
+    const item = items.find((v) => v.id === calendar.itemId)
 
     return {
       ...calendar,
@@ -24,5 +25,5 @@ export const getCalendars = async (
     }
   })
 
-  return result as CalendarItem[]
+  return result.filter((v: CalendarItem) => !!v.kind) as CalendarItem[]
 }
