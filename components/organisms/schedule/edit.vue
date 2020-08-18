@@ -9,7 +9,7 @@
       <div class="inner pt-4">
         <div>
           <v-text-field
-            v-model="state.title"
+            v-model="title"
             label="タイトル"
             single-line
             autofocus
@@ -17,14 +17,14 @@
         </div>
       </div>
       <div class="edit-action">
-        <v-btn color="error" class="edit-button" text @click="props.onCancel">
+        <v-btn color="error" class="edit-button" text @click="onCancel">
           キャンセル
         </v-btn>
         <v-btn
           color="primary"
           class="edit-button"
-          :loading="props.loading"
-          :disabled="props.loading"
+          :loading="loading"
+          :disabled="loading"
           @click="onSaveItem"
         >
           保存
@@ -100,7 +100,12 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, reactive } from '@vue/composition-api'
+import {
+  defineComponent,
+  computed,
+  reactive,
+  toRefs,
+} from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
@@ -119,14 +124,14 @@ type Props = {
 
 dayjs.extend(advancedFormat)
 
-export default defineComponent({
+export default defineComponent<Props>({
   props: {
     loading: { type: Boolean, default: false },
     item: { type: Object, default: () => {} },
     onCancel: { type: Function, default: () => {} },
     onSave: { type: Function, default: () => {} },
   },
-  setup(props: Props) {
+  setup(props) {
     const state = reactive<State>({
       title: props.item.title,
     })
@@ -149,8 +154,7 @@ export default defineComponent({
     }
 
     return {
-      props,
-      state,
+      ...toRefs(state),
       kindData,
       bg,
       onSaveItem,

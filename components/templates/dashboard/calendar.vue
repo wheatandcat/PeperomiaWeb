@@ -85,14 +85,14 @@ type State = {
   small: boolean
 }
 
-export default defineComponent({
+export default defineComponent<Props>({
   components: {
     calendar,
   },
   props: {
     calendars: { type: Array, default: () => [] },
   },
-  setup(props: Props) {
+  setup(props) {
     const main = ref<any>(null)
 
     const getDate = (month: number) => {

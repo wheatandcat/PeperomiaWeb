@@ -1,11 +1,11 @@
 <template>
   <div class="root">
     <v-sheet elevation="4" width="400">
-      <v-form v-model="state.sendCalendarPushNotifications.valid" class="form">
+      <v-form v-model="sendCalendarPushNotifications.valid" class="form">
         <h3>カレンダー当日通知</h3>
 
         <v-date-picker
-          v-model="state.sendCalendarPushNotifications.date"
+          v-model="sendCalendarPushNotifications.date"
           :rules="[required]"
           :day-format="(date) => new Date(date).getDate()"
           locale="jp-ja"
@@ -32,7 +32,12 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, reactive, SetupContext } from '@vue/composition-api'
+import {
+  defineComponent,
+  reactive,
+  SetupContext,
+  toRefs,
+} from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { get } from '~/modules/fetch.ts'
@@ -75,7 +80,7 @@ export default defineComponent({
     const required = (value: string) => !!value || '必須です.'
 
     return {
-      state,
+      ...toRefs(state),
       required,
       onSendCalendarPushNotifications,
     }

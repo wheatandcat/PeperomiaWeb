@@ -1,9 +1,9 @@
 <template>
   <v-sheet elevation="4" max-width="500">
-    <div v-if="!props.loading">
+    <div v-if="!loading">
       <div class="header-itme" :style="bg">
         <v-menu
-          v-if="props.edit"
+          v-if="edit"
           v-model="menu"
           :close-on-content-click="false"
           :nudge-right="40"
@@ -25,8 +25,8 @@
             <v-btn text color="error" @click="menu = false">キャンセル</v-btn>
             <v-btn
               color="primary"
-              :loading="props.apiLoading"
-              :disabled="props.apiLoading"
+              :loading="apiLoading"
+              :disabled="apiLoading"
               @click="onSaveCalendarData"
             >
               保存
@@ -40,20 +40,20 @@
           <div class="pr-3 py-3">
             <v-img :src="kindData.src" width="60" height="60" />
           </div>
-          <div class="item-title pl-5 pt-8" @click="props.onEditItem">
-            {{ props.item.title }}
+          <div class="item-title pl-5 pt-8" @click="onEditItem">
+            {{ item.title }}
           </div>
         </div>
       </div>
       <div class="item-body">
         <div
-          v-for="itemDetail in props.itemDetails"
+          v-for="itemDetail in itemDetails"
           :key="itemDetail.id"
           class="pa-3"
         >
           <card
             :item-detail="itemDetail"
-            :on-edit-item-detail="props.onEditItemDetail"
+            :on-edit-item-detail="onEditItemDetail"
           />
         </div>
       </div>
@@ -127,7 +127,7 @@ type Props = {
 
 dayjs.extend(advancedFormat)
 
-export default defineComponent({
+export default defineComponent<Props>({
   components: {
     card,
   },
@@ -142,7 +142,7 @@ export default defineComponent({
     onEditItemDetail: { type: Function, default: () => {} },
     onSaveCalendar: { type: Function, default: () => {} },
   },
-  setup(props: Props) {
+  setup(props) {
     const menu = ref<boolean>(false)
     const date = ref<string>(props.calendar.date)
 
@@ -168,7 +168,6 @@ export default defineComponent({
     }
 
     return {
-      props,
       kindData,
       bg,
       dayjs,

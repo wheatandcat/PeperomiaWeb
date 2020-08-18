@@ -133,14 +133,11 @@
 import { defineComponent } from '@vue/composition-api'
 import { LoginType } from '~/pages/login.vue'
 
-export default defineComponent({
+type Props = LoginType
+
+export default defineComponent<Props>({
   props: {
     fbGoogleLogin: { type: Function, required: true },
-  },
-  setup(props: LoginType) {
-    return {
-      fbGoogleLogin: props.fbGoogleLogin,
-    }
   },
 })
 </script>

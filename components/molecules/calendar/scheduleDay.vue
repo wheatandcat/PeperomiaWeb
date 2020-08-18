@@ -1,10 +1,10 @@
 <template>
-  <div class="root" :style="bg" @click="onOenItemDialog(props.itemID)">
+  <div class="root" :style="bg" @click="onOenItemDialog(itemID)">
     <div class="event" :style="fontStyle">
-      {{ dayjs(props.date).format('D') }}
+      {{ dayjs(date).format('D') }}
     </div>
     <div>
-      <v-img :src="props.kindData.src" class="kind-img" :style="imgStyle" />
+      <v-img :src="kindData.src" class="kind-img" :style="imgStyle" />
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, SetupContext } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { Kind } from 'peperomia-util/build/getKind'
@@ -46,14 +46,14 @@ type Props = {
   size: number
 }
 
-export default defineComponent({
+export default defineComponent<Props>({
   props: {
     date: { type: String, default: '' },
     itemID: { type: String, default: '' },
     kindData: { type: Object, default: () => {} },
     size: { type: Number, default: 1 },
   },
-  setup(props: Props, context: SetupContext) {
+  setup(props, ctx) {
     const bg = computed(() => {
       return {
         backgroundColor: props.kindData.backgroundColor || '#FFF',
@@ -72,7 +72,7 @@ export default defineComponent({
     })
 
     const onOenItemDialog = (id: string) => {
-      context.root.$store.commit('OPEN_ITEM_DIALOG', {
+      ctx.root.$store.commit('OPEN_ITEM_DIALOG', {
         id,
       })
     }
@@ -82,7 +82,6 @@ export default defineComponent({
       imgStyle,
       fontStyle,
       dayjs,
-      props,
       onOenItemDialog,
     }
   },
