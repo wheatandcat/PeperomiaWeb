@@ -1,0 +1,8 @@
+{
+  "eslint.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "cSpell.ignoreWords": ["firestore", "peperomia", "Nuxt"],
+  "editor.formatOnSave": true
+}

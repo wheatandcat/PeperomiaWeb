@@ -5,7 +5,7 @@
       min-height="60"
       class="root"
       :style="bg"
-      @click="onEditItemDetail(props.itemDetail.id)"
+      @click="onEditItemDetail(itemDetail.id)"
     >
       <div class="header-card">
         <div class="header-card-title">
@@ -13,13 +13,13 @@
             <v-img :src="kindData.src" width="30" height="30" />
           </div>
           <div class="card-title pl-3 pt-5">
-            {{ props.itemDetail.title }}
+            {{ itemDetail.title }}
           </div>
         </div>
       </div>
       <div>
         <div class="px-2">
-          <template v-if="props.itemDetail.place">
+          <template v-if="itemDetail.place">
             <v-chip
               class="chip-container"
               color="themeLightGray"
@@ -35,11 +35,11 @@
               </div>
             </v-chip>
             <div class="label-value">
-              {{ props.itemDetail.place }}
+              {{ itemDetail.place }}
             </div>
           </template>
 
-          <template v-if="props.itemDetail.url">
+          <template v-if="itemDetail.url">
             <v-chip
               class="chip-container"
               color="themeLightGray"
@@ -53,11 +53,11 @@
               <div class="label-text">URL</div>
             </v-chip>
             <div class="label-value">
-              <a :href="props.itemDetail.url">{{ props.itemDetail.url }}</a>
+              <a :href="itemDetail.url">{{ itemDetail.url }}</a>
             </div>
           </template>
 
-          <template v-if="props.itemDetail.memo">
+          <template v-if="itemDetail.memo">
             <v-chip
               class="chip-container"
               color="themeLightGray"
@@ -70,7 +70,7 @@
               </v-icon>
               <div class="label-text">メモ</div>
             </v-chip>
-            <div class="label-value">{{ props.itemDetail.memo }}</div>
+            <div class="label-value">{{ itemDetail.memo }}</div>
           </template>
         </div>
       </div>
@@ -134,12 +134,12 @@ type Props = {
   onEditItemDetail: (itemDetailId: string) => void
 }
 
-export default defineComponent({
+export default defineComponent<Props>({
   props: {
     itemDetail: { type: Object, required: true },
     onEditItemDetail: { type: Function, default: () => {} },
   },
-  setup(props: Props) {
+  setup(props) {
     const kindData = KINDS[props.itemDetail.kind]
 
     const bg = computed(() => {
@@ -149,7 +149,6 @@ export default defineComponent({
     })
 
     return {
-      props,
       kindData,
       bg,
     }

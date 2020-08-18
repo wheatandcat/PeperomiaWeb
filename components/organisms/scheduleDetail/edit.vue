@@ -6,13 +6,13 @@
           <v-img :src="kindData.src" width="40" height="40" />
         </div>
         <div class="item-title pt-3">
-          <v-text-field v-model="state.title" single-line />
+          <v-text-field v-model="title" single-line />
         </div>
       </div>
       <div class="px-6">
         <div>
           <v-text-field
-            v-model="state.place"
+            v-model="place"
             label="場所"
             prepend-icon="mdi-map-marker-outline"
             color="themeLightGreen"
@@ -21,7 +21,7 @@
         </div>
         <div>
           <v-text-field
-            v-model="state.url"
+            v-model="url"
             label="URL"
             prepend-icon="mdi-link"
             color="themeLightGreen"
@@ -30,7 +30,7 @@
         </div>
         <div>
           <v-textarea
-            v-model="state.memo"
+            v-model="memo"
             label="メモ"
             prepend-icon="mdi-view-list"
             color="themeLightGreen"
@@ -40,14 +40,14 @@
         </div>
       </div>
       <div class="edit-action">
-        <v-btn color="error" class="edit-button" text @click="props.onCancel">
+        <v-btn color="error" class="edit-button" text @click="onCancel">
           キャンセル
         </v-btn>
         <v-btn
           color="primary"
           class="edit-button"
-          :loading="props.loading"
-          :disabled="props.loading"
+          :loading="loading"
+          :disabled="loading"
           @click="onSaveItemDetail"
         >
           保存
@@ -126,7 +126,12 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, computed, reactive } from '@vue/composition-api'
+import {
+  defineComponent,
+  computed,
+  reactive,
+  toRefs,
+} from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
@@ -149,14 +154,14 @@ type Props = {
 
 dayjs.extend(advancedFormat)
 
-export default defineComponent({
+export default defineComponent<Props>({
   props: {
     loading: { type: Boolean, default: false },
     itemDetail: { type: Object, default: () => {} },
     onCancel: { type: Function, default: () => {} },
     onSave: { type: Function, default: () => {} },
   },
-  setup(props: Props) {
+  setup(props) {
     const state = reactive<State>({
       title: props.itemDetail.title,
       kind: props.itemDetail.kind,
@@ -183,8 +188,7 @@ export default defineComponent({
     }
 
     return {
-      props,
-      state,
+      ...toRefs(state),
       kindData,
       bg,
       onSaveItemDetail,

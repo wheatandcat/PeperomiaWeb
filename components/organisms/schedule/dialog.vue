@@ -1,34 +1,34 @@
 <template>
   <v-dialog v-model="openDialog" width="500">
     <div>
-      <v-sheet v-if="state.loading" elevation="4" width="500" height="200">
+      <v-sheet v-if="loading" elevation="4" width="500" height="200">
         <div class="loading-container">
           <v-progress-circular indeterminate color="primary" />
         </div>
       </v-sheet>
-      <div v-if="state.mode === 'loading'" />
+      <div v-if="mode === 'loading'" />
       <editItem
-        v-else-if="state.mode === 'editItem'"
-        :loading="state.apiLoading"
-        :item="state.item"
+        v-else-if="mode === 'editItem'"
+        :loading="postLoading"
+        :item="item"
         :on-cancel="onCancel"
         :on-save="onSaveItem"
       />
       <editItemDetail
-        v-else-if="state.mode === 'editItemDetail'"
-        :loading="state.apiLoading"
-        :item-detail="state.selectedItemDetail"
+        v-else-if="mode === 'editItemDetail'"
+        :loading="postLoading"
+        :item-detail="selectedItemDetail"
         :on-cancel="onCancel"
         :on-save="onSaveItemDetail"
       />
       <itemDialog
         v-else
         edit
-        :loading="state.loading"
-        :api-loading="state.apiLoading"
-        :item="state.item"
-        :item-details="state.itemDetails"
-        :calendar="state.calendar"
+        :loading="loading"
+        :api-loading="postLoading"
+        :item="item"
+        :item-details="itemDetails"
+        :calendar="calendar"
         :on-edit-item="onEditItem"
         :on-edit-item-detail="onEditItemDetail"
         :on-save-calendar="onSaveCalendar"
@@ -53,55 +53,27 @@
 import {
   defineComponent,
   watch,
-  SetupContext,
   computed,
   reactive,
+  SetupContext,
+  toRefs,
 } from '@vue/composition-api'
-import {
-  findByID as findItemByID,
-  Item,
-} from 'peperomia-util/build/firestore/item'
-import {
-  findByItemID as findItemDetailByItemID,
-  ItemDetail,
-} from 'peperomia-util/build/firestore/itemDetail'
-import {
-  findByItemID as findCalendarByItemID,
-  Calendar,
-} from 'peperomia-util/build/firestore/calendar'
+import { Item } from 'peperomia-util/build/firestore/item'
+import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
+import { Calendar } from 'peperomia-util/build/firestore/calendar'
 import itemDialog from './index.vue'
 import editItem from './edit.vue'
 import editItemDetail from '~/components/organisms/scheduleDetail/edit.vue'
-import { post } from '~/modules/fetch.ts'
+import useFetchItem from '~/use/item.ts'
 
 type State = {
   mode: 'show' | 'editItemDetail' | 'editItem' | 'loading'
   selectedItemDetail: ItemDetail | null | undefined
-  loading: boolean
-  apiLoading: boolean
-  item: Item | null
-  itemDetails: ItemDetail[] | null
-  calendar: Calendar | null
 }
 
 const initState: State = {
   mode: 'loading',
   selectedItemDetail: null,
-  loading: true,
-  apiLoading: false,
-  item: {
-    id: '',
-    uid: '',
-    title: '',
-    kind: '',
-  },
-  itemDetails: [],
-  calendar: {
-    id: '',
-    itemId: '',
-    uid: '',
-    date: '',
-  },
 }
 
 export default defineComponent({
@@ -111,50 +83,36 @@ export default defineComponent({
     editItemDetail,
   },
 
-  setup(_, context: SetupContext) {
+  setup(_, ctx: SetupContext) {
     const state = reactive<State>(initState)
+    const {
+      item,
+      itemDetails,
+      calendar,
+      loading,
+      postLoading,
+      fetchItem,
+      saveItem,
+      saveItemDetail,
+      saveCalendar,
+    } = useFetchItem(ctx)
 
     const setItemData = async () => {
       state.mode = 'loading'
-      state.loading = true
 
-      const itemDialog = context.root.$store.state.itemDialog
-      const firestore = context.root.$fireStore
-      const uid = context.root.$store.state.authUser?.uid
-      const itemID = itemDialog.id
+      const itemID = ctx.root.$store.state.itemDialog.id
 
-      if (itemID && uid) {
-        const item: any = await findItemByID(firestore, uid, itemID)
-        const itemDetails = await findItemDetailByItemID(firestore, uid, itemID)
-        const calendar = await findCalendarByItemID(firestore, uid, itemID)
-
-        state.item = {
-          id: item.id,
-          uid: item.uid,
-          title: item.title,
-          kind: item.kind,
-        }
-
-        state.itemDetails = itemDetails
-
-        state.calendar = {
-          id: calendar.id,
-          itemId: calendar.itemId,
-          uid: calendar.uid,
-          date: calendar.date,
-        }
-
+      if (itemID) {
+        await fetchItem(itemID)
         state.mode = 'show'
       }
-
-      state.loading = false
     }
 
     const openDialog = computed({
-      get: () => context.root.$store.getters.isOpenItemDialog,
+      get: () => ctx.root.$store.getters.isOpenItemDialog,
       set: (val) => {
         if (!val) {
-          context.root.$store.commit('CLOSE_ITEM_DIALOG')
+          ctx.root.$store.commit('CLOSE_ITEM_DIALOG')
         }
       },
     })
@@ -166,11 +124,11 @@ export default defineComponent({
     })
 
     const onEditItemDetail = (itemDetailId: string) => {
-      if (!state.itemDetails) {
+      if (!itemDetails.value) {
         return
       }
 
-      state.selectedItemDetail = state.itemDetails.find(
+      state.selectedItemDetail = itemDetails.value.find(
         (v) => v.id === itemDetailId
       )
 
@@ -188,51 +146,42 @@ export default defineComponent({
     }
 
     const onSaveItem = async (item: Item) => {
-      state.apiLoading = true
+      const ok = await saveItem(item)
 
-      const res = await post(context, 'UpdateItem', {
-        item,
-      })
-
-      if (res.ok) {
+      if (ok) {
         await setItemData()
         state.mode = 'show'
       }
-
-      state.apiLoading = false
     }
 
     const onSaveItemDetail = async (itemDetail: ItemDetail) => {
-      state.apiLoading = true
+      const ok = await saveItemDetail(itemDetail)
 
-      const res = await post(context, 'UpdateItemDetail', {
-        itemDetail,
-      })
-
-      if (res.ok) {
+      if (ok) {
         await setItemData()
         state.mode = 'show'
       }
-
-      state.apiLoading = false
     }
 
     const onSaveCalendar = async (calendar: Calendar) => {
-      const res = await post(context, 'UpdateCalendar', {
-        calendar,
-      })
+      const ok = await saveCalendar(calendar)
 
-      if (res.ok) {
+      if (ok) {
         await setItemData()
       }
 
-      const authUser = context.root.$store.state?.authUser
-      context.root.$store.dispatch('getCalendarData', { authUser })
+      const authUser = ctx.root.$store.state?.authUser
+      ctx.root.$store.dispatch('getCalendarData', { authUser })
     }
 
     return {
+      ...toRefs(state),
+      item,
+      itemDetails,
+      calendar,
+      loading,
+      postLoading,
       openDialog,
-      state,
       onEditItem,
       onEditItemDetail,
       onCancel,

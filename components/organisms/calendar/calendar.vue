@@ -68,7 +68,7 @@ const defaultCalendarItem: CalendarItem = {
   kind: '',
 }
 
-export default defineComponent({
+export default defineComponent<Props>({
   components: {
     day,
     scheduleDay,
@@ -78,7 +78,7 @@ export default defineComponent({
     calendarDate: { type: String, required: true },
     calendars: { type: Array, default: () => [] },
   },
-  setup(props: Props) {
+  setup(props) {
     const isSchedule = (date: string): boolean => {
       const item = props.calendars.find((v) => v.date === date)
 

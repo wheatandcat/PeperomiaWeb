@@ -1,25 +1,21 @@
 <template>
   <div class="root">
     <v-sheet elevation="4" width="500">
-      <v-form v-model="state.valid" class="form">
+      <v-form v-model="valid" class="form">
         <h3>Push通知送信</h3>
-        <v-text-field v-model="state.uuid" label="uuid" :rules="[required]" />
+        <v-text-field v-model="uuid" label="uuid" :rules="[required]" />
 
-        <v-text-field
-          v-model="state.title"
-          label="タイトル"
-          :rules="[required]"
-        />
+        <v-text-field v-model="title" label="タイトル" :rules="[required]" />
 
         <v-textarea
-          v-model="state.body"
+          v-model="body"
           label="本文"
           auto-grow
           rows="1"
           :rules="[required]"
         />
 
-        <v-text-field v-model="state.urlScheme" label="URLスキーマ" />
+        <v-text-field v-model="urlScheme" label="URLスキーマ" />
 
         <div class="my-5">
           <v-btn color="primary" large @click="onPushNotidication">
@@ -42,7 +38,12 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, reactive, SetupContext } from '@vue/composition-api'
+import {
+  defineComponent,
+  reactive,
+  SetupContext,
+  toRefs,
+} from '@vue/composition-api'
 import { post } from '~/modules/fetch.ts'
 
 type State = {
@@ -83,7 +84,7 @@ export default defineComponent({
     const required = (value: string) => !!value || '必須です.'
 
     return {
-      state,
+      ...toRefs(state),
       required,
       onPushNotidication,
     }

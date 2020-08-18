@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CalendarView :calendars="state.calendars" />
+    <CalendarView :calendars="calendars" />
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import {
   onUnmounted,
   reactive,
   SetupContext,
+  toRefs,
 } from '@vue/composition-api'
 import CalendarView from '~/components/templates/dashboard/calendar.vue'
 import { CalendarItem } from '~/domain/calendar'
@@ -23,11 +24,11 @@ export default defineComponent({
   components: {
     CalendarView,
   },
-  setup(_, context: SetupContext) {
+  setup(_, ctx: SetupContext) {
     const state = reactive<State>({
       calendars: [],
     })
-    const unwatch = context.root.$store.watch<CalendarItem[]>(
+    const unwatch = ctx.root.$store.watch<CalendarItem[]>(
       (vuexState) => {
         return vuexState.calendars
       },
@@ -37,17 +38,15 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      const authUser = context.root.$store.state?.authUser
-      context.root.$store.dispatch('getCalendarData', { authUser })
+      const authUser = ctx.root.$store.state?.authUser
+      ctx.root.$store.dispatch('getCalendarData', { authUser })
     })
 
     onUnmounted(() => {
       unwatch()
     })
 
-    return {
-      state,
-    }
+    return toRefs(state)
   },
 })
 </script>

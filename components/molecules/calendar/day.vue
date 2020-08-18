@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <div class="no-event" :style="fontStyle">
-      {{ dayjs(props.date).format('D') }}
+      {{ dayjs(date).format('D') }}
     </div>
   </div>
 </template>
@@ -35,12 +35,12 @@ type Props = {
   size: number
 }
 
-export default defineComponent({
+export default defineComponent<Props>({
   props: {
     date: { type: String, default: '' },
     size: { type: Number, default: 1 },
   },
-  setup(props: Props) {
+  setup(props) {
     const fontStyle = computed(() => {
       return {
         fontSize: `${1.2 * props.size}rem`,
@@ -50,7 +50,6 @@ export default defineComponent({
     return {
       fontStyle,
       dayjs,
-      props,
     }
   },
 })
