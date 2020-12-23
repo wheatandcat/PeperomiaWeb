@@ -1,7 +1,7 @@
 import { SetupContext } from '@vue/composition-api'
 import dayjs from 'dayjs'
 
-export const getAccessToken = async (context: SetupContext) => {
+export const getAccessToken = async (ctx: SetupContext) => {
   const accessToken = await localStorage.getItem('accessToken')
 
   if (!accessToken) {
@@ -14,11 +14,11 @@ export const getAccessToken = async (context: SetupContext) => {
     return accessToken
   }
 
-  return await setSession(context, true)
+  return await setSession(ctx, true)
 }
 
-export const setSession = async (context: SetupContext, refresh = false) => {
-  const user = context.root.$fireAuth.currentUser
+export const setSession = async (ctx: SetupContext, refresh = false) => {
+  const user = ctx.root.$fire.auth.currentUser
   if (!user) {
     return null
   }

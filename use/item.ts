@@ -22,7 +22,7 @@ type useFetchItem = {
 }
 
 const useFetchItem = (ctx: SetupContext) => {
-  const firestore = ctx.root.$fireStore
+  const firestore = ctx.root.$fire.firestore
   const uid = ctx.root.$store.state.authUser?.uid
 
   const state = reactive<useFetchItem>({

@@ -3,29 +3,42 @@ import { State } from './state'
 import { getCalendars } from '~/modules/calendar.ts'
 
 const actions: ActionTree<State, State> = {
-  nuxtServerInit({ commit }, ctx) {
-    const ssrVerifiedAuthUser = ctx.res.verifiedFireAuthUser
-    const ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims
+  async nuxtServerInit({ dispatch }, ctx) {
+    if (ctx.res && ctx.res.locals && ctx.res.locals.user) {
+      const { allClaims: claims, ...authUser } = ctx.res.locals.user
 
-    if (ssrVerifiedAuthUser && ssrVerifiedAuthUserClaims) {
-      commit('SET_AUTH_USER', {
-        authUser: ssrVerifiedAuthUser,
-        claims: ssrVerifiedAuthUserClaims,
+      console.info(
+        'Auth User verified on server-side. User: ',
+        authUser,
+        'Claims:',
+        claims
+      )
+
+      await dispatch('onAuthStateChanged', {
+        authUser,
+        claims,
       })
     }
   },
 
-  onAuthStateChanged({ commit }, { authUser }) {
+  async onAuthStateChanged({ commit }, { authUser }) {
     if (!authUser) {
       commit('RESET_STORE')
       return
     }
-
+    if (authUser && authUser.getIdToken) {
+      try {
+        const idToken = await authUser.getIdToken(true)
+        console.info('idToken', idToken)
+      } catch (e) {
+        console.error(e)
+      }
+    }
     commit('SET_AUTH_USER', { authUser })
   },
   async getCalendarData({ commit }, { authUser }) {
     const uid = authUser?.uid
-    const firestore = this.$fireStore
+    const firestore = this.$fire.firestore
 
     if (uid) {
       const result = await getCalendars(firestore, uid)

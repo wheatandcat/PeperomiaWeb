@@ -1,21 +1,20 @@
 query ShareItem($itemId: ID!) {
-  item(id: $itemId) {
+  shareItem(id: $itemId) {
     id
-    title
-    kind
-    itemDetails {
+    date
+    item {
       id
       title
       kind
-      moveMinutes
-      place
-      url
-      memo
-      priority
-    }
-    calendar {
-      id
-      date
+      itemDetails {
+        id
+        title
+        kind
+        place
+        url
+        memo
+        priority
+      }
     }
   }
 }

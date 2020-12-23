@@ -12,8 +12,6 @@ type State = ReturnType<typeof state>
 
 export const actions: ActionTree<any, State> = {
   setRole({ commit }, { role }) {
-    console.log(role)
-
     commit('SET_ROLE', role)
   },
 }

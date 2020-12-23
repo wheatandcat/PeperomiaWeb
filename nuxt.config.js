@@ -80,8 +80,11 @@ export default {
       auth: {
         initialize: {
           onAuthStateChangedAction: 'onAuthStateChanged',
-          ssr: true,
+          subscribeManually: true,
         },
+        ssr: true,
+        // emulatorPort: process.env.NODE_ENV === 'development' ? 9099 : undefined,
+        disableEmulatorWarnings: false,
       },
       firestore: true,
     },

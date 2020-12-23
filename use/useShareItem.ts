@@ -3,7 +3,7 @@ import shareItemQuery from '~/queries/shareItem.gql'
 import { ShareItemQuery, ShareItemQueryVariables } from '~/queries/types'
 
 type UseFetchShareItemState = {
-  item: ShareItemQuery['item'] | null
+  item: ShareItemQuery['shareItem'] | null
   loading: boolean
 }
 
@@ -24,7 +24,7 @@ const useFetchShareItem = (ctx: SetupContext) => {
       variables: { itemId },
     })
 
-    state.item = res.data.item
+    state.item = res.data.shareItem
     state.loading = false
   }
 

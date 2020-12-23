@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, SetupContext } from '@vue/composition-api'
+import { defineComponent, SetupContext, watch } from '@vue/composition-api'
 import firebase from 'firebase'
 import Login from '~/components/templates/login/index.vue'
 import { setSession } from '~/modules/auth'
@@ -17,26 +17,34 @@ export default defineComponent({
   components: {
     Login,
   },
-  setup(_, context: SetupContext) {
+  setup(_, ctx: SetupContext) {
     const fbGoogleLogin = async () => {
+      console.log('fbGoogleLogin')
+
       try {
         const googleProvider = new firebase.auth.GoogleAuthProvider()
 
-        await context.root.$fireAuth.signInWithPopup(googleProvider)
+        await ctx.root.$fire.auth.signInWithPopup(googleProvider)
 
-        context.root.$fireAuth.onAuthStateChanged(async () => {
-          await setSession(context, true)
-          window.location.href = `${location.protocol}//${location.host}`
+        ctx.root.$fire.auth.onAuthStateChanged(async () => {
+          await setSession(ctx, true)
+          const authUser = ctx.root.$fire.auth.currentUser
+          ctx.root.$store.dispatch('onAuthStateChanged', { authUser })
         })
       } catch (e) {
         console.log(e)
       }
     }
 
-    if (context.root.$store.getters.isLoggedIn) {
-      setSession(context, true)
-      context.root.$router.push('/')
-    }
+    watch(
+      () => ctx.root.$store.getters.isLoggedIn,
+      (value) => {
+        if (value) {
+          setSession(ctx, true)
+          ctx.root.$router.push('/')
+        }
+      }
+    )
 
     return {
       fbGoogleLogin,
