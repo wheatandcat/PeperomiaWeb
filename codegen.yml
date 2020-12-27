@@ -4,6 +4,11 @@ schema:
 documents:
   - "./queries/**/*.gql"
 generates:
+  ./schema.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
   ./queries/types/index.d.ts:
     hooks:
       afterOneFileWrite:

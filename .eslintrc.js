@@ -30,9 +30,16 @@ module.exports = {
     },
   ],
   // required to lint *.vue files
-  plugins: ['vue', 'jest'],
+  plugins: ['vue', 'jest', 'graphql'],
   // add your custom rules here
   rules: {
+    'graphql/template-strings': [
+      'error',
+      {
+        env: 'apollo',
+        schemaJson: require('./schema.json'),
+      },
+    ],
     'no-console': 'off',
     'vue/no-parsing-error': [
       'error',

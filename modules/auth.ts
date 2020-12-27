@@ -1,5 +1,6 @@
 import { SetupContext } from '@vue/composition-api'
 import dayjs from 'dayjs'
+import firebase from 'firebase'
 
 export const getAccessToken = async (ctx: SetupContext) => {
   const accessToken = await localStorage.getItem('accessToken')
@@ -32,4 +33,32 @@ export const setSession = async (ctx: SetupContext, refresh = false) => {
   await localStorage.setItem('expiration', String(expiration))
 
   return accessToken
+}
+
+export const getIdToken = async () => {
+  const expiration = await localStorage.getItem('expiration')
+
+  if (dayjs(new Date(Number(expiration) * 1000)).isAfter(dayjs())) {
+    const accessToken = localStorage.getItem('accessToken')
+    console.log('002')
+    if (!accessToken) {
+      console.error('Not found token')
+      return null
+    }
+    return accessToken
+  }
+
+  const user = firebase.auth().currentUser
+
+  if (user) {
+    const result = await user.getIdTokenResult()
+
+    await localStorage.setItem('accessToken', result.token)
+    await localStorage.setItem('expiration', String(result.claims.exp))
+
+    return result.token
+  } else {
+    console.error('Not found token')
+    return null
+  }
 }
