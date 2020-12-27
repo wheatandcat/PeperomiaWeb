@@ -1,6 +1,5 @@
 import { ActionTree } from 'vuex'
 import { State } from './state'
-import { getCalendars } from '~/modules/calendar.ts'
 
 const actions: ActionTree<State, State> = {
   async nuxtServerInit({ dispatch }, ctx) {
@@ -35,15 +34,6 @@ const actions: ActionTree<State, State> = {
       }
     }
     commit('SET_AUTH_USER', { authUser })
-  },
-  async getCalendarData({ commit }, { authUser }) {
-    const uid = authUser?.uid
-    const firestore = this.$fire.firestore
-
-    if (uid) {
-      const result = await getCalendars(firestore, uid)
-      commit('SET_CALENDARS', { calendars: result })
-    }
   },
 }
 

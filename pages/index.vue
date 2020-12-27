@@ -5,12 +5,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  SetupContext,
-  inject,
-} from '@vue/composition-api'
+import { defineComponent, onMounted, inject } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import firebase from 'firebase'
@@ -23,16 +18,13 @@ export default defineComponent({
   components: {
     CalendarView,
   },
-  setup(_, ctx: SetupContext) {
+  setup() {
     const calendarStore = inject<CalendarStore>('CalendarStore')
     if (!calendarStore) {
       throw new Error(`CalendarStore is not provided`)
     }
 
     onMounted(() => {
-      const authUser = ctx.root.$store.state?.authUser
-      ctx.root.$store.dispatch('getCalendarData', { authUser })
-
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           calendarStore.fetchCalendars({

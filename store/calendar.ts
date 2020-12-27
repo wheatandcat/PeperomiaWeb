@@ -7,11 +7,13 @@ export type Calendars = NonNullable<CalendarsQuery['calendars']>
 type State = {
   calendars: Calendars
   loading: boolean
+  variables: CalendarsQueryVariables | null
 }
 
 const initialState = (): State => ({
   calendars: [],
   loading: false,
+  variables: null,
 })
 
 export type CalendarStore = ReturnType<typeof calendarStore>
@@ -32,8 +34,15 @@ export default function calendarStore(ctx: SetupContext) {
     })
 
     state.calendars = res.data.calendars || []
+    state.variables = variables
     state.loading = false
   }
 
-  return { ...toRefs(state), fetchCalendars }
+  const refetchCalendars = async () => {
+    if (state.variables) {
+      await fetchCalendars(state.variables)
+    }
+  }
+
+  return { ...toRefs(state), fetchCalendars, refetchCalendars }
 }

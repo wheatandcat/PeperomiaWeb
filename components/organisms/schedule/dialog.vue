@@ -7,16 +7,10 @@
         </div>
       </v-sheet>
       <div v-if="mode === 'loading'" />
-      <editItem
-        v-else-if="mode === 'editItem'"
-        :loading="postLoading"
-        :item="item"
-        :on-cancel="onCancel"
-        :on-save="onSaveItem"
-      />
       <editItemDetail
         v-else-if="mode === 'editItemDetail'"
-        :loading="postLoading"
+        :api-loading="postLoading"
+        :loading="itemDetailLoading"
         :item-detail="selectedItemDetail"
         :on-cancel="onCancel"
         :on-save="onSaveItemDetail"
@@ -55,12 +49,13 @@ import {
   reactive,
   SetupContext,
   toRefs,
+  inject,
 } from '@vue/composition-api'
 import itemDialog from './index.vue'
-import editItem from './edit.vue'
 import editItemDetail from '~/components/organisms/scheduleDetail/edit.vue'
 import useCalendar from '~/use/useCalendar'
 import useItemDetail, { ItemDetail } from '~/use/useItemDetail'
+import { CalendarStore } from '~/store/calendar'
 
 type State = {
   mode: 'show' | 'editItemDetail' | 'editItem' | 'loading'
@@ -73,11 +68,15 @@ const initialState = (): State => ({
 export default defineComponent({
   components: {
     itemDialog,
-    editItem,
     editItemDetail,
   },
 
   setup(_, ctx: SetupContext) {
+    const calendarStore = inject<CalendarStore>('CalendarStore')
+    if (!calendarStore) {
+      throw new Error(`CalendarStore is not provided`)
+    }
+
     const state = reactive<State>(initialState())
     const { loading, calendar, fetchCalendar } = useCalendar(ctx)
     const useItemDetailData = useItemDetail(ctx)
@@ -106,6 +105,16 @@ export default defineComponent({
       }
     })
 
+    const onEditItem = () => {
+      const itemDetail = (calendar?.value?.item?.itemDetails || []).find(
+        (v) => v?.priority === 1
+      )
+
+      if (itemDetail) {
+        onEditItemDetail(itemDetail.id)
+      }
+    }
+
     const onEditItemDetail = (itemDetailId: string) => {
       useItemDetailData.fetchItemDetail(
         ctx.root.$store.state.itemDialog.date,
@@ -116,15 +125,9 @@ export default defineComponent({
       state.mode = 'editItemDetail'
     }
 
-    const onEditItem = () => {
-      state.mode = 'editItem'
-    }
-
     const onCancel = () => {
       state.mode = 'show'
     }
-
-    const onSaveItem = async () => {}
 
     const onSaveItemDetail = async (itemDetail: ItemDetail) => {
       const res = await useItemDetailData.updateItemDetail(
@@ -138,6 +141,11 @@ export default defineComponent({
       }
 
       await setItemData()
+
+      if (itemDetail?.priority === 1) {
+        await calendarStore.refetchCalendars()
+      }
+
       state.mode = 'show'
     }
 
@@ -149,10 +157,10 @@ export default defineComponent({
       loading,
       openDialog,
       selectedItemDetail: useItemDetailData.itemDetail,
-      onEditItem,
+      itemDetailLoading: useItemDetailData.loading,
       onEditItemDetail,
+      onEditItem,
       onCancel,
-      onSaveItem,
       onSaveItemDetail,
       onSaveCalendar,
     }

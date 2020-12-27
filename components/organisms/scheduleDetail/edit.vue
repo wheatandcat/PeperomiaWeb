@@ -1,6 +1,9 @@
 <template>
   <v-sheet elevation="4" width="500">
-    <div class="header-itme" :style="bg">
+    <div v-if="loading" class="loading">
+      <v-progress-circular indeterminate color="primary" />
+    </div>
+    <div v-else class="header-itme" :style="bg">
       <div class="header-item-title pb-5">
         <div class="img-icon">
           <v-img :src="kindData().src" width="40" height="40" />
@@ -46,8 +49,8 @@
         <v-btn
           color="primary"
           class="edit-button"
-          :loading="loading"
-          :disabled="loading"
+          :loading="apiLoading"
+          :disabled="apiLoading"
           @click="onSaveItemDetail"
         >
           保存
@@ -81,6 +84,14 @@
   color: $main !important;
   font-weight: bold;
   padding-top: 0.175rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $white;
+  height: 500px;
 }
 
 .header-itme {
@@ -148,6 +159,7 @@ type State = {
 
 type Props = {
   loading: boolean
+  apiLoading: boolean
   itemDetail: ItemDetail
   onCancel: () => void
   onSave: (itemDetail: ItemDetail) => Promise<void>
@@ -165,6 +177,7 @@ const initialState = (props: Props): State => ({
 
 export default defineComponent<Props>({
   props: {
+    apiLoading: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
     itemDetail: { type: Object, default: () => {} },
     onCancel: { type: Function, default: () => {} },

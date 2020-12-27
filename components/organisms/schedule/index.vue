@@ -40,7 +40,7 @@
           <div class="pr-3 py-3">
             <v-img :src="kindData.src" width="60" height="60" />
           </div>
-          <div class="item-title pl-5 pt-8" @click="onEditItem">
+          <div class="item-title pl-5 pt-8" @click="() => onEditItem()">
             {{ calendar.item.title }}
           </div>
         </div>
