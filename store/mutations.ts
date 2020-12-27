@@ -16,7 +16,7 @@ export default {
     state.itemDialog = itemDialog
   },
   CLOSE_ITEM_DIALOG: (state: State) => {
-    state.itemDialog = null
+    state.itemDialog = { date: null }
   },
   SET_CALENDARS: (state: State, { calendars }: State) => {
     state.calendars = calendars

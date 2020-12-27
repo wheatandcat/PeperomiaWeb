@@ -13,7 +13,7 @@
         >
           <template v-slot:activator="{ on }">
             <div class="date cursor" v-on="on">
-              {{ itemDate }}
+              {{ dayjs(calendar.date).format('YYYY年MM月DD日') }}
             </div>
           </template>
           <v-date-picker
@@ -34,20 +34,20 @@
           </v-date-picker>
         </v-menu>
         <div v-else class="date">
-          {{ itemDate }}
+          {{ dayjs(calendar.date).format('YYYY年MM月DD日') }}
         </div>
         <div class="header-item-title">
           <div class="pr-3 py-3">
             <v-img :src="kindData.src" width="60" height="60" />
           </div>
           <div class="item-title pl-5 pt-8" @click="onEditItem">
-            {{ item.title }}
+            {{ calendar.item.title }}
           </div>
         </div>
       </div>
       <div class="item-body">
         <div
-          v-for="itemDetail in itemDetails"
+          v-for="itemDetail in calendar.item.itemDetails"
           :key="itemDetail.id"
           class="pa-3"
         >
@@ -109,16 +109,12 @@ import { defineComponent, computed, ref } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
-import { Item } from 'peperomia-util/build/firestore/item'
-import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
-import { Calendar } from 'peperomia-util/build/firestore/calendar'
 import card from './card.vue'
+import { Calendar } from '~/use/useCalendar'
 
 type Props = {
   loading: boolean
   apiLoading: boolean
-  item: Item
-  itemDetails: ItemDetail[]
   calendar: Calendar
   onEditItem: () => void
   onEditItemDetail: (itemDetailId: string) => void
@@ -144,9 +140,10 @@ export default defineComponent<Props>({
   },
   setup(props) {
     const menu = ref<boolean>(false)
-    const date = ref<string>(props.calendar.date)
+    const date = ref<string>(props.calendar?.date)
+    const kind: string = props.calendar?.item?.kind || ''
 
-    const kindData = KINDS[props.item?.kind] || {
+    const kindData = KINDS[kind] || {
       src: '',
       backgroundColor: '',
     }
@@ -157,13 +154,7 @@ export default defineComponent<Props>({
       }
     })
 
-    const itemDate = dayjs(props.calendar.date).format('YYYY年MM月DD日')
-
     const onSaveCalendarData = () => {
-      props.onSaveCalendar({
-        ...props.calendar,
-        date: dayjs(date.value).format('YYYY-MM-DDT00:00:00Z'),
-      })
       menu.value = false
     }
 
@@ -171,7 +162,6 @@ export default defineComponent<Props>({
       kindData,
       bg,
       dayjs,
-      itemDate,
       menu,
       date,
       onSaveCalendarData,

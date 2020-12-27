@@ -3,7 +3,7 @@
     <div class="header-itme" :style="bg">
       <div class="header-item-title pb-5">
         <div class="img-icon">
-          <v-img :src="kindData.src" width="40" height="40" />
+          <v-img :src="kindData().src" width="40" height="40" />
         </div>
         <div class="item-title pt-3">
           <v-text-field v-model="title" single-line />
@@ -131,11 +131,12 @@ import {
   computed,
   reactive,
   toRefs,
+  watch,
 } from '@vue/composition-api'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
-import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
+import { ItemDetail } from '~/use/useItemDetail'
 
 type State = {
   title: string
@@ -154,6 +155,14 @@ type Props = {
 
 dayjs.extend(advancedFormat)
 
+const initialState = (props: Props): State => ({
+  title: props.itemDetail?.title || '',
+  kind: props.itemDetail?.kind || '',
+  memo: props.itemDetail?.memo || '',
+  place: props.itemDetail?.place || '',
+  url: props.itemDetail?.url || '',
+})
+
 export default defineComponent<Props>({
   props: {
     loading: { type: Boolean, default: false },
@@ -162,27 +171,42 @@ export default defineComponent<Props>({
     onSave: { type: Function, default: () => {} },
   },
   setup(props) {
-    const state = reactive<State>({
-      title: props.itemDetail.title,
-      kind: props.itemDetail.kind,
-      memo: props.itemDetail.memo,
-      place: props.itemDetail.place,
-      url: props.itemDetail.url,
-    })
+    const state = reactive<State>(initialState(props))
 
-    const kindData = KINDS[props.itemDetail?.kind] || {
-      src: '',
-      backgroundColor: '',
+    watch(
+      () => props.itemDetail?.id,
+      (newVal, oldVal) => {
+        if (newVal !== oldVal) {
+          state.title = props.itemDetail?.title || ''
+          state.kind = props.itemDetail?.kind || ''
+          state.memo = props.itemDetail?.memo || ''
+          state.place = props.itemDetail?.place || ''
+          state.url = props.itemDetail?.url || ''
+        }
+      }
+    )
+
+    const kindData = () => {
+      return (
+        KINDS[props.itemDetail?.kind || ''] || {
+          src: '',
+          backgroundColor: '',
+        }
+      )
     }
 
     const bg = computed(() => {
       return {
-        backgroundColor: kindData?.backgroundColor,
+        backgroundColor: kindData().backgroundColor,
       }
     })
 
     const onSaveItemDetail = () => {
-      const param = { ...props.itemDetail, ...state }
+      const param: ItemDetail = {
+        id: props.itemDetail?.id || '',
+        priority: props.itemDetail?.priority || 0,
+        ...state,
+      }
 
       props.onSave(param)
     }

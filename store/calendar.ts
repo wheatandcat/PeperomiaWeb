@@ -2,8 +2,10 @@ import { reactive, SetupContext, toRefs } from '@vue/composition-api'
 import { CalendarsQuery, CalendarsQueryVariables } from '~/queries/types'
 import query from '~/queries/calendars.gql'
 
+export type Calendars = NonNullable<CalendarsQuery['calendars']>
+
 type State = {
-  calendars: CalendarsQuery['calendars']
+  calendars: Calendars
   loading: boolean
 }
 

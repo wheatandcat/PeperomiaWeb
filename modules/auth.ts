@@ -11,7 +11,7 @@ export const getAccessToken = async (ctx: SetupContext) => {
 
   const expiration = await localStorage.getItem('expiration')
 
-  if (dayjs(new Date(Number(expiration) * 1000)).isAfter(dayjs())) {
+  if (Number(expiration) > dayjs().unix()) {
     return accessToken
   }
 
@@ -24,23 +24,44 @@ export const setSession = async (ctx: SetupContext, refresh = false) => {
     return null
   }
 
-  const accessToken = await user.getIdToken(refresh)
+  const result = await user.getIdTokenResult(refresh)
 
-  await localStorage.setItem('accessToken', accessToken)
+  await localStorage.setItem('accessToken', result.token)
 
-  const expiration = dayjs().add(1, 'hour').unix()
+  await localStorage.setItem('expiration', String(result.claims.exp))
 
-  await localStorage.setItem('expiration', String(expiration))
+  return result.token
+}
 
-  return accessToken
+export const initialSession = async () => {
+  const expiration = await localStorage.getItem('expiration')
+
+  if (Number(expiration) > dayjs().unix()) {
+    return
+  }
+
+  try {
+    await firebase.auth().onAuthStateChanged(async (user2) => {
+      if (user2) {
+        const result = await user2.getIdTokenResult(true)
+
+        await localStorage.setItem('accessToken', result.token)
+        await localStorage.setItem('expiration', String(result.claims.exp))
+      } else {
+        throw new Error('Could not get firebase auth user')
+      }
+    })
+  } catch (error) {
+    console.error('Not found token')
+  }
 }
 
 export const getIdToken = async () => {
   const expiration = await localStorage.getItem('expiration')
 
-  if (dayjs(new Date(Number(expiration) * 1000)).isAfter(dayjs())) {
+  if (Number(expiration) > dayjs().unix()) {
     const accessToken = localStorage.getItem('accessToken')
-    console.log('002')
+
     if (!accessToken) {
       console.error('Not found token')
       return null
@@ -51,7 +72,7 @@ export const getIdToken = async () => {
   const user = firebase.auth().currentUser
 
   if (user) {
-    const result = await user.getIdTokenResult()
+    const result = await user.getIdTokenResult(true)
 
     await localStorage.setItem('accessToken', result.token)
     await localStorage.setItem('expiration', String(result.claims.exp))

@@ -7,8 +7,8 @@ export type State = {
     photoURL?: string
   } | null
   itemDialog: {
-    id?: string
-  } | null
+    date: string | null
+  }
   calendars: CalendarItem[]
 }
 
@@ -16,6 +16,8 @@ export const initItemData = {}
 
 export default (): State => ({
   authUser: null,
-  itemDialog: null,
+  itemDialog: {
+    date: null,
+  },
   calendars: [],
 })

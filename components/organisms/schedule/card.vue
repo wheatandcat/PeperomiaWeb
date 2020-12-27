@@ -30,9 +30,7 @@
               <v-icon color="themeLightGreen" size="13" class="mr-1" left>
                 mdi-map-marker-outline
               </v-icon>
-              <div class="label-text">
-                場所
-              </div>
+              <div class="label-text">場所</div>
             </v-chip>
             <div class="label-value">
               {{ itemDetail.place }}
