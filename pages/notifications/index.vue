@@ -1,42 +1,3 @@
-<template>
-  <div class="root">
-    <v-sheet elevation="4" width="500">
-      <v-form v-model="valid" class="form">
-        <h3>Push通知送信</h3>
-        <v-text-field v-model="uuid" label="uuid" :rules="[required]" />
-
-        <v-text-field v-model="title" label="タイトル" :rules="[required]" />
-
-        <v-textarea
-          v-model="body"
-          label="本文"
-          auto-grow
-          rows="1"
-          :rules="[required]"
-        />
-
-        <v-text-field v-model="urlScheme" label="URLスキーマ" />
-
-        <div class="my-5">
-          <v-btn color="primary" large @click="onPushNotidication">
-            送信する
-          </v-btn>
-        </div>
-      </v-form>
-    </v-sheet>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.root {
-  padding: 1rem 2rem;
-}
-
-.form {
-  padding: 1rem 2rem;
-}
-</style>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -91,3 +52,42 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <div class="root">
+    <v-sheet elevation="4" width="500">
+      <v-form v-model="valid" class="form">
+        <h3>Push通知送信</h3>
+        <v-text-field v-model="uuid" label="uuid" :rules="[required]" />
+
+        <v-text-field v-model="title" label="タイトル" :rules="[required]" />
+
+        <v-textarea
+          v-model="body"
+          label="本文"
+          auto-grow
+          rows="1"
+          :rules="[required]"
+        />
+
+        <v-text-field v-model="urlScheme" label="URLスキーマ" />
+
+        <div class="my-5">
+          <v-btn color="primary" large @click="onPushNotidication">
+            送信する
+          </v-btn>
+        </div>
+      </v-form>
+    </v-sheet>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.root {
+  padding: 1rem 2rem;
+}
+
+.form {
+  padding: 1rem 2rem;
+}
+</style>

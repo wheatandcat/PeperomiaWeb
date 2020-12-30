@@ -1,63 +1,3 @@
-<template>
-  <v-container fluid>
-    <v-row>
-      <v-col ref="main" cols="12" md="6" class="calendar-container">
-        <calendar
-          :size="getMainCalendarSize"
-          :calendars="getCalendarByMonth(0)"
-          :calendar-date="getDate(0)"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-container fluid>
-          <v-row>
-            <v-col cols="6" class="calendar-container">
-              <calendar
-                :size="getSubCalendarSize"
-                :calendars="getCalendarByMonth(1)"
-                :calendar-date="getDate(1)"
-              />
-            </v-col>
-            <v-col cols="6" class="calendar-container">
-              <calendar
-                :size="getSubCalendarSize"
-                :calendars="getCalendarByMonth(2)"
-                :calendar-date="getDate(2)"
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6" class="calendar-container">
-              <calendar
-                :size="getSubCalendarSize"
-                :calendars="getCalendarByMonth(-1)"
-                :calendar-date="getDate(-1)"
-              />
-            </v-col>
-            <v-col cols="6" class="calendar-container">
-              <calendar
-                :size="getSubCalendarSize"
-                :calendar="getCalendarByMonth(-2)"
-                :calendar-date="getDate(-2)"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.calendar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -165,3 +105,63 @@ export default defineComponent<Props>({
   },
 })
 </script>
+
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col ref="main" cols="12" md="6" class="calendar-container">
+        <calendar
+          :size="getMainCalendarSize"
+          :calendars="getCalendarByMonth(0)"
+          :calendar-date="getDate(0)"
+        />
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-container fluid>
+          <v-row>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(1)"
+                :calendar-date="getDate(1)"
+              />
+            </v-col>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(2)"
+                :calendar-date="getDate(2)"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendars="getCalendarByMonth(-1)"
+                :calendar-date="getDate(-1)"
+              />
+            </v-col>
+            <v-col cols="6" class="calendar-container">
+              <calendar
+                :size="getSubCalendarSize"
+                :calendar="getCalendarByMonth(-2)"
+                :calendar-date="getDate(-2)"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

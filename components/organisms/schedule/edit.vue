@@ -1,3 +1,67 @@
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  reactive,
+  toRefs,
+} from '@vue/composition-api'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import { KINDS } from 'peperomia-util'
+import { Item } from 'peperomia-util/build/firestore/item'
+
+type State = {
+  title: string
+}
+
+type Props = {
+  loading: boolean
+  item: Item
+  onCancel: () => void
+  onSave: (item: Item) => Promise<void>
+}
+
+dayjs.extend(advancedFormat)
+
+export default defineComponent<Props>({
+  props: {
+    loading: { type: Boolean, default: false },
+    item: { type: Object, default: () => {} },
+    onCancel: { type: Function, default: () => {} },
+    onSave: { type: Function, default: () => {} },
+  },
+  setup(props) {
+    const state = reactive<State>({
+      title: props.item.title,
+    })
+
+    const kindData = KINDS[props.item?.kind] || {
+      src: '',
+      backgroundColor: '',
+    }
+
+    const bg = computed(() => {
+      return {
+        backgroundColor: kindData.backgroundColor,
+      }
+    })
+
+    const onSaveItem = () => {
+      const param = { ...props.item, ...state }
+
+      props.onSave(param)
+    }
+
+    return {
+      ...toRefs(state),
+      kindData,
+      bg,
+      onSaveItem,
+    }
+  },
+})
+</script>
+
 <template>
   <v-sheet elevation="4" width="500" height="350">
     <div class="header-itme" :style="bg">
@@ -98,67 +162,3 @@
   height: 80%;
 }
 </style>
-
-<script lang="ts">
-import {
-  defineComponent,
-  computed,
-  reactive,
-  toRefs,
-} from '@vue/composition-api'
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import { KINDS } from 'peperomia-util'
-import { Item } from 'peperomia-util/build/firestore/item'
-
-type State = {
-  title: string
-}
-
-type Props = {
-  loading: boolean
-  item: Item
-  onCancel: () => void
-  onSave: (item: Item) => Promise<void>
-}
-
-dayjs.extend(advancedFormat)
-
-export default defineComponent<Props>({
-  props: {
-    loading: { type: Boolean, default: false },
-    item: { type: Object, default: () => {} },
-    onCancel: { type: Function, default: () => {} },
-    onSave: { type: Function, default: () => {} },
-  },
-  setup(props) {
-    const state = reactive<State>({
-      title: props.item.title,
-    })
-
-    const kindData = KINDS[props.item?.kind] || {
-      src: '',
-      backgroundColor: '',
-    }
-
-    const bg = computed(() => {
-      return {
-        backgroundColor: kindData.backgroundColor,
-      }
-    })
-
-    const onSaveItem = () => {
-      const param = { ...props.item, ...state }
-
-      props.onSave(param)
-    }
-
-    return {
-      ...toRefs(state),
-      kindData,
-      bg,
-      onSaveItem,
-    }
-  },
-})
-</script>

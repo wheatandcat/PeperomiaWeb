@@ -57,6 +57,12 @@ module.exports = {
     ],
     'prettier/prettier': 'error',
     'vue-scoped-css/no-unused-selector': 'error',
+    'vue/component-tags-order': [
+      'error',
+      {
+        order: [['script', 'template'], 'style'],
+      },
+    ],
   },
   globals: {
     context: false, // for jest

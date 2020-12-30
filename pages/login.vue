@@ -13,10 +13,10 @@ export type LoginType = {
 }
 
 export default defineComponent({
-  layout: 'simple',
   components: {
     Login,
   },
+  layout: 'simple',
   setup(_, ctx: SetupContext) {
     const fbGoogleLogin = async () => {
       console.log('fbGoogleLogin')
