@@ -4,22 +4,22 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
     - name: Cache node_modules PeperomiaWeb
-      uses: actions/cache@preview
+      uses: actions/cache@v2
       with:
         path: ~/.cache/yarn
-        key: ${{ runner.os }}-PeperomiaWeb-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+        key: ${{ runner.OS }}-PeperomiaWeb-${{ hashFiles('**/yarn.lock') }}
         restore-keys:
-          ${{ runner.os }}-PeperomiaWeb-
+          ${{ runner.OS }}-PeperomiaWeb-
+          ${{ runner.OS }}-
     - name: Install node_modules PeperomiaWeb
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: yarn install
+      run: yarn --frozen-lockfile
     - name: setup
       run: sh localInit.sh
     - name: codegen
