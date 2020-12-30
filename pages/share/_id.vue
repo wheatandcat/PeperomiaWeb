@@ -1,16 +1,12 @@
 <template>
   <div v-if="!loading">
-    <ScheduleCard
-      :item="item"
-      :calendar="item.calendar"
-      :item-details="item.itemDetails"
-    />
+    <ScheduleCard :calendar="calendar" :loading="loading" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, SetupContext } from '@vue/composition-api'
-import useShareItem from '~/use/useShareItem'
+import useShareCalendar from '~/use/useShareCalendar'
 import ScheduleCard from '~/components/organisms/schedule/index.vue'
 
 export default defineComponent({
@@ -20,15 +16,15 @@ export default defineComponent({
   },
 
   setup(_, ctx: SetupContext) {
-    const itemId = String(ctx.root.$route.params.id)
-    const { item, loading, fetchShareItem } = useShareItem(ctx)
+    const id = String(ctx.root.$route.params.id)
+    const { calendar, loading, fetchShareItem } = useShareCalendar(ctx)
 
     onMounted(async () => {
-      await fetchShareItem(itemId)
+      await fetchShareItem(id)
     })
 
     return {
-      item,
+      calendar,
       loading,
     }
   },

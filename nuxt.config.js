@@ -1,5 +1,7 @@
 import env from './config/index'
 
+const API_HOST_PUBLIC = env.API_HOST_PUBLIC
+
 export default {
   mode: 'universal',
   buildModules: ['@nuxt/typescript-build'],
@@ -68,6 +70,9 @@ export default {
     includeNodeModules: true,
     clientConfigs: {
       default: '~/plugins/apollo-client.ts',
+      publicClient: {
+        httpEndpoint: `${API_HOST_PUBLIC}graphql`,
+      },
     },
   },
 

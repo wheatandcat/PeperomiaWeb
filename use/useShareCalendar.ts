@@ -3,17 +3,17 @@ import shareItemQuery from '~/queries/shareItem.gql'
 import { ShareItemQuery, ShareItemQueryVariables } from '~/queries/types'
 
 type UseFetchShareItemState = {
-  item: ShareItemQuery['shareItem'] | null
+  calendar: ShareItemQuery['shareItem'] | null
   loading: boolean
 }
 
 const useFetchShareItem = (ctx: SetupContext) => {
   const state = reactive<UseFetchShareItemState>({
-    item: null,
+    calendar: null,
     loading: true,
   })
 
-  const fetchShareItem = async (itemId: string) => {
+  const fetchShareItem = async (id: string) => {
     state.loading = true
     const res = await ctx.root.$apollo.query<
       ShareItemQuery,
@@ -21,10 +21,11 @@ const useFetchShareItem = (ctx: SetupContext) => {
     >({
       query: shareItemQuery,
       fetchPolicy: 'network-only',
-      variables: { itemId },
+      variables: { id },
+      client: 'publicClient',
     })
 
-    state.item = res.data.shareItem
+    state.calendar = res.data.shareItem
     state.loading = false
   }
 

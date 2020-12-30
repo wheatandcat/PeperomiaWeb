@@ -1,5 +1,5 @@
-query ShareItem($itemId: ID!) {
-  shareItem(id: $itemId) {
+query ShareItem($id: ID!) {
+  shareItem(id: $id) {
     id
     date
     item {
