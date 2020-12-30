@@ -1,46 +1,3 @@
-<template>
-  <v-dialog v-model="openDialog" width="500">
-    <div>
-      <v-sheet v-if="loading" elevation="4" width="500" height="200">
-        <div class="loading-container">
-          <v-progress-circular indeterminate color="primary" />
-        </div>
-      </v-sheet>
-      <div v-if="mode === 'loading'" />
-      <editItemDetail
-        v-else-if="mode === 'editItemDetail'"
-        :api-loading="postLoading"
-        :loading="itemDetailLoading"
-        :item-detail="selectedItemDetail"
-        :on-cancel="onCancel"
-        :on-save="onSaveItemDetail"
-      />
-      <itemDialog
-        v-else
-        edit
-        :loading="loading"
-        :api-loading="postLoading"
-        :calendar="calendar"
-        :on-edit-item="onEditItem"
-        :on-edit-item-detail="onEditItemDetail"
-        :on-save-calendar="onSaveCalendar"
-      />
-    </div>
-  </v-dialog>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.loading-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -167,3 +124,46 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <v-dialog v-model="openDialog" width="500">
+    <div>
+      <v-sheet v-if="loading" elevation="4" width="500" height="200">
+        <div class="loading-container">
+          <v-progress-circular indeterminate color="primary" />
+        </div>
+      </v-sheet>
+      <div v-if="mode === 'loading'" />
+      <editItemDetail
+        v-else-if="mode === 'editItemDetail'"
+        :api-loading="postLoading"
+        :loading="itemDetailLoading"
+        :item-detail="selectedItemDetail"
+        :on-cancel="onCancel"
+        :on-save="onSaveItemDetail"
+      />
+      <itemDialog
+        v-else
+        edit
+        :loading="loading"
+        :api-loading="postLoading"
+        :calendar="calendar"
+        :on-edit-item="onEditItem"
+        :on-edit-item-detail="onEditItemDetail"
+        :on-save-calendar="onSaveCalendar"
+      />
+    </div>
+  </v-dialog>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.loading-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

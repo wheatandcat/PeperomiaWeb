@@ -1,6 +1,8 @@
 shims-tsx.d.ts
 config/index.js
 static/firebase-auth-sw.js
+queries/types/index.d.ts
+gql.d.ts
 .cache
 # next.js build output
 .next

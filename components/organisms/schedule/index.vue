@@ -1,3 +1,69 @@
+<script lang="ts">
+import { defineComponent, computed, ref } from '@vue/composition-api'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import { KINDS } from 'peperomia-util'
+import card from './card.vue'
+import { Calendar } from '~/use/useCalendar'
+
+type Props = {
+  loading: boolean
+  apiLoading: boolean
+  calendar: Calendar
+  onEditItem: () => void
+  onEditItemDetail: (itemDetailId: string) => void
+  onSaveCalendar: (calendar: Calendar) => Promise<void>
+}
+
+dayjs.extend(advancedFormat)
+
+export default defineComponent<Props>({
+  components: {
+    card,
+  },
+  props: {
+    loading: { type: Boolean, default: false },
+    apiLoading: { type: Boolean, default: false },
+    edit: { type: Boolean, default: false },
+    item: { type: Object, default: () => {} },
+    itemDetails: { type: Array, default: () => [] },
+    calendar: { type: Object, default: () => {} },
+    onEditItem: { type: Function, default: () => {} },
+    onEditItemDetail: { type: Function, default: () => {} },
+    onSaveCalendar: { type: Function, default: () => {} },
+  },
+  setup(props) {
+    const menu = ref<boolean>(false)
+    const date = ref<string>(props.calendar?.date)
+    const kind: string = props.calendar?.item?.kind || ''
+
+    const kindData = KINDS[kind] || {
+      src: '',
+      backgroundColor: '',
+    }
+
+    const bg = computed(() => {
+      return {
+        backgroundColor: kindData?.backgroundColor,
+      }
+    })
+
+    const onSaveCalendarData = () => {
+      menu.value = false
+    }
+
+    return {
+      kindData,
+      bg,
+      dayjs,
+      menu,
+      date,
+      onSaveCalendarData,
+    }
+  },
+})
+</script>
+
 <template>
   <v-sheet elevation="4" max-width="500">
     <div v-if="!loading">
@@ -11,7 +77,7 @@
           offset-y
           min-width="290px"
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <div class="date cursor" v-on="on">
               {{ dayjs(calendar.date).format('YYYY年MM月DD日') }}
             </div>
@@ -103,69 +169,3 @@
   }
 }
 </style>
-
-<script lang="ts">
-import { defineComponent, computed, ref } from '@vue/composition-api'
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import { KINDS } from 'peperomia-util'
-import card from './card.vue'
-import { Calendar } from '~/use/useCalendar'
-
-type Props = {
-  loading: boolean
-  apiLoading: boolean
-  calendar: Calendar
-  onEditItem: () => void
-  onEditItemDetail: (itemDetailId: string) => void
-  onSaveCalendar: (calendar: Calendar) => Promise<void>
-}
-
-dayjs.extend(advancedFormat)
-
-export default defineComponent<Props>({
-  components: {
-    card,
-  },
-  props: {
-    loading: { type: Boolean, default: false },
-    apiLoading: { type: Boolean, default: false },
-    edit: { type: Boolean, default: false },
-    item: { type: Object, default: () => {} },
-    itemDetails: { type: Array, default: () => [] },
-    calendar: { type: Object, default: () => {} },
-    onEditItem: { type: Function, default: () => {} },
-    onEditItemDetail: { type: Function, default: () => {} },
-    onSaveCalendar: { type: Function, default: () => {} },
-  },
-  setup(props) {
-    const menu = ref<boolean>(false)
-    const date = ref<string>(props.calendar?.date)
-    const kind: string = props.calendar?.item?.kind || ''
-
-    const kindData = KINDS[kind] || {
-      src: '',
-      backgroundColor: '',
-    }
-
-    const bg = computed(() => {
-      return {
-        backgroundColor: kindData?.backgroundColor,
-      }
-    })
-
-    const onSaveCalendarData = () => {
-      menu.value = false
-    }
-
-    return {
-      kindData,
-      bg,
-      dayjs,
-      menu,
-      date,
-      onSaveCalendarData,
-    }
-  },
-})
-</script>

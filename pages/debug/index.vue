@@ -1,36 +1,3 @@
-<template>
-  <div class="root">
-    <v-sheet elevation="4" width="400">
-      <v-form v-model="sendCalendarPushNotifications.valid" class="form">
-        <h3>カレンダー当日通知</h3>
-
-        <v-date-picker
-          v-model="sendCalendarPushNotifications.date"
-          :rules="[required]"
-          :day-format="(date) => new Date(date).getDate()"
-          locale="jp-ja"
-        />
-
-        <div class="my-5">
-          <v-btn color="primary" large @click="onSendCalendarPushNotifications">
-            送信する
-          </v-btn>
-        </div>
-      </v-form>
-    </v-sheet>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.root {
-  padding: 1rem 2rem;
-}
-
-.form {
-  padding: 1rem 2rem;
-}
-</style>
-
 <script lang="ts">
 import {
   defineComponent,
@@ -85,3 +52,36 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <div class="root">
+    <v-sheet elevation="4" width="400">
+      <v-form v-model="sendCalendarPushNotifications.valid" class="form">
+        <h3>カレンダー当日通知</h3>
+
+        <v-date-picker
+          v-model="sendCalendarPushNotifications.date"
+          :rules="[required]"
+          :day-format="(date) => new Date(date).getDate()"
+          locale="jp-ja"
+        />
+
+        <div class="my-5">
+          <v-btn color="primary" large @click="onSendCalendarPushNotifications">
+            送信する
+          </v-btn>
+        </div>
+      </v-form>
+    </v-sheet>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.root {
+  padding: 1rem 2rem;
+}
+
+.form {
+  padding: 1rem 2rem;
+}
+</style>

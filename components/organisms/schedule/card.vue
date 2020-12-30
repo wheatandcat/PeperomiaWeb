@@ -1,5 +1,37 @@
+<script lang="ts">
+import { defineComponent, computed } from '@vue/composition-api'
+import { KINDS } from 'peperomia-util'
+import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
+
+type Props = {
+  itemDetail: ItemDetail
+  onEditItemDetail: (itemDetailId: string) => void
+}
+
+export default defineComponent<Props>({
+  props: {
+    itemDetail: { type: Object, required: true },
+    onEditItemDetail: { type: Function, default: () => {} },
+  },
+  setup(props) {
+    const kindData = KINDS[props.itemDetail.kind]
+
+    const bg = computed(() => {
+      return {
+        backgroundColor: kindData.backgroundColor,
+      }
+    })
+
+    return {
+      kindData,
+      bg,
+    }
+  },
+})
+</script>
+
 <template>
-  <v-hover v-slot:default="{ hover }" open-delay="200">
+  <v-hover v-slot="{ hover }" open-delay="200">
     <v-card
       :elevation="hover ? 4 : 0"
       min-height="60"
@@ -121,35 +153,3 @@
   padding-left: 0.2rem;
 }
 </style>
-
-<script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
-import { KINDS } from 'peperomia-util'
-import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
-
-type Props = {
-  itemDetail: ItemDetail
-  onEditItemDetail: (itemDetailId: string) => void
-}
-
-export default defineComponent<Props>({
-  props: {
-    itemDetail: { type: Object, required: true },
-    onEditItemDetail: { type: Function, default: () => {} },
-  },
-  setup(props) {
-    const kindData = KINDS[props.itemDetail.kind]
-
-    const bg = computed(() => {
-      return {
-        backgroundColor: kindData.backgroundColor,
-      }
-    })
-
-    return {
-      kindData,
-      bg,
-    }
-  },
-})
-</script>

@@ -1,28 +1,3 @@
-<template>
-  <div class="root">
-    <div class="no-event" :style="fontStyle">
-      {{ dayjs(date).format('D') }}
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $darkGray;
-}
-
-.no-event {
-  font-weight: 600;
-}
-</style>
-
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
@@ -54,3 +29,28 @@ export default defineComponent<Props>({
   },
 })
 </script>
+
+<template>
+  <div class="root">
+    <div class="no-event" :style="fontStyle">
+      {{ dayjs(date).format('D') }}
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $darkGray;
+}
+
+.no-event {
+  font-weight: 600;
+}
+</style>

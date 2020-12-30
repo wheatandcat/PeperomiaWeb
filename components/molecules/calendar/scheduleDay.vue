@@ -1,37 +1,3 @@
-<template>
-  <div class="root" :style="bg" @click="onOenItemDialog(date)">
-    <div class="event" :style="fontStyle">
-      {{ dayjs(date).format('D') }}
-    </div>
-    <div>
-      <v-img :src="kindData.src" class="kind-img" :style="imgStyle" />
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: $darkGray;
-  cursor: pointer;
-}
-
-.event {
-  font-weight: 600;
-}
-
-.kind-img {
-  opacity: 0.8;
-}
-</style>
-
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
@@ -87,3 +53,37 @@ export default defineComponent<Props>({
   },
 })
 </script>
+
+<template>
+  <div class="root" :style="bg" @click="onOenItemDialog(date)">
+    <div class="event" :style="fontStyle">
+      {{ dayjs(date).format('D') }}
+    </div>
+    <div>
+      <v-img :src="kindData.src" class="kind-img" :style="imgStyle" />
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: $darkGray;
+  cursor: pointer;
+}
+
+.event {
+  font-weight: 600;
+}
+
+.kind-img {
+  opacity: 0.8;
+}
+</style>

@@ -1,97 +1,3 @@
-<template>
-  <v-app dark>
-    <scheduleDialog />
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in getItems()"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="primary">
-      <v-app-bar-nav-icon @click.stop="onDrawer" />
-      <img src="/logo.png" alt="logp" class="logo" />
-      <v-spacer />
-      <v-menu left bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn class="text-transform-none" color="#eee" text v-on="on">
-            <v-img
-              v-if="getPhotoURL"
-              :src="getPhotoURL"
-              contain
-              max-width="28px"
-              max-height="28px"
-              class="user-photo"
-            />
-            <span class="my-page">
-              {{ getName }}
-            </span>
-            <v-icon right>mdi-chevron-down</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item @click="logout">
-            <v-list-item-title>
-              <span class="logout">ログアウト</span>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-    <v-main>
-      <nuxt />
-    </v-main>
-    <v-footer fixed app>
-      <span>&copy; 2020</span>
-    </v-footer>
-  </v-app>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-.logo {
-  width: 30px;
-  height: 30px;
-}
-
-.logout {
-  color: $red;
-  font-size: 12px;
-}
-
-.my-page {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 200px;
-}
-
-.user-photo {
-  border-radius: 20px;
-  width: 28px;
-  margin-right: 7px;
-}
-</style>
-
 <script lang="ts">
 import Vue from 'vue'
 import {
@@ -141,10 +47,10 @@ const initState = {
 }
 
 export default defineComponent({
-  middleware: 'authenticated',
   components: {
     scheduleDialog,
   },
+  middleware: 'authenticated',
 
   setup(_, ctx: SetupContext) {
     provide('CalendarStore', calendarStore(ctx))
@@ -230,3 +136,97 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <v-app dark>
+    <scheduleDialog />
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      fixed
+      app
+    >
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in getItems()"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar :clipped-left="clipped" fixed app color="primary">
+      <v-app-bar-nav-icon @click.stop="onDrawer" />
+      <img src="/logo.png" alt="logp" class="logo" />
+      <v-spacer />
+      <v-menu left bottom>
+        <template #activator="{ on }">
+          <v-btn class="text-transform-none" color="#eee" text v-on="on">
+            <v-img
+              v-if="getPhotoURL"
+              :src="getPhotoURL"
+              contain
+              max-width="28px"
+              max-height="28px"
+              class="user-photo"
+            />
+            <span class="my-page">
+              {{ getName }}
+            </span>
+            <v-icon right>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="logout">
+            <v-list-item-title>
+              <span class="logout">ログアウト</span>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+    <v-main>
+      <nuxt />
+    </v-main>
+    <v-footer fixed app>
+      <span>&copy; 2020</span>
+    </v-footer>
+  </v-app>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.logo {
+  width: 30px;
+  height: 30px;
+}
+
+.logout {
+  color: $red;
+  font-size: 12px;
+}
+
+.my-page {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.user-photo {
+  border-radius: 20px;
+  width: 28px;
+  margin-right: 7px;
+}
+</style>

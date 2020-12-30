@@ -1,3 +1,101 @@
+<script lang="ts">
+import {
+  defineComponent,
+  computed,
+  reactive,
+  toRefs,
+  watch,
+} from '@vue/composition-api'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import { KINDS } from 'peperomia-util'
+import { ItemDetail } from '~/use/useItemDetail'
+
+type State = {
+  title: string
+  kind: string
+  memo: string
+  place: string
+  url: string
+}
+
+type Props = {
+  loading: boolean
+  apiLoading: boolean
+  itemDetail: ItemDetail
+  onCancel: () => void
+  onSave: (itemDetail: ItemDetail) => Promise<void>
+}
+
+dayjs.extend(advancedFormat)
+
+const initialState = (props: Props): State => ({
+  title: props.itemDetail?.title || '',
+  kind: props.itemDetail?.kind || '',
+  memo: props.itemDetail?.memo || '',
+  place: props.itemDetail?.place || '',
+  url: props.itemDetail?.url || '',
+})
+
+export default defineComponent<Props>({
+  props: {
+    apiLoading: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    itemDetail: { type: Object, default: () => {} },
+    onCancel: { type: Function, default: () => {} },
+    onSave: { type: Function, default: () => {} },
+  },
+  setup(props) {
+    const state = reactive<State>(initialState(props))
+
+    watch(
+      () => props.itemDetail?.id,
+      (newVal, oldVal) => {
+        if (newVal !== oldVal) {
+          state.title = props.itemDetail?.title || ''
+          state.kind = props.itemDetail?.kind || ''
+          state.memo = props.itemDetail?.memo || ''
+          state.place = props.itemDetail?.place || ''
+          state.url = props.itemDetail?.url || ''
+        }
+      }
+    )
+
+    const kindData = () => {
+      return (
+        KINDS[props.itemDetail?.kind || ''] || {
+          src: '',
+          backgroundColor: '',
+        }
+      )
+    }
+
+    const bg = computed(() => {
+      return {
+        backgroundColor: kindData().backgroundColor,
+      }
+    })
+
+    const onSaveItemDetail = () => {
+      const param: ItemDetail = {
+        id: props.itemDetail?.id || '',
+        priority: props.itemDetail?.priority || 0,
+        ...state,
+      }
+
+      props.onSave(param)
+    }
+
+    return {
+      ...toRefs(state),
+      kindData,
+      bg,
+      onSaveItemDetail,
+    }
+  },
+})
+</script>
+
 <template>
   <v-sheet elevation="4" width="500">
     <div v-if="loading" class="loading">
@@ -135,101 +233,3 @@
   }
 }
 </style>
-
-<script lang="ts">
-import {
-  defineComponent,
-  computed,
-  reactive,
-  toRefs,
-  watch,
-} from '@vue/composition-api'
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import { KINDS } from 'peperomia-util'
-import { ItemDetail } from '~/use/useItemDetail'
-
-type State = {
-  title: string
-  kind: string
-  memo: string
-  place: string
-  url: string
-}
-
-type Props = {
-  loading: boolean
-  apiLoading: boolean
-  itemDetail: ItemDetail
-  onCancel: () => void
-  onSave: (itemDetail: ItemDetail) => Promise<void>
-}
-
-dayjs.extend(advancedFormat)
-
-const initialState = (props: Props): State => ({
-  title: props.itemDetail?.title || '',
-  kind: props.itemDetail?.kind || '',
-  memo: props.itemDetail?.memo || '',
-  place: props.itemDetail?.place || '',
-  url: props.itemDetail?.url || '',
-})
-
-export default defineComponent<Props>({
-  props: {
-    apiLoading: { type: Boolean, default: false },
-    loading: { type: Boolean, default: false },
-    itemDetail: { type: Object, default: () => {} },
-    onCancel: { type: Function, default: () => {} },
-    onSave: { type: Function, default: () => {} },
-  },
-  setup(props) {
-    const state = reactive<State>(initialState(props))
-
-    watch(
-      () => props.itemDetail?.id,
-      (newVal, oldVal) => {
-        if (newVal !== oldVal) {
-          state.title = props.itemDetail?.title || ''
-          state.kind = props.itemDetail?.kind || ''
-          state.memo = props.itemDetail?.memo || ''
-          state.place = props.itemDetail?.place || ''
-          state.url = props.itemDetail?.url || ''
-        }
-      }
-    )
-
-    const kindData = () => {
-      return (
-        KINDS[props.itemDetail?.kind || ''] || {
-          src: '',
-          backgroundColor: '',
-        }
-      )
-    }
-
-    const bg = computed(() => {
-      return {
-        backgroundColor: kindData().backgroundColor,
-      }
-    })
-
-    const onSaveItemDetail = () => {
-      const param: ItemDetail = {
-        id: props.itemDetail?.id || '',
-        priority: props.itemDetail?.priority || 0,
-        ...state,
-      }
-
-      props.onSave(param)
-    }
-
-    return {
-      ...toRefs(state),
-      kindData,
-      bg,
-      onSaveItemDetail,
-    }
-  },
-})
-</script>

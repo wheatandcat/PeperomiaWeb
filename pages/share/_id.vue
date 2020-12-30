@@ -10,10 +10,10 @@ import useShareCalendar from '~/use/useShareCalendar'
 import ScheduleCard from '~/components/organisms/schedule/index.vue'
 
 export default defineComponent({
-  layout: 'simple',
   components: {
     ScheduleCard,
   },
+  layout: 'simple',
 
   setup(_, ctx: SetupContext) {
     const id = String(ctx.root.$route.params.id)

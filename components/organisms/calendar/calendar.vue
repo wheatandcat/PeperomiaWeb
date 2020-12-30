@@ -1,47 +1,3 @@
-<template>
-  <div>
-    <div :style="fontStyle" class="calendar-title">
-      {{ dayjs(calendarDate).format('YYYY年MM月') }}
-    </div>
-    <v-sheet :height="height" :width="width">
-      <v-calendar
-        :now="dayjs().format('YYYY-MM-DD')"
-        :value="dayjs(calendarDate).format('YYYY-MM-DD')"
-        locale="ja-jp"
-      >
-        <template v-slot:day="{ date }">
-          <scheduleDay
-            v-if="isSchedule(date)"
-            :date="date"
-            :item-i-d="getSchedule(date).itemId"
-            :kind-data="KINDS[getSchedule(date).item.kind]"
-            :size="size"
-          />
-          <day v-else :date="date" :size="size" />
-        </template>
-      </v-calendar>
-    </v-sheet>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-@import '~/assets/variables.scss';
-
-::v-deep .v-calendar-weekly__day-label {
-  display: none !important;
-}
-
-::v-deep .v-calendar-weekly__head-weekday {
-  font-weight: 600;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.calendar-title {
-  font-weight: 600;
-  text-align: center;
-}
-</style>
-
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
 import dayjs from 'dayjs'
@@ -116,3 +72,47 @@ export default defineComponent<Props>({
   },
 })
 </script>
+
+<template>
+  <div>
+    <div :style="fontStyle" class="calendar-title">
+      {{ dayjs(calendarDate).format('YYYY年MM月') }}
+    </div>
+    <v-sheet :height="height" :width="width">
+      <v-calendar
+        :now="dayjs().format('YYYY-MM-DD')"
+        :value="dayjs(calendarDate).format('YYYY-MM-DD')"
+        locale="ja-jp"
+      >
+        <template #day="{ date }">
+          <scheduleDay
+            v-if="isSchedule(date)"
+            :date="date"
+            :item-i-d="getSchedule(date).itemId"
+            :kind-data="KINDS[getSchedule(date).item.kind]"
+            :size="size"
+          />
+          <day v-else :date="date" :size="size" />
+        </template>
+      </v-calendar>
+    </v-sheet>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+::v-deep .v-calendar-weekly__day-label {
+  display: none !important;
+}
+
+::v-deep .v-calendar-weekly__head-weekday {
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.calendar-title {
+  font-weight: 600;
+  text-align: center;
+}
+</style>

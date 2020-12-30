@@ -1,3 +1,16 @@
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api'
+import { LoginType } from '~/pages/login.vue'
+
+type Props = LoginType
+
+export default defineComponent<Props>({
+  props: {
+    fbGoogleLogin: { type: Function, required: true },
+  },
+})
+</script>
+
 <template>
   <div class="root">
     <div class="icon">
@@ -128,16 +141,3 @@
   font-size: 12px;
 }
 </style>
-
-<script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { LoginType } from '~/pages/login.vue'
-
-type Props = LoginType
-
-export default defineComponent<Props>({
-  props: {
-    fbGoogleLogin: { type: Function, required: true },
-  },
-})
-</script>
