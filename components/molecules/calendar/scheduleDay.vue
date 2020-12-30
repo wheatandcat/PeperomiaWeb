@@ -1,5 +1,5 @@
 <template>
-  <div class="root" :style="bg" @click="onOenItemDialog(itemID)">
+  <div class="root" :style="bg" @click="onOenItemDialog(date)">
     <div class="event" :style="fontStyle">
       {{ dayjs(date).format('D') }}
     </div>
@@ -71,9 +71,9 @@ export default defineComponent<Props>({
       }
     })
 
-    const onOenItemDialog = (id: string) => {
+    const onOenItemDialog = (date: string) => {
       ctx.root.$store.commit('OPEN_ITEM_DIALOG', {
-        id,
+        date,
       })
     }
 

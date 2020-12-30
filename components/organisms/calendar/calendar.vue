@@ -14,7 +14,7 @@
             v-if="isSchedule(date)"
             :date="date"
             :item-i-d="getSchedule(date).itemId"
-            :kind-data="KINDS[getSchedule(date).kind]"
+            :kind-data="KINDS[getSchedule(date).item.kind]"
             :size="size"
           />
           <day v-else :date="date" :size="size" />
@@ -49,23 +49,25 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { KINDS } from 'peperomia-util'
 import day from '~/components/molecules/calendar/day.vue'
 import scheduleDay from '~/components/molecules/calendar/scheduleDay.vue'
-import { CalendarItem } from '~/domain/calendar'
+import { Calendars } from '~/store/calendar.ts'
 
 dayjs.extend(advancedFormat)
 
 type Props = {
-  calendars: CalendarItem[]
+  calendars: Calendars
   size: number
   calendarDate: string
 }
 
-const defaultCalendarItem: CalendarItem = {
+type Calendar = Calendars[0]
+
+const defaultCalendarItem: Calendar = {
   id: '',
-  itemId: '',
-  uid: '',
   date: '',
-  title: '',
-  kind: '',
+  item: {
+    id: '',
+    kind: '',
+  },
 }
 
 export default defineComponent<Props>({
@@ -80,13 +82,17 @@ export default defineComponent<Props>({
   },
   setup(props) {
     const isSchedule = (date: string): boolean => {
-      const item = props.calendars.find((v) => v.date === date)
+      const item = props.calendars.find(
+        (v) => dayjs(v?.date).format('YYYY-MM-DD') === date
+      )
 
       return Boolean(item)
     }
 
-    const getSchedule = (date: string) => {
-      const item = props.calendars.find((v) => v.date === date)
+    const getSchedule = (date: string): Calendar => {
+      const item = props.calendars.find(
+        (v) => dayjs(v?.date).format('YYYY-MM-DD') === date
+      )
 
       return item || defaultCalendarItem
     }

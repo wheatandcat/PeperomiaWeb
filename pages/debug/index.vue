@@ -67,8 +67,6 @@ export default defineComponent({
     const onSendCalendarPushNotifications = async () => {
       state.loading = true
 
-      console.log(state.sendCalendarPushNotifications.date)
-
       await get(
         ctx,
         `cron/SendCalendarPushNotifications?date=${state.sendCalendarPushNotifications.date}T00:00:00`

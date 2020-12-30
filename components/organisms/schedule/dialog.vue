@@ -7,16 +7,10 @@
         </div>
       </v-sheet>
       <div v-if="mode === 'loading'" />
-      <editItem
-        v-else-if="mode === 'editItem'"
-        :loading="postLoading"
-        :item="item"
-        :on-cancel="onCancel"
-        :on-save="onSaveItem"
-      />
       <editItemDetail
         v-else-if="mode === 'editItemDetail'"
-        :loading="postLoading"
+        :api-loading="postLoading"
+        :loading="itemDetailLoading"
         :item-detail="selectedItemDetail"
         :on-cancel="onCancel"
         :on-save="onSaveItemDetail"
@@ -26,8 +20,6 @@
         edit
         :loading="loading"
         :api-loading="postLoading"
-        :item="item"
-        :item-details="itemDetails"
         :calendar="calendar"
         :on-edit-item="onEditItem"
         :on-edit-item-detail="onEditItemDetail"
@@ -57,53 +49,43 @@ import {
   reactive,
   SetupContext,
   toRefs,
+  inject,
 } from '@vue/composition-api'
-import { Item } from 'peperomia-util/build/firestore/item'
-import { ItemDetail } from 'peperomia-util/build/firestore/itemDetail'
-import { Calendar } from 'peperomia-util/build/firestore/calendar'
 import itemDialog from './index.vue'
-import editItem from './edit.vue'
 import editItemDetail from '~/components/organisms/scheduleDetail/edit.vue'
-import useFetchItem from '~/use/item.ts'
+import useCalendar from '~/use/useCalendar'
+import useItemDetail, { ItemDetail } from '~/use/useItemDetail'
+import { CalendarStore } from '~/store/calendar'
 
 type State = {
   mode: 'show' | 'editItemDetail' | 'editItem' | 'loading'
-  selectedItemDetail: ItemDetail | null | undefined
 }
 
-const initState: State = {
+const initialState = (): State => ({
   mode: 'loading',
-  selectedItemDetail: null,
-}
+})
 
 export default defineComponent({
   components: {
     itemDialog,
-    editItem,
     editItemDetail,
   },
 
   setup(_, ctx: SetupContext) {
-    const state = reactive<State>(initState)
-    const {
-      item,
-      itemDetails,
-      calendar,
-      loading,
-      postLoading,
-      fetchItem,
-      saveItem,
-      saveItemDetail,
-      saveCalendar,
-    } = useFetchItem(ctx)
+    const calendarStore = inject<CalendarStore>('CalendarStore')
+    if (!calendarStore) {
+      throw new Error(`CalendarStore is not provided`)
+    }
+
+    const state = reactive<State>(initialState())
+    const { loading, calendar, fetchCalendar } = useCalendar(ctx)
+    const useItemDetailData = useItemDetail(ctx)
 
     const setItemData = async () => {
       state.mode = 'loading'
 
-      const itemID = ctx.root.$store.state.itemDialog.id
-
-      if (itemID) {
-        await fetchItem(itemID)
+      if (ctx.root.$store.state.itemDialog.date) {
+        await fetchCalendar(ctx.root.$store.state.itemDialog.date)
         state.mode = 'show'
       }
     }
@@ -123,69 +105,62 @@ export default defineComponent({
       }
     })
 
-    const onEditItemDetail = (itemDetailId: string) => {
-      if (!itemDetails.value) {
-        return
-      }
-
-      state.selectedItemDetail = itemDetails.value.find(
-        (v) => v.id === itemDetailId
+    const onEditItem = () => {
+      const itemDetail = (calendar?.value?.item?.itemDetails || []).find(
+        (v) => v?.priority === 1
       )
 
-      if (state.selectedItemDetail?.id) {
-        state.mode = 'editItemDetail'
+      if (itemDetail) {
+        onEditItemDetail(itemDetail.id)
       }
     }
 
-    const onEditItem = () => {
-      state.mode = 'editItem'
+    const onEditItemDetail = (itemDetailId: string) => {
+      useItemDetailData.fetchItemDetail(
+        ctx.root.$store.state.itemDialog.date,
+        calendar.value?.item?.id || '',
+        itemDetailId
+      )
+
+      state.mode = 'editItemDetail'
     }
 
     const onCancel = () => {
       state.mode = 'show'
     }
 
-    const onSaveItem = async (item: Item) => {
-      const ok = await saveItem(item)
-
-      if (ok) {
-        await setItemData()
-        state.mode = 'show'
-      }
-    }
-
     const onSaveItemDetail = async (itemDetail: ItemDetail) => {
-      const ok = await saveItemDetail(itemDetail)
+      const res = await useItemDetailData.updateItemDetail(
+        ctx.root.$store.state.itemDialog.date,
+        calendar.value?.item?.id || '',
+        itemDetail
+      )
 
-      if (ok) {
-        await setItemData()
-        state.mode = 'show'
-      }
-    }
-
-    const onSaveCalendar = async (calendar: Calendar) => {
-      const ok = await saveCalendar(calendar)
-
-      if (ok) {
-        await setItemData()
+      if (res.errors) {
+        return
       }
 
-      const authUser = ctx.root.$store.state?.authUser
-      ctx.root.$store.dispatch('getCalendarData', { authUser })
+      await setItemData()
+
+      if (itemDetail?.priority === 1) {
+        await calendarStore.refetchCalendars()
+      }
+
+      state.mode = 'show'
     }
+
+    const onSaveCalendar = async () => {}
 
     return {
       ...toRefs(state),
-      item,
-      itemDetails,
       calendar,
       loading,
-      postLoading,
       openDialog,
-      onEditItem,
+      selectedItemDetail: useItemDetailData.itemDetail,
+      itemDetailLoading: useItemDetailData.loading,
       onEditItemDetail,
+      onEditItem,
       onCancel,
-      onSaveItem,
       onSaveItemDetail,
       onSaveCalendar,
     }

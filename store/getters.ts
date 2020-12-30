@@ -9,6 +9,6 @@ export default {
     }
   },
   isOpenItemDialog: (state: State) => {
-    return !!state.itemDialog?.id
+    return !!state.itemDialog?.date
   },
 }

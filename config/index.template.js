@@ -9,4 +9,5 @@ module.exports = {
     appId: '',
   },
   API_HOST: '',
+  API_HOST_PUBLIC: '',
 }

@@ -56,9 +56,9 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <nuxt />
-    </v-content>
+    </v-main>
     <v-footer fixed app>
       <span>&copy; 2020</span>
     </v-footer>
@@ -102,9 +102,12 @@ import {
   onMounted,
   watch,
   toRefs,
+  provide,
 } from '@vue/composition-api'
 import { findByUID } from 'peperomia-util/build/firestore/user'
 import scheduleDialog from '~/components/organisms/schedule/dialog.vue'
+import calendarStore from '~/store/calendar'
+import { initialSession } from '~/modules/auth'
 
 const ignoreWarnMessage =
   'The .native modifier for v-on is only valid on components but it was used on <div>.'
@@ -144,11 +147,14 @@ export default defineComponent({
   },
 
   setup(_, ctx: SetupContext) {
+    provide('CalendarStore', calendarStore(ctx))
     const state = reactive<State>(initState)
 
     onMounted(async () => {
+      await initialSession()
+
       const user = await findByUID(
-        ctx.root.$fireStore,
+        ctx.root.$fire.firestore,
         ctx.root.$store.state.authUser.uid
       )
 
@@ -173,7 +179,7 @@ export default defineComponent({
 
     const logout = async () => {
       try {
-        await ctx.root.$fireAuth.signOut()
+        await ctx.root.$fire.auth.signOut()
         await ctx.root.$store.commit('RESET_STORE')
         ctx.root.$router.push('/login')
       } catch (e) {

@@ -1,7 +1,8 @@
-query ShareItem($id: ID!) {
-  shareItem(id: $id) {
+query Calendar($date: String!) {
+  calendar(date: $date) {
     id
     date
+    public
     item {
       id
       title
@@ -10,9 +11,9 @@ query ShareItem($id: ID!) {
         id
         title
         kind
-        place
-        url
         memo
+        url
+        place
         priority
       }
     }

@@ -5,48 +5,43 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  reactive,
-  SetupContext,
-  toRefs,
-} from '@vue/composition-api'
+import { defineComponent, onMounted, inject } from '@vue/composition-api'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import firebase from 'firebase'
 import CalendarView from '~/components/templates/dashboard/calendar.vue'
-import { CalendarItem } from '~/domain/calendar'
+import { CalendarStore } from '~/store/calendar'
 
-type State = {
-  calendars: CalendarItem[]
-}
+dayjs.extend(advancedFormat)
 
 export default defineComponent({
   components: {
     CalendarView,
   },
-  setup(_, ctx: SetupContext) {
-    const state = reactive<State>({
-      calendars: [],
-    })
-    const unwatch = ctx.root.$store.watch<CalendarItem[]>(
-      (vuexState) => {
-        return vuexState.calendars
-      },
-      (calendars: CalendarItem[]) => {
-        state.calendars = calendars
-      }
-    )
+  setup() {
+    const calendarStore = inject<CalendarStore>('CalendarStore')
+    if (!calendarStore) {
+      throw new Error(`CalendarStore is not provided`)
+    }
 
     onMounted(() => {
-      const authUser = ctx.root.$store.state?.authUser
-      ctx.root.$store.dispatch('getCalendarData', { authUser })
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          calendarStore.fetchCalendars({
+            startDate: dayjs().add(-2, 'month').format('YYYY-MM-DDT00:00:00'),
+            endDate: dayjs()
+              .add(2, 'month')
+              .endOf('month')
+              .format('YYYY-MM-DDT23:59:59'),
+          })
+        }
+      })
     })
 
-    onUnmounted(() => {
-      unwatch()
-    })
-
-    return toRefs(state)
+    return {
+      loading: calendarStore.loading,
+      calendars: calendarStore.calendars,
+    }
   },
 })
 </script>
