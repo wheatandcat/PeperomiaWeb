@@ -170,7 +170,12 @@ export default defineComponent({
       <v-spacer />
       <v-menu left bottom>
         <template #activator="{ on }">
-          <v-btn class="text-transform-none" color="#eee" text v-on="on">
+          <v-btn
+            class="text-transform-none"
+            color="themeBackgroundLight"
+            text
+            v-on="on"
+          >
             <v-img
               v-if="getPhotoURL"
               :src="getPhotoURL"
@@ -213,7 +218,7 @@ export default defineComponent({
 }
 
 .logout {
-  color: $red;
+  color: map-get($error, main);
   font-size: 12px;
 }
 

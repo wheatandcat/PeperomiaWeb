@@ -75,7 +75,7 @@ export default defineComponent<Props>({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: $darkGray;
+  color: map-get($base, main);
   cursor: pointer;
 }
 

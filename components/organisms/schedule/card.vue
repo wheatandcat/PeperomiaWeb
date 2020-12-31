@@ -54,12 +54,12 @@ export default defineComponent<Props>({
           <template v-if="itemDetail.place">
             <v-chip
               class="chip-container"
-              color="themeLightGray"
+              color="themeBackgroundLight"
               text-color="themeGary"
               x-small
               label
             >
-              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+              <v-icon color="secondary" size="13" class="mr-1" left>
                 mdi-map-marker-outline
               </v-icon>
               <div class="label-text">場所</div>
@@ -72,12 +72,12 @@ export default defineComponent<Props>({
           <template v-if="itemDetail.url">
             <v-chip
               class="chip-container"
-              color="themeLightGray"
+              color="themeBackgroundLight"
               text-color="themeGary"
               x-small
               label
             >
-              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+              <v-icon color="secondary" size="13" class="mr-1" left>
                 mdi-link
               </v-icon>
               <div class="label-text">URL</div>
@@ -90,12 +90,12 @@ export default defineComponent<Props>({
           <template v-if="itemDetail.memo">
             <v-chip
               class="chip-container"
-              color="themeLightGray"
+              color="themeBackgroundLight"
               text-color="themeGary"
               x-small
               label
             >
-              <v-icon color="themeLightGreen" size="13" class="mr-1" left>
+              <v-icon color="secondary" size="13" class="mr-1" left>
                 mdi-view-list
               </v-icon>
               <div class="label-text">メモ</div>
@@ -136,7 +136,7 @@ export default defineComponent<Props>({
     .card-title {
       font-size: 0.6rem;
       font-weight: 600;
-      color: $darkGray;
+      color: map-get($base, main);
     }
   }
 }
@@ -148,7 +148,7 @@ export default defineComponent<Props>({
 }
 
 .label-value {
-  color: $darkGray;
+  color: map-get($base, main);
   font-size: 0.6rem;
   padding-left: 0.2rem;
 }

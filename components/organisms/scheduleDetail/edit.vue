@@ -116,7 +116,7 @@ export default defineComponent<Props>({
             v-model="place"
             label="場所"
             prepend-icon="mdi-map-marker-outline"
-            color="themeLightGreen"
+            color="secondary"
             single-line
           />
         </div>
@@ -125,7 +125,7 @@ export default defineComponent<Props>({
             v-model="url"
             label="URL"
             prepend-icon="mdi-link"
-            color="themeLightGreen"
+            color="secondary"
             single-line
           />
         </div>
@@ -134,7 +134,7 @@ export default defineComponent<Props>({
             v-model="memo"
             label="メモ"
             prepend-icon="mdi-view-list"
-            color="themeLightGreen"
+            color="secondary"
             single-line
             auto-grow
           />
@@ -174,12 +174,12 @@ export default defineComponent<Props>({
 }
 
 ::v-deep input {
-  color: $main !important;
+  color: map-get($primary, main) !important;
   font-weight: bold;
 }
 
 ::v-deep textarea {
-  color: $main !important;
+  color: map-get($primary, main) !important;
   font-weight: bold;
   padding-top: 0.175rem;
 }
@@ -188,7 +188,7 @@ export default defineComponent<Props>({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $white;
+  background-color: map-get($background, main);
   height: 500px;
 }
 
@@ -205,10 +205,10 @@ export default defineComponent<Props>({
       font-size: 1.5rem;
       font-weight: 600;
 
-      color: $darkGray;
+      color: map-get($base, main);
 
       ::v-deep input {
-        color: $darkGray !important;
+        color: map-get($base, main) !important;
         font-weight: bold;
         font-size: 1.3rem;
         text-align: center;

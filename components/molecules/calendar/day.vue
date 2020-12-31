@@ -47,7 +47,7 @@ export default defineComponent<Props>({
   display: flex;
   justify-content: center;
   align-items: center;
-  color: $darkGray;
+  color: map-get($base, main);
 }
 
 .no-event {
