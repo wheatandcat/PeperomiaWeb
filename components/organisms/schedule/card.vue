@@ -136,7 +136,7 @@ export default defineComponent<Props>({
     .card-title {
       font-size: 0.6rem;
       font-weight: 600;
-      color: $darkGray;
+      color: map-get($base, main);
     }
   }
 }
@@ -148,7 +148,7 @@ export default defineComponent<Props>({
 }
 
 .label-value {
-  color: $darkGray;
+  color: map-get($base, main);
   font-size: 0.6rem;
   padding-left: 0.2rem;
 }

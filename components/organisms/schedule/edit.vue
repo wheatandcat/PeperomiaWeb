@@ -114,7 +114,7 @@ export default defineComponent<Props>({
 }
 
 ::v-deep input {
-  color: $main !important;
+  color: map-get($primary, main) !important;
   font-weight: bold;
   font-size: 1.4rem;
   text-align: center;

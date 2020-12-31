@@ -19,7 +19,7 @@ $base: (
   pale: #DBDBDB,
   light: #9D9D9D,
   main: #4F4F4F,
-  dark: #121212,
+  dark: #110f0f,
 );
 
 $accent1: (
@@ -49,24 +49,7 @@ $background: (
   dark: #000000,
 );
 
-$main: #006835;
-$darkGray: #4F4F4F;
-$red: #E15757;
-$lightRed: #FF8C8C;
-$lightGray: #F2F2F2;
-$lightGreen: #ADCF01;
-$gray: #D3D3D3;
-$white: #fff;
-
 :export {
-  main: $main;
-  darkGray: $darkGray;
-  red: $red;
-  lightRed: $lightRed;
-  gray: $gray;
-  lightGray: $lightGray;
-  lightGreen: $lightGreen;
-
   @each $key, $value in $primary {
     primary_#{unquote($key)}: $value;
   }

@@ -140,7 +140,7 @@ export default defineComponent<Props>({
 
   .date {
     font-size: 0.8rem;
-    color: $darkGray;
+    color: map-get($base, main);
   }
 
   .header-item-title {
@@ -151,7 +151,7 @@ export default defineComponent<Props>({
       cursor: pointer;
       font-size: 1.3rem;
       font-weight: 600;
-      color: $darkGray;
+      color: map-get($base, main);
       vertical-align: middle;
     }
   }
@@ -162,7 +162,7 @@ export default defineComponent<Props>({
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 0.6rem;
-  background-color: $lightGray;
+  background-color: map-get($background, light);
 
   @media (max-width: 767px) {
     justify-content: center;
