@@ -59,7 +59,7 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    optionsPath: './plugins/vuetify.js',
+    optionsPath: './plugins/vuetify.ts',
   },
 
   apollo: {

@@ -36,7 +36,7 @@ $accent2: (
   dark: #BE9109,
 );
 
-$alert: (
+$error: (
   pale: #FFEBEB,
   light: #FFABAB,
   main: #E15757,
@@ -82,8 +82,8 @@ $white: #fff;
   @each $key, $value in $accent2 {
     accent2_#{unquote($key)}: $value;
   }
-  @each $key, $value in $alert {
-    alert_#{unquote($key)}: $value;
+  @each $key, $value in $error {
+    error_#{unquote($key)}: $value;
   }
   @each $key, $value in $background {
     background_#{unquote($key)}: $value;

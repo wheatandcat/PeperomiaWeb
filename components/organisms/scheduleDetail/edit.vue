@@ -116,7 +116,7 @@ export default defineComponent<Props>({
             v-model="place"
             label="場所"
             prepend-icon="mdi-map-marker-outline"
-            color="themeLightGreen"
+            color="secondary"
             single-line
           />
         </div>
@@ -125,7 +125,7 @@ export default defineComponent<Props>({
             v-model="url"
             label="URL"
             prepend-icon="mdi-link"
-            color="themeLightGreen"
+            color="secondary"
             single-line
           />
         </div>
@@ -134,7 +134,7 @@ export default defineComponent<Props>({
             v-model="memo"
             label="メモ"
             prepend-icon="mdi-view-list"
-            color="themeLightGreen"
+            color="secondary"
             single-line
             auto-grow
           />
