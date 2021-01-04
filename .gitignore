@@ -96,3 +96,6 @@ static/firebase-auth-sw.js
 schema.graphqls
 queries/types/index.d.ts
 schema.json
+
+.nuxt-storybook
+storybook-static

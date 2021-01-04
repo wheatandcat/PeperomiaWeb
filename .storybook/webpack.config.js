@@ -1,14 +1,13 @@
 const path = require('path')
 const rootPath = path.resolve(__dirname, '../')
 
-module.exports = async ({ config, mode }) => {
+module.exports = async ({ config }) => {
   mode = 'development'
 
   config.module.rules.push({
     test: /\.(otf|eot|svg|ttf|woff|woff2)(\?.+)?$/,
     loader: 'url-loader',
   })
-
 
   config.module.rules.push({
     test: /\.ts/,

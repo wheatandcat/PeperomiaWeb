@@ -7,9 +7,10 @@ import card from './card.vue'
 import { Calendar } from '~/use/useCalendar'
 
 type Props = {
-  loading: boolean
   apiLoading: boolean
   calendar: Calendar
+  edit: boolean
+  loading: boolean
   onEditItem: () => void
   onEditItemDetail: (itemDetailId: string) => void
   onSaveCalendar: (calendar: Calendar) => Promise<void>
@@ -22,12 +23,10 @@ export default defineComponent<Props>({
     card,
   },
   props: {
-    loading: { type: Boolean, default: false },
     apiLoading: { type: Boolean, default: false },
-    edit: { type: Boolean, default: false },
-    item: { type: Object, default: () => {} },
-    itemDetails: { type: Array, default: () => [] },
     calendar: { type: Object, default: () => {} },
+    edit: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
     onEditItem: { type: Function, default: () => {} },
     onEditItemDetail: { type: Function, default: () => {} },
     onSaveCalendar: { type: Function, default: () => {} },
