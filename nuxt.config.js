@@ -106,6 +106,7 @@ export default {
             require.resolve('@nuxt/babel-preset-app'),
             {
               targets: isServer ? { node: 'current' } : { ie: '9' },
+              corejs: { version: 3 },
             },
           ],
         ]
