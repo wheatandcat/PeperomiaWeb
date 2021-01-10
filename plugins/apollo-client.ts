@@ -4,7 +4,7 @@ const BASE_URL = process.env.API_HOST
 
 export default function () {
   return {
-    httpEndpoint: `${BASE_URL}graphql`,
+    httpEndpoint: `${BASE_URL}app/graphql`,
     getAuth: async () => {
       const token = await getIdToken()
       console.log(token, 'token')

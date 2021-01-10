@@ -36,7 +36,7 @@ export default defineComponent<Props>({
             outlined
             @click.prevent="fbGoogleLogin"
           >
-            <v-icon left color="secondary">mdi-google-plus</v-icon>
+            <v-icon left color="themeErrorDark">mdi-google-plus</v-icon>
             Googleで登録する
           </v-btn>
         </div>

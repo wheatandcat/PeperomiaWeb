@@ -1,6 +1,6 @@
 import env from './config/index'
 
-const API_HOST_PUBLIC = env.API_HOST_PUBLIC
+const API_HOST = env.API_HOST
 
 export default {
   mode: 'universal',
@@ -71,7 +71,7 @@ export default {
     clientConfigs: {
       default: '~/plugins/apollo-client.ts',
       publicClient: {
-        httpEndpoint: `${API_HOST_PUBLIC}graphql`,
+        httpEndpoint: `${API_HOST}graphql`,
       },
     },
   },

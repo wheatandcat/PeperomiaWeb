@@ -32,12 +32,18 @@ export default defineComponent({
     const onPushNotidication = async () => {
       state.loading = true
 
-      await post(ctx, 'admin/SentPushNotifications', {
+      const res = await post(ctx, 'admin/SentPushNotifications', {
         uid: state.uuid,
         title: state.title,
         body: state.body,
         urlScheme: state.urlScheme,
       })
+
+      if (res.ok) {
+        alert('送信に成功しました！')
+      } else {
+        alert('送信に失敗しました')
+      }
 
       state.loading = false
     }
