@@ -64,7 +64,7 @@ export default defineComponent<Props>({
 </script>
 
 <template>
-  <v-sheet elevation="4" max-width="500">
+  <v-sheet elevation="4" max-width="700">
     <div v-if="!loading">
       <div class="header-itme" :style="bg">
         <v-menu
@@ -165,6 +165,10 @@ export default defineComponent<Props>({
 
   @media (max-width: 767px) {
     justify-content: center;
+  }
+
+  @media (min-width: 700px) {
+    justify-content: flex-start;
   }
 }
 </style>
