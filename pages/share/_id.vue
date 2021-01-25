@@ -1,6 +1,8 @@
 <template>
-  <div v-if="!loading">
-    <ScheduleCard :calendar="calendar" :loading="loading" />
+  <div v-if="!loading" class="root">
+    <div>
+      <ScheduleCard :calendar="calendar" :loading="loading" />
+    </div>
   </div>
 </template>
 
@@ -30,3 +32,14 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+@import '~/assets/variables.scss';
+
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+</style>
