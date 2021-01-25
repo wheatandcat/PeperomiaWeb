@@ -28,18 +28,30 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'error',
       },
     },
-  ],
-  // required to lint *.vue files
-  plugins: ['vue', 'jest', 'graphql'],
-  // add your custom rules here
-  rules: {
-    'graphql/template-strings': [
-      'error',
-      {
-        env: 'apollo',
-        schemaJson: require('./schema.json'),
+    {
+      files: ['*.gql'],
+      parser: '@graphql-eslint/eslint-plugin',
+      plugins: ['@graphql-eslint'],
+      parserOptions: {
+        operations: ['./queries/**/*.gql'],
+        schema: './schema.json',
       },
-    ],
+      rules: {
+        'prettier/prettier': 0,
+        '@graphql-eslint/require-id-when-available': [
+          'error',
+          {
+            fieldName: 'id',
+          },
+        ],
+        '@graphql-eslint/no-deprecated': 'error',
+        '@graphql-eslint/prettier': 'error',
+        '@graphql-eslint/no-unused-variables': 'error',
+      },
+    },
+  ],
+  plugins: ['vue', 'jest'],
+  rules: {
     'no-console': 'off',
     'vue/no-parsing-error': [
       'error',
